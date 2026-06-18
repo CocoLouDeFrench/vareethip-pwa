@@ -451,8 +451,19 @@ return;
   for(let i=0;i<order.length;i++){
     total += getPrice(order[i]);
   }
+let now = new Date();
 
+let orderNumber =
+  "VT-" +
+  now.getFullYear() +
+  String(now.getMonth()+1).padStart(2,"0") +
+  String(now.getDate()).padStart(2,"0") +
+  "-" +
+  String(now.getHours()).padStart(2,"0") +
+  String(now.getMinutes()).padStart(2,"0") +
+  String(now.getSeconds()).padStart(2,"0");
   let text="Neue Vareethip Bestellung\n\n";
+text+="Bestellnummer: " + orderNumber + "\n\n";
   text+="Name: "+name+"\n";
 text+="Telefon: +" + cleanPhone + "\n";
   text+="Abholzeit: "+time+"\n\n";

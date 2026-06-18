@@ -289,7 +289,7 @@ Ohne Ei
 
 <ul id="items"></ul>
 
-<button type="button" onclick="sendWhatsApp()" style="width:100%;margin-top:20px;">
+<button type="button" onclick="sendWhatsApp();" style="width:100%;margin-top:20px;display:block;">
 Bestellung per WhatsApp senden
 </button>
 
@@ -307,49 +307,52 @@ function addItem(item){
 function render(){
   let list=document.getElementById("items");
   list.innerHTML="";
-  order.forEach(item=>{
-    list.innerHTML+=`<li>${item}</li>`;
-  });
+  for(let i=0;i<order.length;i++){
+    list.innerHTML += "<li>" + order[i] + "</li>";
+  }
 }
 
 function sendWhatsApp(){
-
+  let name=document.getElementById("name").value;
   let phone=document.getElementById("phone").value;
- let name=document.getElementById("name").value;
   let time=document.getElementById("time").value;
 
- if(phone.trim()===""){
-    alert("Bitte Telefonnummer eingeben.");
+  if(name.trim()==""){
+    alert("Bitte Namen eingeben.");
     return;
-}
   }
 
-  if(time.trim()===""){
+  if(phone.trim()==""){
+    alert("Bitte Telefonnummer eingeben.");
+    return;
+  }
+
+  if(time.trim()==""){
     alert("Bitte Abholzeit auswählen.");
     return;
   }
 
-  if(order.length===0){
+  if(order.length==0){
     alert("Bitte mindestens ein Gericht auswählen.");
     return;
   }
 
-  let text=`🍜 Neue Vareethip Bestellung%0A%0A`;
-  text+=`Name: ${name}%0A`;
-text+=`Telefon: ${phone}%0A`;
-text+=`Abholzeit: ${time}%0A%0A`;
+  let text="Neue Vareethip Bestellung\n\n";
+  text+="Name: "+name+"\n";
+  text+="Telefon: "+phone+"\n";
+  text+="Abholzeit: "+time+"\n\n";
+  text+="Bestellung:\n";
 
-  order.forEach(item=>{
-    text+=`- ${item}%0A`;
-  });
+  for(let i=0;i<order.length;i++){
+    text+="- "+order[i]+"\n";
+  }
 
-  text+=`%0AAlle Preise gelten für Außer Haus.`;
+  text+="\nAlle Preise gelten fuer Ausser Haus.";
 
-  window.open(
-    "https://wa.me/4915730642210?text="+text,
-    "_blank"
-  );
+  let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);
+  window.location.href=url;
 }
+   </script>
     
 </body>
 </html>

@@ -52,7 +52,19 @@ margin:5px 0 20px 0;
 font-size:18px;
 display:block;
 }
-    
+    textarea{
+width:100%;
+padding:10px;
+margin:5px 0;
+font-size:18px;
+min-height:80px;
+}
+
+input[type="checkbox"]{
+width:auto;
+margin-right:10px;
+}
+   
 #cart{
 background:#fff3cd;
 padding:15px;
@@ -283,6 +295,12 @@ Ohne Ei
 <option value="75 Minuten">75 Minuten</option>
 <option value="90 Minuten">90 Minuten</option>
 </select>
+   <textarea id="note" placeholder="Anmerkung z.B. ohne Koriander, extra scharf"></textarea>
+
+<label style="display:block;margin:15px 0;font-size:16px;">
+<input type="checkbox" id="confirm" style="width:auto;">
+Ich bestätige verbindlich, dass ich die Bestellung abhole.
+</label>
 
 <ul id="items"></ul>
 
@@ -340,7 +358,8 @@ function sendWhatsApp(){
   let name=document.getElementById("name").value;
   let phone=document.getElementById("phone").value;
   let time=document.getElementById("time").value;
-
+let note=document.getElementById("note").value;
+let confirm=document.getElementById("confirm").checked;
   if(name.trim()==""){
     alert("Bitte Namen eingeben.");
     return;
@@ -360,6 +379,10 @@ function sendWhatsApp(){
     alert("Bitte mindestens ein Gericht auswählen.");
     return;
   }
+   if(!confirm){
+alert("Bitte Bestellung bestätigen.");
+return;
+}
 
   let grouped={};
   for(let i=0;i<order.length;i++){
@@ -380,7 +403,10 @@ function sendWhatsApp(){
   text+="Name: "+name+"\n";
   text+="Telefon: "+phone+"\n";
   text+="Abholzeit: "+time+"\n\n";
-  text+="Bestellung:\n";
+  if(note.trim()!==""){
+text+="Anmerkung: "+note+"%0A%0A";
+}
+   text+="Bestellung:\n";
 
   for(let item in grouped){
     text+="- "+grouped[item]+"x "+item+"\n";

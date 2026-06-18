@@ -25,7 +25,22 @@ margin:10px 0;
 border-radius:10px;
 box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
+#statusBar{
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:15px;
+  color:white;
+}
 
+.open{
+  background:#28a745;
+}
+
+.closed{
+  background:#dc3545;
+}
 button{
 background:#25D366;
 color:white;
@@ -280,7 +295,7 @@ Ohne Ei
 <h3>Nom Yen</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Nom Yen 5,00€')">Hinzufügen</button>
-</div>
+<div id="statusBar"></div>
 <h2>Bestellung</h2>
 
 <input id="name" placeholder="Name">
@@ -387,7 +402,45 @@ if(total < 5){
   }
 }
 
+function updateStatus(){
 
+  let now = new Date();
+
+  let day = now.getDay();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+
+  let current = hour * 60 + minute;
+
+  let open = false;
+
+  if(day >= 1 && day <= 5){
+
+    if(
+      (current >= 720 && current <= 840) ||
+      (current >= 960 && current <= 1250)
+    ){
+      open = true;
+    }
+
+  }else{
+
+    if(current >= 960 && current <= 1250){
+      open = true;
+    }
+
+  }
+
+  let bar = document.getElementById("statusBar");
+
+  if(open){
+    bar.className = "open";
+    bar.innerHTML = "🟢 Geöffnet";
+  }else{
+    bar.className = "closed";
+    bar.innerHTML = "🔴 Geschlossen";
+  }
+}
 function sendWhatsApp(){
   let name=document.getElementById("name").value;
   if(name.trim()==""){
@@ -528,6 +581,8 @@ Letzte Bestellung: 20:50 Uhr`
   let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);
   window.location.href=url;
 }
+   updateStatus();
+setInterval(updateStatus,60000);
    </script>
     
 </body>

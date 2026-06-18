@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vareethip Thai Noodle Bar</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+max-width:800px;
+margin:auto;
+padding:20px;
+background:#fafafa;
+}
+
+h1{
+text-align:center;
+}
+
+.card{
+background:white;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+button{
+background:#25D366;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:5px 0;
+}
+
+#cart{
+background:#fff3cd;
+padding:15px;
+border-radius:10px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🍜 Vareethip Thai Noodle Bar</h1>
+
+<div class="card">
+<h3>Khao Soi</h3>
+<p>14 €</p>
+<button onclick="addItem('Khao Soi 14€')">Hinzufügen</button>
+</div>
+
+<div class="card">
+<h3>Yen Ta Fo</h3>
+<p>14 €</p>
+<button onclick="addItem('Yen Ta Fo 14€')">Hinzufügen</button>
+</div>
+
+<div class="card">
+<h3>Rinder Nudelsuppe</h3>
+<p>15 €</p>
+<button onclick="addItem('Rinder Nudelsuppe 15€')">Hinzufügen</button>
+</div>
+
+<div class="card">
+<h3>Pad Thai</h3>
+<p>13 €</p>
+<button onclick="addItem('Pad Thai 13€')">Hinzufügen</button>
+</div>
+
+<div id="cart">
+<h2>Bestellung</h2>
+
+<input id="name" placeholder="Name">
+
+<input id="time" placeholder="Abholzeit">
+
+<ul id="items"></ul>
+
+<button onclick="sendWhatsApp()">
+Bestellung per WhatsApp senden
+</button>
+
+</div>
+
+<script>
+
+let order=[];
+
+function addItem(item){
+order.push(item);
+render();
+}
+
+function render(){
+let list=document.getElementById("items");
+list.innerHTML="";
+order.forEach(item=>{
+list.innerHTML+=`<li>${item}</li>`;
+});
+}
+
+function sendWhatsApp(){
+
+let name=document.getElementById("name").value;
+let time=document.getElementById("time").value;
+
+let text=`Hallo Vareethip,%0A%0AName: ${name}%0AAbholzeit: ${time}%0A%0ABestellung:%0A`;
+
+order.forEach(item=>{
+text+=`- ${item}%0A`;
+});
+
+window.open(
+"https://wa.me/4915730642210?text="+text,
+"_blank"
+);
+
+}
+
+</script>
+
+</body>
+</html>

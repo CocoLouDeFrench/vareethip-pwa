@@ -432,14 +432,27 @@ function updateStatus(){
   }
 
   let bar = document.getElementById("statusBar");
+let button = document.querySelector('button[onclick="sendWhatsApp()"]');
+if(open){
+  bar.className = "open";
+  bar.innerHTML = "🟢 Geöffnet";
 
-  if(open){
-    bar.className = "open";
-    bar.innerHTML = "🟢 Geöffnet";
-  }else{
-    bar.className = "closed";
-    bar.innerHTML = "🔴 Geschlossen";
-  }
+  button.disabled = false;
+  button.style.background = "#2ecc71";
+  button.style.opacity = "1";
+  button.innerHTML = "Bestellung per WhatsApp senden";
+
+}else{
+
+  bar.className = "closed";
+  bar.innerHTML = "🔴 Geschlossen";
+
+  button.disabled = true;
+  button.style.background = "#999";
+  button.style.opacity = "0.6";
+  button.innerHTML = "Online-Bestellung geschlossen";
+
+}
 }
 function sendWhatsApp(){
   let name=document.getElementById("name").value;

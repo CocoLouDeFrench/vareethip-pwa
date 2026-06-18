@@ -327,7 +327,18 @@ function addItem(item){
   render();
 }
 
+function removeItem(item){
+  let index = order.indexOf(item);
+
+  if(index > -1){
+    order.splice(index,1);
+  }
+
+  render();
+}
+
 function render(){
+
   let list=document.getElementById("items");
   list.innerHTML="";
 
@@ -335,6 +346,7 @@ function render(){
 
   for(let i=0;i<order.length;i++){
     let item=order[i];
+
     if(grouped[item]){
       grouped[item]++;
     }else{
@@ -342,17 +354,36 @@ function render(){
     }
   }
 
-  for(let item in grouped){
-    list.innerHTML += "<li>" + grouped[item] + "x " + item + "</li>";
-  }
-
   let total=0;
-  for(let i=0;i<order.length;i++){
-    total += getPrice(order[i]);
+
+  for(let item in grouped){
+
+    total += getPrice(item) * grouped[item];
+
+    list.innerHTML += `
+      <li style="margin-bottom:10px;">
+        ${grouped[item]}x ${item}
+
+        <button
+          type="button"
+          onclick="removeItem('${item}')"
+          style="margin-left:10px;background:#dc3545;">
+          Entfernen
+        </button>
+
+      </li>
+    `;
   }
 
-  list.innerHTML += "<li><strong>Gesamt: " + total + ",00€</strong></li>";
+  if(order.length>0){
+    list.innerHTML += `
+      <li style="font-size:22px;font-weight:bold;margin-top:15px;">
+        Gesamt: ${total},00€
+      </li>
+    `;
+  }
 }
+
 
 function sendWhatsApp(){
   let name=document.getElementById("name").value;

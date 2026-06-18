@@ -562,20 +562,7 @@ if(day === 0 || day === 6){
 }
 
 if(!open){
-  alert(
-`Online-Bestellungen sind aktuell nicht möglich.
-
-Öffnungszeiten:
-
-Montag–Freitag
-12:00–14:00 Uhr
-16:00–21:00 Uhr
-
-Samstag–Sonntag
-16:00–21:00 Uhr
-
-Letzte Bestellung: 20:50 Uhr`
-  );
+  alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo-Fr: 12:00-14:00 & 16:00-20:50\nSa-So: 16:00-20:50");
   return;
 }
   let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);

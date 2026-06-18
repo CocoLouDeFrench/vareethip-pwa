@@ -359,7 +359,10 @@ function render(){
   for(let item in grouped){
 
     total += getPrice(item) * grouped[item];
-
+if(total < 5){
+  alert("Der Mindestbestellwert beträgt 5,00 €.");
+  return;
+}
     list.innerHTML += `
       <li style="margin-bottom:10px;">
         ${grouped[item]}x ${item}

@@ -387,8 +387,16 @@ function render(){
 
 function sendWhatsApp(){
   let name=document.getElementById("name").value;
-  let phone=document.getElementById("phone").value;
-  let time=document.getElementById("time").value;
+  if(name.trim()==""){
+  alert("Bitte Namen eingeben");
+  return;
+}
+   let phone=document.getElementById("phone").value;
+  if(phone.length < 8){
+  alert("Bitte gültige Telefonnummer eingeben");
+  return;
+}
+   let time=document.getElementById("time").value;
 let note=document.getElementById("note").value;
 let confirm=document.getElementById("confirm").checked;
   if(name.trim()==""){

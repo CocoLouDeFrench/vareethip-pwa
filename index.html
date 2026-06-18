@@ -477,7 +477,51 @@ text+= "Anmerkung: " + note + "\n\n";
   }
 
   text+="\nGesamt: "+total+",00€";
+let now = new Date();
+let day = now.getDay();
+let hour = now.getHours();
+let minute = now.getMinutes();
 
+let currentTime = hour * 60 + minute;
+
+let open = false;
+
+// Montag bis Freitag
+if(day >= 1 && day <= 5){
+  open =
+    (
+      currentTime >= 720 && currentTime <= 840
+    ) ||
+    (
+      currentTime >= 960 && currentTime <= 1250
+    );
+}
+
+// Samstag & Sonntag
+if(day === 0 || day === 6){
+  open =
+    (
+      currentTime >= 960 && currentTime <= 1250
+    );
+}
+
+if(!open){
+  alert(
+`Online-Bestellungen sind aktuell nicht möglich.
+
+Öffnungszeiten:
+
+Montag–Freitag
+12:00–14:00 Uhr
+16:00–21:00 Uhr
+
+Samstag–Sonntag
+16:00–21:00 Uhr
+
+Letzte Bestellung: 20:50 Uhr`
+  );
+  return;
+}
   let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);
   window.location.href=url;
 }

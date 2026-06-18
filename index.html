@@ -264,7 +264,18 @@ Ohne Ei
 
 <input id="name" placeholder="Name">
 
-<input id="time" placeholder="Abholzeit">
+<input id="phone" placeholder="Telefonnummer">
+
+<select id="time">
+
+<select id="time">
+  <option value="">Abholzeit wählen</option>
+  <option>Schnellstmöglich ca. 30 Min.</option>
+  <option>45 Minuten</option>
+  <option>60 Minuten</option>
+  <option>75 Minuten</option>
+  <option>90 Minuten</option>
+</select>
 
 <ul id="items"></ul>
 
@@ -279,37 +290,56 @@ Bestellung per WhatsApp senden
 let order=[];
 
 function addItem(item){
-order.push(item);
-render();
+  order.push(item);
+  render();
 }
 
 function render(){
-let list=document.getElementById("items");
-list.innerHTML="";
-order.forEach(item=>{
-list.innerHTML+=`<li>${item}</li>`;
-});
+  let list=document.getElementById("items");
+  list.innerHTML="";
+  order.forEach(item=>{
+    list.innerHTML+=`<li>${item}</li>`;
+  });
 }
 
 function sendWhatsApp(){
 
-let name=document.getElementById("name").value;
-let time=document.getElementById("time").value;
+  let phone=document.getElementById("phone").value;
+ let name=document.getElementById("name").value;
+  let time=document.getElementById("time").value;
 
-let text=`Hallo Vareethip,%0A%0AName: ${name}%0AAbholzeit: ${time}%0A%0ABestellung:%0A`;
-
-order.forEach(item=>{
-text+=`- ${item}%0A`;
-});
-
-window.open(
-"https://wa.me/4915730642210?text="+text,
-"_blank"
-);
-
+ if(phone.trim()===""){
+    alert("Bitte Telefonnummer eingeben.");
+    return;
 }
+  }
 
-</script>
+  if(time.trim()===""){
+    alert("Bitte Abholzeit auswählen.");
+    return;
+  }
 
+  if(order.length===0){
+    alert("Bitte mindestens ein Gericht auswählen.");
+    return;
+  }
+
+  let text=`🍜 Neue Vareethip Bestellung%0A%0A`;
+  text+=`Name: ${name}%0A`;
+text+=`Telefon: ${phone}%0A`;
+text+=`Abholzeit: ${time}%0A%0A`;
+
+  order.forEach(item=>{
+    text+=`- ${item}%0A`;
+  });
+
+  text+=`%0AAlle Preise gelten für Außer Haus.`;
+
+  window.open(
+    "https://wa.me/4915730642210?text="+text,
+    "_blank"
+  );
+}
+    
 </body>
 </html>

@@ -296,6 +296,13 @@ Ohne Ei
 <p>5,00 €</p>
 <button onclick="addItem('Nom Yen 5,00€')">Hinzufügen</button>
 <div id="statusBar"></div>
+
+<div id="adminPanel" style="display:none;margin-bottom:15px;">
+  <button type="button" onclick="toggleClosed()">
+    Heute öffnen/schließen
+  </button>
+</div>
+
 <h2>Bestellung</h2>
 
 <input id="name" placeholder="Name">
@@ -328,6 +335,7 @@ Bestellung per WhatsApp senden
 <script>
 
 let order=[];
+let forceClosed = localStorage.getItem("forceClosed") === "true";
 
 function getPrice(item){
   let match=item.match(/(\d+),00€/);

@@ -672,9 +672,13 @@ if(!open){
 
 
 checkAdmin();
-updateStatus();
 updatePickupTimes();
-setInterval(updateStatus,60000);
+updateStatus();
+
+setInterval(function(){
+  updatePickupTimes();
+  updateStatus();
+},60000);
    </script>
     
 </body>

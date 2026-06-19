@@ -420,6 +420,30 @@ function checkAdmin(){
     document.getElementById("adminPanel").style.display = "block";
   }
 }
+  function updatePickupTimes(){
+  let select = document.getElementById("time");
+  if(!select) return;
+
+  let now = new Date();
+  let current = now.getHours() * 60 + now.getMinutes();
+
+  let firstPickup = current + 30;
+  let lastPickup = 1250;
+
+  select.innerHTML = '<option value="">Abholzeit wählen</option>';
+
+  for(let t = firstPickup; t <= lastPickup; t += 10){
+    let h = Math.floor(t / 60);
+    let m = t % 60;
+
+    let timeText =
+      String(h).padStart(2, "0") + ":" +
+      String(m).padStart(2, "0") + " Uhr";
+
+    select.innerHTML += '<option value="' + timeText + '">' + timeText + '</option>';
+  }
+}
+
 function updateStatus(){
 
   let now = new Date();
@@ -452,7 +476,9 @@ function updateStatus(){
 if(adminOpen){
   open = true;
 }
-
+  
+updatePickupTimes();
+  
 let bar = document.getElementById("statusBar");
 let button = document.querySelector('button[onclick="sendWhatsApp()"]');
 if(open){

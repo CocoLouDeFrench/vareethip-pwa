@@ -409,7 +409,17 @@ if(total < 5){
     `;
   }
 }
+function toggleClosed(){
+  forceClosed = !forceClosed;
+  localStorage.setItem("forceClosed", forceClosed);
+  updateStatus();
+}
 
+function checkAdmin(){
+  if(window.location.search.includes("admin")){
+    document.getElementById("adminPanel").style.display = "block";
+  }
+}
 function updateStatus(){
 
   let now = new Date();
@@ -431,15 +441,19 @@ function updateStatus(){
       open = true;
     }
 
-  }else{
+}else{
 
-    if(current >= 960 && current <= 1250){
-      open = true;
-    }
-
+  if(current >= 960 && current <= 1250){
+    open = true;
   }
 
-  let bar = document.getElementById("statusBar");
+}
+
+if(forceClosed){
+  open = false;
+}
+
+let bar = document.getElementById("statusBar");
 let button = document.querySelector('button[onclick="sendWhatsApp()"]');
 if(open){
   bar.className = "open";
@@ -589,7 +603,8 @@ if(!open){
   let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);
   window.location.href=url;
 }
-   updateStatus();
+   checkAdmin();
+updateStatus();
 setInterval(updateStatus,60000);
    </script>
     

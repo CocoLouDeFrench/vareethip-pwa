@@ -24,57 +24,87 @@ body {
 }
 
 /* HEADER */
-.header {
+.app-header {
   position: sticky;
   top: 0;
-  background: var(--primary);
+  background: #c9342b;
   color: white;
-  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 24px 28px;
+  min-height: 140px;
+  box-sizing: border-box;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.header-logo {
+.brand-area {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 18px;
 }
-.header-logo img {
-  height: 56px;
-  border-radius: 6px;
+.brand-logo {
+  width: 92px;
+  height: auto;
+  max-height: 92px;
+  object-fit: contain;
+  display: block;
+  image-rendering: auto;
 }
-.header-logo span {
-  font-size: 15px;
-  font-weight: bold;
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-title {
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
   color: white;
-  line-height: 1.3;
+}
+.brand-subtitle {
+  font-size: 31px;
+  font-weight: 800;
+  color: white;
 }
 /* Mobile cart button — hidden on desktop */
-.cart-icon-btn {
+.cart-button {
   position: relative;
-  background: none;
+  background: transparent;
   border: none;
-  color: white;
-  font-size: 28px;
+  font-size: 40px;
   cursor: pointer;
-  padding: 4px 8px;
+  color: white;
+  flex-shrink: 0;
 }
 .cart-badge {
   position: absolute;
-  top: -2px;
-  right: 0;
+  top: -4px;
+  right: -4px;
   background: var(--gold);
   color: #1a1a1a;
   border-radius: 50%;
-  min-width: 20px;
-  height: 20px;
-  font-size: 12px;
+  min-width: 22px;
+  height: 22px;
+  font-size: 13px;
   font-weight: bold;
   display: none;
   align-items: center;
   justify-content: center;
+}
+@media (max-width: 480px) {
+  .app-header {
+    padding: 22px 24px;
+    min-height: 150px;
+  }
+  .brand-logo {
+    width: 86px;
+    max-height: 86px;
+  }
+  .brand-area { gap: 16px; }
+  .brand-title,
+  .brand-subtitle { font-size: 28px; }
+  .cart-button { font-size: 36px; }
 }
 
 /* STATUS BAR */
@@ -110,7 +140,7 @@ body {
   border-bottom: 1px solid var(--border);
   scrollbar-width: none;
   position: sticky;
-  top: 76px;
+  top: 180px;
   z-index: 90;
 }
 .categories::-webkit-scrollbar { display: none; }
@@ -417,13 +447,13 @@ body {
   .main-layout {
     max-width: none;
     align-items: flex-start;
-    min-height: calc(100vh - 115px);
+    min-height: calc(100vh - 180px);
   }
 
   .menu-column { flex: 1; padding-bottom: 60px; }
 
   .categories {
-    top: 76px;
+    top: 180px;
     padding: 12px 24px;
     gap: 10px;
   }
@@ -446,9 +476,9 @@ body {
     flex-direction: column;
     width: 360px;
     min-width: 320px;
-    height: calc(100vh - 115px);
+    height: calc(100vh - 180px);
     position: sticky;
-    top: 115px;
+    top: 180px;
     border-left: 2px solid var(--border);
     background: white;
     overflow: hidden;
@@ -463,7 +493,7 @@ body {
   .cart-col-header h2 { font-size: 20px; font-weight: bold; }
 
   /* Hide mobile-only elements on desktop */
-  .cart-icon-btn { display: none; }
+  .cart-button { display: none; }
   .cart-overlay,
   .cart-sheet { display: none !important; }
 }
@@ -491,16 +521,19 @@ body {
 <body>
 
 <!-- HEADER -->
-<div class="header">
-  <div class="header-logo">
-    <img src="Logo.PNG" alt="Logo" onerror="this.style.display='none'">
-    <span>VAREETHIP<br>Thai Noodle Bar</span>
+<header class="app-header">
+  <div class="brand-area">
+    <img src="Logo.PNG" alt="Vareethip Thai Noodle Bar Logo" class="brand-logo" onerror="this.style.display='none'">
+    <div class="brand-text">
+      <div class="brand-title">VAREETHIP</div>
+      <div class="brand-subtitle">Thai Noodle Bar</div>
+    </div>
   </div>
-  <button class="cart-icon-btn" onclick="openMobileCart()">
+  <button class="cart-button" onclick="openMobileCart()">
     🛒
     <span class="cart-badge" id="cartBadge">0</span>
   </button>
-</div>
+</header>
 
 <!-- STATUS BAR -->
 <div id="statusBar"></div>

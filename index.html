@@ -573,10 +573,10 @@ let confirm=document.getElementById("confirm").checked;
     return;
   }
 
-  if(time.trim()==""){
-    alert("Bitte Abholzeit auswählen.");
-    return;
-  }
+  if(time.trim()==="" || time.includes("keine Abholzeit")){
+  alert("Bitte gültige Abholzeit auswählen.");
+  return;
+}
 
   if(order.length==0){
     alert("Bitte mindestens ein Gericht auswählen.");

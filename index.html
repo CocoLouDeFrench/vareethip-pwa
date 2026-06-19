@@ -617,6 +617,62 @@ body {
   color: var(--text-muted);
 }
 
+/* ── SOCIAL MEDIA SECTION ── */
+.social-section {
+  padding: 28px 16px 8px;
+}
+.social-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.social-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 22px 22px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  min-height: 160px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+}
+.social-card:active { transform: scale(0.97); }
+.social-icon {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 14px;
+}
+.social-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.1px;
+}
+.social-instagram {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+@media (min-width: 800px) {
+  .social-section {
+    padding: 28px 24px 8px;
+  }
+  .social-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 480px;
+  }
+  .social-card { min-height: 180px; }
+}
+
 /* Admin */
 #adminPanel {
   position: fixed;
@@ -842,6 +898,23 @@ body {
           <button class="add-btn" onclick="addItem('Nom Yen',500,'🌸',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Nom Yen</div><div class="menu-card-price">5,00 €</div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL MEDIA -->
+    <div class="social-section">
+      <div class="social-heading">Folge uns auf</div>
+      <div class="social-grid">
+        <a class="social-card social-instagram"
+           href="https://www.instagram.com/vareethip_thainoodle_bar?igsh=ZDQ3czV6bzY2ZzRk"
+           target="_blank" rel="noopener noreferrer">
+          <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="6" ry="6" stroke="white" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+          </svg>
+          <span class="social-name">Instagram</span>
+        </a>
       </div>
     </div>
 

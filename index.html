@@ -116,50 +116,44 @@ body {
 .open  { background: #27ae60; color: white; }
 .closed { background: var(--primary); color: white; }
 
-/* ── MOBILE STICKY NAV WRAPPER ── */
-/* Only active on mobile — wraps status bar + category tabs together */
-.mobile-sticky-nav {
-  /* default: no sticky on mobile yet — desktop overrides below */
+/* ══════════════════════════════════════════════
+   STICKY NAV WRAPPER — gilt für Mobile & Desktop
+   Status-Balken + Kategorie-Balken kleben immer
+   gemeinsam oben. Roter Header scrollt weg.
+   ══════════════════════════════════════════════ */
+
+/* Header scrollt weg (beide Breakpoints) */
+.app-header {
+  position: relative !important;
+  top: auto !important;
 }
 
-@media (max-width: 799px) {
-  /* Header is NOT sticky on mobile (let it scroll away) */
-  .app-header {
-    position: relative;
-    top: auto;
-  }
-
-  /* The combined nav block sticks to top on mobile */
-  .mobile-sticky-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: white;
-  }
-
-  /* Status bar: static inside wrapper, full width */
-  .mobile-sticky-nav #statusBar {
-    position: static !important;
-    width: 100%;
-  }
-
-  /* Category tabs: static inside wrapper, full width */
-  .mobile-sticky-nav .categories {
-    position: static !important;
-    top: auto !important;
-    z-index: auto !important;
-  }
-
-  /* Sections scroll-margin accounts for the combined sticky block height */
-  #nudelsuppen,
-  #klassiker,
-  #getraenke {
-    scroll-margin-top: 90px;
-  }
+/* Der gemeinsame Wrapper ist das einzige sticky Element */
+.sticky-nav-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
 }
 
-/* DESKTOP STICKY NAV WRAPPER (status + categories) */
-.sticky-order-nav { display: contents; }
+/* Status-Balken und Kategorien dürfen KEIN eigenes sticky haben */
+.sticky-nav-wrapper #statusBar,
+.sticky-nav-wrapper .categories {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+/* Scroll-Offset für Abschnitte (Höhe des gemeinsamen Blocks) */
+#nudelsuppen,
+#klassiker,
+#getraenke {
+  scroll-margin-top: 100px;
+}
+
+/* Legacy-Klassen — werden nicht mehr genutzt, aber zur Sicherheit neutralisiert */
+.sticky-order-nav,
+.mobile-sticky-nav { display: contents; }
 
 /* ── LAYOUT ── */
 .main-layout {
@@ -182,10 +176,7 @@ body {
   background: white;
   border-bottom: 1px solid var(--border);
   scrollbar-width: none;
-  /* Mobile: position is overridden to static inside .mobile-sticky-nav */
-  position: sticky;
-  top: 180px;
-  z-index: 90;
+  /* position/top/z-index are controlled by .sticky-nav-wrapper */
 }
 .categories::-webkit-scrollbar { display: none; }
 .cat-btn {
@@ -483,46 +474,31 @@ body {
 @media (min-width: 800px) {
   body { max-width: none; }
 
-  /* Restore sticky header on desktop */
-  .app-header {
-    position: sticky;
-    top: 0;
-  }
-
   #statusBar { font-size: 15px; }
 
   .main-layout {
     max-width: none;
     align-items: flex-start;
-    min-height: calc(100vh - 255px);
+    min-height: calc(100vh - 100px);
   }
 
   .menu-column { flex: 1; padding-bottom: 60px; }
 
-  /* Status bar + categories stick together as one block below the header */
-  .sticky-order-nav {
-    display: block;
-    position: sticky;
-    top: 165px;
-    z-index: 95;
-    background: white;
-  }
-
-  /* Categories: not sticky on their own on desktop — parent handles it */
+  /* Wider padding for category tabs on desktop */
   .categories {
-    position: relative;
-    top: auto;
     padding: 12px 24px;
     gap: 10px;
   }
   .cat-btn { font-size: 14px; padding: 8px 18px; }
 
+  /* Hide section titles on desktop — tabs already show the active category */
   .section-title { display: none !important; }
 
+  /* Desktop scroll offset = sticky-nav-wrapper height (~100px) */
   #nudelsuppen,
   #klassiker,
   #getraenke {
-    scroll-margin-top: 255px;
+    scroll-margin-top: 100px;
     padding-top: 16px;
   }
 
@@ -535,14 +511,15 @@ body {
   .menu-card-name { font-size: 14px; }
   .menu-card-price { font-size: 15px; }
 
+  /* Desktop cart column */
   .cart-column {
     display: flex;
     flex-direction: column;
     width: 360px;
     min-width: 320px;
-    height: calc(100vh - 255px);
+    height: calc(100vh - 100px);
     position: sticky;
-    top: 255px;
+    top: 100px;
     border-left: 2px solid var(--border);
     background: white;
     overflow: hidden;
@@ -629,12 +606,11 @@ body {
   </button>
 </header>
 
-<!-- ══════════════════════════════════════════════════
-     MOBILE: Status + Kategorien als ein sticky Block
-     DESKTOP: sticky-order-nav übernimmt (display:contents auf desktop,
-              block mit top:165px sticky)
-     ══════════════════════════════════════════════════ -->
-<div class="mobile-sticky-nav sticky-order-nav">
+<!-- ══════════════════════════════════════════════
+     STICKY NAV: Status + Kategorien gemeinsam
+     Roter Header scrollt weg — dieser Block bleibt
+     ══════════════════════════════════════════════ -->
+<div class="sticky-nav-wrapper">
   <div id="statusBar"></div>
   <div class="categories">
     <button class="cat-btn active" onclick="scrollToSection('nudelsuppen', this)">🍜 Nudelsuppen</button>
@@ -1045,8 +1021,7 @@ function hideDesktopForm() {
 
 function scrollToSection(id, btn) {
   let el = document.getElementById(id);
-  let offset = window.innerWidth >= 800 ? 255 : 90;
-  let top = el.getBoundingClientRect().top + window.scrollY - offset;
+  let top = el.getBoundingClientRect().top + window.scrollY - 100;
   window.scrollTo({ top, behavior: "smooth" });
   document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");

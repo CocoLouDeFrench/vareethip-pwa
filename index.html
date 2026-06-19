@@ -445,6 +445,12 @@ if(day >= 1 && day <= 5 && current >= 840 && current < 960){
   select.innerHTML =
 '<option value="Schnellstmöglich">Schnellstmöglich (ca. 30 Min.)</option>';
 
+    if(firstPickup > lastPickup){
+  select.innerHTML =
+  '<option value="">Heute keine Abholzeit mehr verfügbar</option>';
+  return;
+}
+
   for(let t = firstPickup; t <= lastPickup; t += 10){
     let h = Math.floor(t / 60);
     let m = t % 60;

@@ -445,104 +445,86 @@ body {
 /* ── MOBILE FLOATING CART ── */
 @media (max-width: 799px) {
 
-  /* Pill-shaped button: 🛒 2 Artikel · 32,50 € */
   .mobile-floating-cart {
     position: fixed;
-    bottom: 100px; /* above iPhone home indicator */
+    bottom: 28px;
     right: 16px;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 18px 0 14px;
-    height: 52px;
+    z-index: 9999;
+    height: 50px;
+    padding: 0 16px 0 12px;
     border-radius: 999px;
     border: none;
     background: #c9342b;
     color: white;
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.32);
     cursor: pointer;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.28);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    transition: box-shadow 0.15s ease;
     white-space: nowrap;
   }
   .mobile-floating-cart.hidden {
-    display: none;
+    display: none !important;
   }
-  /* bounce animation on item add */
+
+  /* Bounce on item add */
   @keyframes cartBounce {
     0%   { transform: scale(1); }
-    30%  { transform: scale(1.18); }
-    60%  { transform: scale(0.95); }
+    30%  { transform: scale(1.22); }
+    65%  { transform: scale(0.93); }
     100% { transform: scale(1); }
   }
   .mobile-floating-cart.bounce {
-    animation: cartBounce 0.35s ease forwards;
+    animation: cartBounce 0.35s cubic-bezier(.36,.07,.19,.97) forwards;
   }
 
-  .mobile-floating-icon { font-size: 20px; line-height: 1; }
-
-  .mobile-floating-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.2;
-  }
-  .mobile-floating-count {
-    font-size: 13px;
-    font-weight: 800;
-    color: white;
-  }
-  .mobile-floating-price {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.82);
-  }
-
-  /* Badge (top-right dot for quick glance) */
+  /* Badge: count only */
   .mobile-floating-badge {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -4px;
+    right: -4px;
     min-width: 22px;
     height: 22px;
     border-radius: 999px;
     background: #d4a843;
     color: #111;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 900;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 5px;
     line-height: 1;
     pointer-events: none;
+    border: 2px solid white;
   }
   @keyframes badgePop {
     0%   { transform: scale(1); }
-    50%  { transform: scale(1.5); }
+    45%  { transform: scale(1.6); }
     100% { transform: scale(1); }
   }
   .mobile-floating-badge.pop {
-    animation: badgePop 0.3s ease forwards;
+    animation: badgePop 0.28s cubic-bezier(.36,.07,.19,.97) forwards;
   }
 
-  /* Toast notification */
+  /* Toast */
   .cart-toast {
     position: fixed;
-    bottom: 164px;
+    bottom: 92px;
     right: 16px;
-    z-index: 2100;
-    background: #1a1a1a;
+    z-index: 9998;
+    background: rgba(26,26,26,0.92);
     color: white;
     font-size: 13px;
     font-weight: 600;
     padding: 9px 16px;
     border-radius: 999px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
     transition: opacity 0.2s ease, transform 0.2s ease;
     pointer-events: none;
     white-space: nowrap;
@@ -554,12 +536,17 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Elements that should never cover the floating cart */
+  .sticky-nav-wrapper { z-index: 1000; }
+  .cart-overlay       { z-index: 8000; }
+  .cart-sheet         { z-index: 8001; }
 }
 
-/* Hide floating cart on desktop */
+/* Hide on desktop */
 @media (min-width: 800px) {
   .mobile-floating-cart { display: none !important; }
-  .cart-toast { display: none !important; }
+  .cart-toast           { display: none !important; }
 }
 
 /* ── DESKTOP STYLES ── */
@@ -1094,13 +1081,9 @@ body {
 </div>
 
 <!-- MOBILE FLOATING CART -->
-<button class="mobile-floating-cart hidden" id="mobileFloatingCart" onclick="openMobileCart()">
-  <span class="mobile-floating-icon">🛒</span>
-  <div class="mobile-floating-info">
-    <span class="mobile-floating-count" id="mobileFloatingCount">1 Artikel</span>
-    <span class="mobile-floating-price" id="mobileFloatingPrice">0,00 €</span>
-  </div>
-  <span class="mobile-floating-badge" id="mobileFloatingBadge">1</span>
+<button class="mobile-floating-cart hidden" id="mobileFloatingCart" onclick="scrollToOrder()">
+  🛒 <span id="mobileFloatingPrice" style="font-size:14px;font-weight:800;margin-left:4px;"></span>
+  <span class="mobile-floating-badge" id="mobileFloatingBadge">0</span>
 </button>
 <div class="cart-toast" id="cartToast"></div>
 
@@ -1229,39 +1212,55 @@ function renderCart() {
   if (mTotal) mTotal.textContent = totalStr;
 }
 
+function scrollToOrder() {
+  // Smooth scroll to order sheet on mobile
+  openMobileCart();
+}
+
 function updateBadge(animateName) {
-  let total   = order.reduce((s, i) => s + i.qty, 0);
-  let totalCents = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
+  let total = order.reduce((s, i) => s + i.qty, 0);
 
   let floatBtn   = document.getElementById("mobileFloatingCart");
   let floatBadge = document.getElementById("mobileFloatingBadge");
-  let floatCount = document.getElementById("mobileFloatingCount");
-  let floatPrice = document.getElementById("mobileFloatingPrice");
   let sheetOpen  = document.getElementById("cartSheet").classList.contains("open");
 
   if (floatBtn) {
+    // Show/hide based on item count
     if (total > 0 && !sheetOpen) {
       floatBtn.classList.remove("hidden");
     } else {
       floatBtn.classList.add("hidden");
     }
-    if (floatBadge) floatBadge.textContent = total;
-    if (floatCount) floatCount.textContent = total + (total === 1 ? " Artikel" : " Artikel");
-    if (floatPrice) floatPrice.textContent = formatPrice(totalCents);
 
-    // Bounce the pill
+    // Update badge count and price
+    if (floatBadge) floatBadge.textContent = total;
+    let floatPrice = document.getElementById("mobileFloatingPrice");
+    if (floatPrice) {
+      let totalCents = order.reduce((s, i) => s + (i.priceCents || 0) * (i.qty || 0), 0);
+      if (totalCents > 0) {
+        floatPrice.textContent = formatPrice(totalCents);
+      } else if (total > 0) {
+        // Fallback: Preis unbekannt aber Artikel vorhanden
+        floatPrice.textContent = total + " Artikel";
+      } else {
+        floatPrice.textContent = "";
+      }
+    }
+
+    // Animate on item add
     if (animateName && total > 0) {
+      // Bounce button
       floatBtn.classList.remove("bounce");
-      void floatBtn.offsetWidth; // reflow to restart animation
+      void floatBtn.offsetWidth;
       floatBtn.classList.add("bounce");
       setTimeout(() => floatBtn.classList.remove("bounce"), 400);
 
-      // Badge pop
+      // Pop badge
       if (floatBadge) {
         floatBadge.classList.remove("pop");
         void floatBadge.offsetWidth;
         floatBadge.classList.add("pop");
-        setTimeout(() => floatBadge.classList.remove("pop"), 350);
+        setTimeout(() => floatBadge.classList.remove("pop"), 320);
       }
 
       // Toast

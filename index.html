@@ -427,10 +427,12 @@ function checkAdmin(){
   let now = new Date();
   let current = now.getHours() * 60 + now.getMinutes();
 
-  let firstPickup = current + 30;
-  let lastPickup = 1250;
+ let firstPickup = current + 30;
+firstPickup = Math.ceil(firstPickup / 10) * 10;
+  let lastPickup = 1230;
 
-  select.innerHTML = '<option value="">Abholzeit wählen</option>';
+  select.innerHTML =
+'<option value="Schnellstmöglich">🚶 Schnellstmöglich (ca. 30 Min.)</option>';
 
   for(let t = firstPickup; t <= lastPickup; t += 10){
     let h = Math.floor(t / 60);

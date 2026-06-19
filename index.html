@@ -398,6 +398,7 @@ body {
   cursor: pointer;
 }
 .confirm-label input { margin-top: 2px; flex-shrink: 0; accent-color: var(--primary); }
+.confirm-label span { flex: 1; color: var(--text); }
 .whatsapp-btn {
   width: 100%;
   padding: 14px;
@@ -880,7 +881,7 @@ body {
         <textarea class="form-input" id="noteD" placeholder="z.B. ohne Koriander, extra scharf" rows="2" style="resize:none;"></textarea>
         <label class="confirm-label">
           <input type="checkbox" id="confirmD">
-          Ich bestätige verbindlich, dass ich die Bestellung abhole.
+          <span>Ich bestätige verbindlich, dass ich die Bestellung abhole.</span>
         </label>
         <button class="whatsapp-btn" onclick="sendWhatsApp('D')">📲 Jetzt per WhatsApp bestellen</button>
       </div>
@@ -923,7 +924,7 @@ body {
       <textarea class="form-input" id="noteM" placeholder="z.B. ohne Koriander, extra scharf" rows="2" style="resize:none;"></textarea>
       <label class="confirm-label">
         <input type="checkbox" id="confirmM">
-        Ich bestätige verbindlich, dass ich die Bestellung abhole.
+        <span>Ich bestätige verbindlich, dass ich die Bestellung abhole.</span>
       </label>
       <button class="whatsapp-btn" onclick="sendWhatsApp('M')">📲 Jetzt per WhatsApp bestellen</button>
     </div>

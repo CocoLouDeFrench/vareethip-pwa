@@ -459,7 +459,16 @@ body {
   }
   .cat-btn { font-size: 14px; padding: 8px 18px; }
 
-  .section-title { padding: 24px 24px 12px; font-size: 22px; }
+  /* Hide section titles on desktop — tabs already show the active category */
+  .section-title { display: none !important; }
+
+  /* Ensure sections land below all sticky bars when scrolled into view */
+  #nudelsuppen,
+  #klassiker,
+  #getraenke {
+    scroll-margin-top: 260px;
+    padding-top: 16px;
+  }
 
   .menu-grid {
     grid-template-columns: 1fr 1fr 1fr;
@@ -983,7 +992,7 @@ function hideDesktopForm() {
 /* ── SHARED ── */
 function scrollToSection(id, btn) {
   let el = document.getElementById(id);
-  let offset = window.innerWidth >= 800 ? 130 : 120;
+  let offset = window.innerWidth >= 800 ? 260 : 120;
   let top = el.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top, behavior: "smooth" });
   document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));

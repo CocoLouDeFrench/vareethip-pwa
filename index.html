@@ -30,44 +30,51 @@ body {
   color: white;
   display: flex;
   align-items: center;
-  gap: 14px;
   padding: 14px 16px;
+  min-height: 90px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .brand-logo {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   flex-shrink: 0;
   image-rendering: auto;
 }
+/* Text block: absolute center of the header */
 .brand-text {
+  position: absolute;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
-  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* logo stays clickable if needed */
 }
 .brand-title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 900;
   color: white;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.1;
 }
 .brand-subtitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.85);
-  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: 1px;
+  margin-top: 3px;
 }
-/* Header cart button: hidden on mobile (floating cart handles it), visible on desktop */
+/* Header cart button: hidden everywhere (floating cart handles mobile, sidebar handles desktop) */
 .cart-button { display: none; }
 .cart-badge  { display: none; }
 
-@media (max-width: 480px) {
-  .brand-logo  { width: 56px; height: 56px; }
-  .brand-title { font-size: 18px; }
-  .brand-subtitle { font-size: 13px; }
+@media (max-width: 380px) {
+  .brand-logo  { width: 66px; height: 66px; }
+  .brand-title { font-size: 20px; }
+  .brand-subtitle { font-size: 12px; }
 }
 
 /* STATUS BAR — redesigned */
@@ -490,11 +497,11 @@ body {
   /* Desktop header: slightly larger */
   .app-header {
     padding: 16px 28px;
-    gap: 18px;
+    min-height: 100px;
   }
-  .brand-logo { width: 80px; height: 80px; }
-  .brand-title { font-size: 26px; }
-  .brand-subtitle { font-size: 16px; }
+  .brand-logo { width: 90px; height: 90px; }
+  .brand-title { font-size: 28px; }
+  .brand-subtitle { font-size: 15px; }
 
   #statusBar { font-size: 13px; }
 

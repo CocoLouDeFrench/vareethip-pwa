@@ -429,7 +429,18 @@ function checkAdmin(){
 
  let firstPickup = current + 30;
 firstPickup = Math.ceil(firstPickup / 10) * 10;
-  let lastPickup = 1230;
+
+let day = now.getDay();
+let lastPickup = 1230;
+
+if(day >= 1 && day <= 5 && current < 840){
+  lastPickup = 830;
+}
+
+if(day >= 1 && day <= 5 && current >= 840 && current < 960){
+  firstPickup = 960;
+  lastPickup = 1230;
+}
 
   select.innerHTML =
 '<option value="Schnellstmöglich">Schnellstmöglich (ca. 30 Min.)</option>';

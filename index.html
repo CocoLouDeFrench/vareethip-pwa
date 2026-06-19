@@ -4,26 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vareethip Thai Noodle Bar</title>
-
 <style>
 body{
-font-family:Arial,sans-serif;
-max-width:800px;
-margin:auto;
-padding:20px;
-background:#fafafa;
+  font-family:Arial,sans-serif;
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+  background:#fafafa;
 }
-
 h1{
-text-align:center;
+  text-align:center;
 }
-
 .card{
-background:white;
-padding:15px;
-margin:10px 0;
-border-radius:10px;
-box-shadow:0 2px 5px rgba(0,0,0,.1);
+  background:white;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
 #statusBar{
   margin:20px 0;
@@ -33,651 +30,529 @@ box-shadow:0 2px 5px rgba(0,0,0,.1);
   border-radius:16px;
   text-align:center;
 }
-
 .open{
   background:#28a745;
+  color:white;
 }
-
 .closed{
   background:#dc3545;
+  color:white;
 }
 button{
-background:#25D366;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:8px;
-cursor:pointer;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:5px 0;
+  background:#25D366;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
 }
 input{
-width:100%;
-padding:10px;
-margin:5px 0;
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  box-sizing:border-box;
 }
-   select{
-width:100%;
-padding:10px;
-margin:5px 0 20px 0;
-font-size:18px;
-display:block;
+select{
+  width:100%;
+  padding:10px;
+  margin:5px 0 20px 0;
+  font-size:18px;
+  display:block;
+  box-sizing:border-box;
 }
-    textarea{
-width:100%;
-padding:10px;
-margin:5px 0;
-font-size:18px;
-min-height:80px;
+textarea{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  font-size:18px;
+  min-height:80px;
+  box-sizing:border-box;
 }
-
 input[type="checkbox"]{
-width:auto;
-margin-right:10px;
+  width:auto;
+  margin-right:10px;
 }
-   
 #cart{
-background:#fff3cd;
-padding:15px;
-border-radius:10px;
-margin-top:20px;
+  background:#fff3cd;
+  padding:15px;
+  border-radius:10px;
+  margin-top:20px;
 }
 </style>
 </head>
-
 <body>
 
 <div style="text-align:center;margin-bottom:20px;">
-    <img src="Logo.PNG" alt="Vareethip Thai Noodle Bar" style="width:300px;">
+  <img src="Logo.PNG" alt="Vareethip Thai Noodle Bar" style="width:300px;">
 </div>
 <p style="text-align:center;color:#666;font-size:18px;">
-🍜 Online Bestellung zur Abholung
+  🍜 Online Bestellung zur Abholung
 </p>
-
 <p style="text-align:center;color:#666;">
-Alle Preise gelten für Außer Haus.
-Bestellung bequem per WhatsApp.
+  Alle Preise gelten für Außer Haus.
+  Bestellung bequem per WhatsApp.
 </p>
 
+<!-- Nudelsuppen -->
 <div class="card">
 <h2>🍜 Nudelsuppen</h2>
-
 <div class="card">
 <h3>Khao Soi</h3>
 <p>18,00 €</p>
 <button onclick="addItem('Khao Soi 18,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Tom Yam</h3>
 <p>15,00 €</p>
 <button onclick="addItem('Guay Tiew Tom Yam 15,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Tom Yam Seafood</h3>
 <p>18,50 €</p>
 <button onclick="addItem('Guay Tiew Tom Yam Seafood 18,50€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Yen Ta Fo</h3>
 <p>16,00 €</p>
 <button onclick="addItem('Yen Ta Fo 16,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Yen Ta Fo Seafood</h3>
 <p>18,50 €</p>
 <button onclick="addItem('Yen Ta Fo Seafood 18,50€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Bami Giew Mhu Daeng</h3>
 <p>15,00 €</p>
 <button onclick="addItem('Bami Giew Mhu Daeng 15,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Nua</h3>
 <p>15,00 €</p>
 <button onclick="addItem('Guay Tiew Nua 15,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Nua Spezial</h3>
 <p>16,00 €</p>
 <button onclick="addItem('Guay Tiew Nua Spezial 16,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Mhu</h3>
 <p>15,00 €</p>
 <button onclick="addItem('Guay Tiew Mhu 15,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Mhu Spezial</h3>
 <p>16,00 €</p>
 <button onclick="addItem('Guay Tiew Mhu Spezial 16,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Guay Tiew Jay</h3>
 <p>14,00 €</p>
 <button onclick="addItem('Guay Tiew Jay 14,00€')">Hinzufügen</button>
 </div>
+</div>
 
-<div id="cart">
-    <h2>🍛 Thai Klassiker</h2>
-
+<!-- Thai Klassiker -->
+<div class="card">
+<h2>🍛 Thai Klassiker</h2>
 <div class="card">
 <h3>Pad Thai Tofu</h3>
 <p>14,00 €</p>
 <button onclick="addItem('Pad Thai Tofu 14,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Pad Thai Hähnchen</h3>
 <p>15,50 €</p>
 <button onclick="addItem('Pad Thai Hähnchen 15,50€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Pad Thai Garnelen</h3>
 <p>17,00 €</p>
 <button onclick="addItem('Pad Thai Garnelen 17,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Pad Krapao Schwein</h3>
 <p>15,00 €</p>
-
-<button onclick="addItem('Pad Krapao Schwein 15,00€')">
-Ohne Ei
-</button>
-
-<button onclick="addItem('Pad Krapao Schwein + Spiegelei 16,00€')">
-+ Spiegelei 1€
-</button>
-
+<button onclick="addItem('Pad Krapao Schwein 15,00€')">Ohne Ei</button>
+<button onclick="addItem('Pad Krapao Schwein + Spiegelei 16,00€')">+ Spiegelei 1€</button>
+</div>
 <div class="card">
 <h3>Pad Krapao Hähnchen</h3>
 <p>15,00 €</p>
-
-<button onclick="addItem('Pad Krapao Hähnchen 15,00€')">
-Ohne Ei
-</button>
-
-<button onclick="addItem('Pad Krapao Hähnchen + Spiegelei 16,00€')">
-+ Spiegelei 1€
-</button>
+<button onclick="addItem('Pad Krapao Hähnchen 15,00€')">Ohne Ei</button>
+<button onclick="addItem('Pad Krapao Hähnchen + Spiegelei 16,00€')">+ Spiegelei 1€</button>
 </div>
-
 <div class="card">
 <h3>Kai Nok Kata</h3>
 <p>7,00 €</p>
 <button onclick="addItem('Kai Nok Kata 7,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Giew Tord</h3>
 <p>7,00 €</p>
 <button onclick="addItem('Giew Tord 7,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Lug Chin Tord</h3>
 <p>7,00 €</p>
 <button onclick="addItem('Lug Chin Tord 7,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Gui Chai Tord</h3>
 <p>7,00 €</p>
 <button onclick="addItem('Gui Chai Tord 7,00€')">Hinzufügen</button>
 </div>
-    <h2>🥤 Getränke</h2>
+</div>
 
+<!-- Getränke -->
+<div class="card">
+<h2>🥤 Getränke</h2>
 <div class="card">
 <h3>Lemongrass Iced Tea</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Lemongrass Iced Tea 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Anchan Manao</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Anchan Manao 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Cha Manao</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Cha Manao 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Oliang</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Oliang 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Anchan Nom</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Anchan Nom 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Coffee Yen</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Coffee Yen 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Cha Thai</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Cha Thai 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Anchan Jasmin</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Anchan Jasmin 5,00€')">Hinzufügen</button>
 </div>
-
 <div class="card">
 <h3>Nom Yen</h3>
 <p>5,00 €</p>
 <button onclick="addItem('Nom Yen 5,00€')">Hinzufügen</button>
-<div id="statusBar"></div>
-
-<div id="adminPanel" style="display:none;margin-bottom:15px;">
-<button onclick="toggleClosed()">
-  Heute manuell öffnen/schließen
-</button>
+</div>
 </div>
 
-<h2>Bestellung</h2>
+<!-- Status bar -->
+<div id="statusBar"></div>
 
-<input id="name" placeholder="Name">
+<!-- Admin panel -->
+<div id="adminPanel" style="display:none;margin-bottom:15px;">
+  <button onclick="toggleClosed()">Heute manuell öffnen/schließen</button>
+</div>
 
-<input id="phone" placeholder="Telefonnummer">
-
-<select id="time">
-<option value="">Abholzeit wählen</option>
-</select>
-  
-   <textarea id="note" placeholder="Anmerkung z.B. ohne Koriander, extra scharf"></textarea>
-
-<label style="display:block;margin:15px 0;font-size:16px;">
-<input type="checkbox" id="confirm" style="width:auto;">
-Ich bestätige verbindlich, dass ich die Bestellung abhole.
-</label>
-
-<ul id="items"></ul>
-
-<button type="button" onclick="sendWhatsApp();" style="width:100%;margin-top:20px;display:block;">
-Bestellung per WhatsApp senden
-</button>
-
+<!-- Order form -->
+<div id="cart">
+  <h2>Bestellung</h2>
+  <input id="name" placeholder="Name">
+  <input id="phone" placeholder="Telefonnummer">
+  <select id="time">
+    <option value="">Abholzeit wählen</option>
+  </select>
+  <textarea id="note" placeholder="Anmerkung z.B. ohne Koriander, extra scharf"></textarea>
+  <label style="display:block;margin:15px 0;font-size:16px;">
+    <input type="checkbox" id="confirm" style="width:auto;">
+    Ich bestätige verbindlich, dass ich die Bestellung abhole.
+  </label>
+  <ul id="items"></ul>
+  <button id="sendBtn" type="button" onclick="sendWhatsApp();" style="width:100%;margin-top:20px;display:block;">
+    Bestellung per WhatsApp senden
+  </button>
 </div>
 
 <script>
-
-let order=[];
+let order = [];
 let adminOpen = localStorage.getItem("adminOpen") === "true";
 
-function getPrice(item){
-  let match=item.match(/(\d+),00€/);
-  if(match){
-    return parseInt(match[1]);
+function getPrice(item) {
+  let match = item.match(/(\d+),(\d{2})€/);
+  if (match) {
+    return parseInt(match[1]) * 100 + parseInt(match[2]);
   }
   return 0;
 }
 
-function addItem(item){
+function formatPrice(cents) {
+  let euros = Math.floor(cents / 100);
+  let ct = cents % 100;
+  return euros + "," + String(ct).padStart(2, "0") + "€";
+}
+
+function addItem(item) {
   order.push(item);
   render();
 }
 
-function removeItem(item){
+function removeItem(item) {
   let index = order.indexOf(item);
-
-  if(index > -1){
-    order.splice(index,1);
+  if (index > -1) {
+    order.splice(index, 1);
   }
-
   render();
 }
 
-function render(){
-
-  let list=document.getElementById("items");
-  list.innerHTML="";
-
-  let grouped={};
-
-  for(let i=0;i<order.length;i++){
-    let item=order[i];
-
-    if(grouped[item]){
-      grouped[item]++;
-    }else{
-      grouped[item]=1;
-    }
+function render() {
+  let list = document.getElementById("items");
+  list.innerHTML = "";
+  let grouped = {};
+  for (let i = 0; i < order.length; i++) {
+    let item = order[i];
+    grouped[item] = (grouped[item] || 0) + 1;
   }
-
-  let total=0;
-
-  for(let item in grouped){
-
+  let total = 0;
+  for (let item in grouped) {
     total += getPrice(item) * grouped[item];
-if(total < 5){
-  alert("Der Mindestbestellwert beträgt 5,00 €.");
-  return;
-}
+  }
+  if (order.length > 0 && total < 500) {
+    alert("Der Mindestbestellwert beträgt 5,00 €.");
+    return;
+  }
+  for (let item in grouped) {
     list.innerHTML += `
       <li style="margin-bottom:10px;">
         ${grouped[item]}x ${item}
-
         <button
           type="button"
           onclick="removeItem('${item}')"
           style="margin-left:10px;background:#dc3545;">
           Entfernen
         </button>
-
       </li>
     `;
   }
-
-  if(order.length>0){
+  if (order.length > 0) {
     list.innerHTML += `
       <li style="font-size:22px;font-weight:bold;margin-top:15px;">
-        Gesamt: ${total},00€
+        Gesamt: ${formatPrice(total)}
       </li>
     `;
   }
 }
-function toggleClosed(){
+
+function toggleClosed() {
   adminOpen = !adminOpen;
   localStorage.setItem("adminOpen", adminOpen);
   updateStatus();
 }
 
-function checkAdmin(){
-  if(window.location.search.includes("admin")){
+function checkAdmin() {
+  if (window.location.search.includes("admin")) {
     document.getElementById("adminPanel").style.display = "block";
   }
 }
-  function updatePickupTimes(){
-  let select = document.getElementById("time");
-  if(!select) return;
 
+function updatePickupTimes() {
+  let select = document.getElementById("time");
+  if (!select) return;
   let now = new Date();
   let current = now.getHours() * 60 + now.getMinutes();
-
- let firstPickup = current + 30;
-firstPickup = Math.ceil(firstPickup / 10) * 10;
-
-let day = now.getDay();
-let lastPickup = 1230;
-
-if(day >= 1 && day <= 5 && current < 840){
-  lastPickup = 830;
-}
-
-if(day >= 1 && day <= 5 && current >= 840 && current < 960){
-  firstPickup = 960;
-  lastPickup = 1230;
-}
-
-  select.innerHTML =
-'<option value="Schnellstmöglich">Schnellstmöglich (ca. 30 Min.)</option>';
-
-    if(firstPickup > lastPickup){
-  select.innerHTML =
-  '<option value="">Heute keine Abholzeit mehr verfügbar</option>';
-
-  let button = document.querySelector('button[onclick="sendWhatsApp();"]');
-  if(button){
-    button.disabled = true;
-    button.style.background = "#999";
-    button.style.opacity = "0.6";
-    button.innerHTML = "Heute keine Abholzeit mehr verfügbar";
+  let firstPickup = current + 30;
+  firstPickup = Math.ceil(firstPickup / 10) * 10;
+  let day = now.getDay();
+  let lastPickup = 1230;
+  if (day >= 1 && day <= 5 && current < 840) {
+    lastPickup = 830;
   }
-
-  return;
-}
-
-  for(let t = firstPickup; t <= lastPickup; t += 10){
+  if (day >= 1 && day <= 5 && current >= 840 && current < 960) {
+    firstPickup = 960;
+    lastPickup = 1230;
+  }
+  select.innerHTML =
+    '<option value="Schnellstmöglich">Schnellstmöglich (ca. 30 Min.)</option>';
+  if (firstPickup > lastPickup) {
+    select.innerHTML =
+      '<option value="">Heute keine Abholzeit mehr verfügbar</option>';
+    let button = document.getElementById("sendBtn");
+    if (button) {
+      button.disabled = true;
+      button.style.background = "#999";
+      button.style.opacity = "0.6";
+      button.innerHTML = "Heute keine Abholzeit mehr verfügbar";
+    }
+    return;
+  }
+  for (let t = firstPickup; t <= lastPickup; t += 10) {
     let h = Math.floor(t / 60);
     let m = t % 60;
-
     let timeText =
       String(h).padStart(2, "0") + ":" +
       String(m).padStart(2, "0") + " Uhr";
-
     select.innerHTML += '<option value="' + timeText + '">' + timeText + '</option>';
-
+  }
 }
 
-function updateStatus(){
-
+function updateStatus() {
   let now = new Date();
-
   let day = now.getDay();
   let hour = now.getHours();
   let minute = now.getMinutes();
-
   let current = hour * 60 + minute;
-
   let open = false;
-
-  if(day >= 1 && day <= 5){
-
-    if(
+  if (day >= 1 && day <= 5) {
+    if (
       (current >= 720 && current <= 840) ||
       (current >= 960 && current <= 1250)
-    ){
+    ) {
       open = true;
     }
-
-}else{
-
-  if(current >= 960 && current <= 1250){
+  } else {
+    if (current >= 960 && current <= 1250) {
+      open = true;
+    }
+  }
+  if (adminOpen) {
     open = true;
   }
-
+  updatePickupTimes();
+  let bar = document.getElementById("statusBar");
+  let button = document.getElementById("sendBtn");
+  if (open) {
+    bar.className = "open";
+    let closingTime = 1250;
+    let remaining = closingTime - current;
+    let remainingHours = Math.floor(remaining / 60);
+    let remainingMinutes = remaining % 60;
+    let countdownText = "";
+    if (remainingHours > 0) {
+      countdownText = "Noch " + remainingHours + " Std. " + remainingMinutes + " Min. bestellbar";
+    } else {
+      countdownText = "Noch " + remainingMinutes + " Min. bestellbar";
+    }
+    bar.innerHTML = "Geöffnet<br><span style='font-size:18px;font-weight:normal;'>" + countdownText + "</span>";
+    button.disabled = false;
+    button.style.background = "#2ecc71";
+    button.style.opacity = "1";
+    button.innerHTML = "Bestellung per WhatsApp senden";
+  } else {
+    bar.className = "closed";
+    bar.innerHTML = "Geschlossen<br><span style='font-size:18px;font-weight:normal;'>Online-Bestellung aktuell nicht möglich</span>";
+    button.disabled = true;
+    button.style.background = "#999";
+    button.style.opacity = "0.6";
+    button.innerHTML = "Online-Bestellung geschlossen";
+  }
 }
 
-if(adminOpen){
-  open = true;
-}
-  
-updatePickupTimes();
-  
-let bar = document.getElementById("statusBar");
-let button = document.querySelector('button[onclick="sendWhatsApp()"]');
-if(open){
-  bar.className = "open";
-  let closingTime = 1250;
-let remaining = closingTime - current;
-let remainingHours = Math.floor(remaining / 60);
-let remainingMinutes = remaining % 60;
-
-let countdownText = "";
-
-if(remainingHours > 0){
-  countdownText = "Noch " + remainingHours + " Std. " + remainingMinutes + " Min. bestellbar";
-}else{
-  countdownText = "Noch " + remainingMinutes + " Min. bestellbar";
-}
-
-bar.innerHTML = "Geöffnet<br><span style='font-size:18px;font-weight:normal;'>" + countdownText + "</span>";
-
-
-  button.disabled = false;
-  button.style.background = "#2ecc71";
-  button.style.opacity = "1";
-  button.innerHTML = "Bestellung per WhatsApp senden";
-
-}else{
-
-  bar.className = "closed";
-  bar.innerHTML = "Geschlossen<br><span style='font-size:18px;font-weight:normal;'>Online-Bestellung aktuell nicht möglich</span>";
-
-  button.disabled = true;
-  button.style.background = "#999";
-  button.style.opacity = "0.6";
-  button.innerHTML = "Online-Bestellung geschlossen";
-
-}
-}
-function sendWhatsApp(){
-  let name=document.getElementById("name").value;
-  if(name.trim()==""){
-  alert("Bitte Namen eingeben");
-  return;
-}let phone=document.getElementById("phone").value;
-
-let cleanPhone = phone.replace(/\D/g,"");
-
-if(cleanPhone.startsWith("00")){
-  cleanPhone = cleanPhone.substring(2);
-}
-
-if(cleanPhone.startsWith("0")){
-  cleanPhone = "49" + cleanPhone.substring(1);
-}
-
-if(
-  cleanPhone.length < 11 ||
-  cleanPhone.length > 14 ||
-  !cleanPhone.startsWith("49")
-){
-  alert("Bitte gültige Telefonnummer eingeben, z.B. 0176... oder +49...");
-  return;
-}
-   let time=document.getElementById("time").value;
-let note=document.getElementById("note").value;
-let confirm=document.getElementById("confirm").checked;
-  if(name.trim()==""){
-    alert("Bitte Namen eingeben.");
+function sendWhatsApp() {
+  let name = document.getElementById("name").value;
+  if (name.trim() === "") {
+    alert("Bitte Namen eingeben");
     return;
   }
-
-  if(phone.trim()==""){
+  let phone = document.getElementById("phone").value;
+  let cleanPhone = phone.replace(/\D/g, "");
+  if (cleanPhone.startsWith("00")) {
+    cleanPhone = cleanPhone.substring(2);
+  }
+  if (cleanPhone.startsWith("0")) {
+    cleanPhone = "49" + cleanPhone.substring(1);
+  }
+  if (
+    cleanPhone.length < 11 ||
+    cleanPhone.length > 14 ||
+    !cleanPhone.startsWith("49")
+  ) {
+    alert("Bitte gültige Telefonnummer eingeben, z.B. 0176... oder +49...");
+    return;
+  }
+  let time = document.getElementById("time").value;
+  let note = document.getElementById("note").value;
+  let confirm = document.getElementById("confirm").checked;
+  if (phone.trim() === "") {
     alert("Bitte Telefonnummer eingeben.");
     return;
   }
-
-  if(time.trim()==="" || time.includes("keine Abholzeit")){
-  alert("Bitte gültige Abholzeit auswählen.");
-  return;
-}
-
-  if(order.length==0){
+  if (time.trim() === "" || time.includes("keine Abholzeit")) {
+    alert("Bitte gültige Abholzeit auswählen.");
+    return;
+  }
+  if (order.length === 0) {
     alert("Bitte mindestens ein Gericht auswählen.");
     return;
   }
-   if(!confirm){
-alert("Bitte Bestellung bestätigen.");
-return;
-}
-
-  let grouped={};
-  for(let i=0;i<order.length;i++){
-    let item=order[i];
-    if(grouped[item]){
-      grouped[item]++;
-    }else{
-      grouped[item]=1;
-    }
+  if (!confirm) {
+    alert("Bitte Bestellung bestätigen.");
+    return;
   }
-
-  let total=0;
-  for(let i=0;i<order.length;i++){
+  let grouped = {};
+  for (let i = 0; i < order.length; i++) {
+    let item = order[i];
+    grouped[item] = (grouped[item] || 0) + 1;
+  }
+  let total = 0;
+  for (let i = 0; i < order.length; i++) {
     total += getPrice(order[i]);
   }
-let now = new Date();
-
-let orderNumber =
-  "VT-" +
-  now.getFullYear() +
-  String(now.getMonth()+1).padStart(2,"0") +
-  String(now.getDate()).padStart(2,"0") +
-  "-" +
-  String(now.getHours()).padStart(2,"0") +
-  String(now.getMinutes()).padStart(2,"0") +
-  String(now.getSeconds()).padStart(2,"0");
-  let text="Neue Vareethip Bestellung\n\n";
-text+="Bestellnummer: " + orderNumber + "\n\n";
-  text+="Name: "+name+"\n";
-text+="Telefon: +" + cleanPhone + "\n";
-  text+="Abholzeit: "+time+"\n\n";
-  if(note.trim()!==""){
-text+= "Anmerkung: " + note + "\n\n";
-}
-   text+="Bestellung:\n";
-
-  for(let item in grouped){
-    text+="- "+grouped[item]+"x "+item+"\n";
+  let now = new Date();
+  let orderNumber =
+    "VT-" +
+    now.getFullYear() +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    String(now.getDate()).padStart(2, "0") +
+    "-" +
+    String(now.getHours()).padStart(2, "0") +
+    String(now.getMinutes()).padStart(2, "0") +
+    String(now.getSeconds()).padStart(2, "0");
+  let text = "Neue Vareethip Bestellung\n\n";
+  text += "Bestellnummer: " + orderNumber + "\n\n";
+  text += "Name: " + name + "\n";
+  text += "Telefon: +" + cleanPhone + "\n";
+  text += "Abholzeit: " + time + "\n\n";
+  if (note.trim() !== "") {
+    text += "Anmerkung: " + note + "\n\n";
   }
-
-  text+="\nGesamt: "+total+",00€";
-now = new Date();
-let day = now.getDay();
-let hour = now.getHours();
-let minute = now.getMinutes();
-
-let currentTime = hour * 60 + minute;
-
-let open = false;
-
-// Montag bis Freitag
-if(day >= 1 && day <= 5){
-  open =
-    (
-      currentTime >= 720 && currentTime <= 840
-    ) ||
-    (
-      currentTime >= 960 && currentTime <= 1250
-    );
+  text += "Bestellung:\n";
+  for (let item in grouped) {
+    text += "- " + grouped[item] + "x " + item + "\n";
+  }
+  text += "\nGesamt: " + formatPrice(total);
+  now = new Date();
+  let day = now.getDay();
+  let currentTime = now.getHours() * 60 + now.getMinutes();
+  let open = false;
+  if (day >= 1 && day <= 5) {
+    open =
+      (currentTime >= 720 && currentTime <= 840) ||
+      (currentTime >= 960 && currentTime <= 1250);
+  } else {
+    open = currentTime >= 960 && currentTime <= 1250;
+  }
+  if (!open && !adminOpen) {
+    alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo-Fr: 12:00-14:00 & 16:00-20:50\nSa-So: 16:00-20:50");
+    return;
+  }
+  let url = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
+  window.location.href = url;
 }
-
-// Samstag & Sonntag
-if(day === 0 || day === 6){
-  open =
-    (
-      currentTime >= 960 && currentTime <= 1250
-    );
-}
-
-if(!open){
-  alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo-Fr: 12:00-14:00 & 16:00-20:50\nSa-So: 16:00-20:50");
-  return;
-}
-  let url="https://wa.me/4915730642210?text="+encodeURIComponent(text);
-  window.location.href=url;
-}
-
 
 checkAdmin();
-updatePickupTimes();
 updateStatus();
-
-setInterval(function(){
-  updatePickupTimes();
+setInterval(function() {
   updateStatus();
-},60000);
-   </script>
-    
+}, 60000);
+</script>
+
 </body>
 </html>

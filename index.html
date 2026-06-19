@@ -673,6 +673,21 @@ body {
   .social-card { min-height: 180px; }
 }
 
+/* ── PREP TIME BAR ── */
+.prep-time-bar {
+  margin: 8px 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.prep-green  { background: #e8f8ee; color: #1e7e3e; border: 1.5px solid #a8ddb8; }
+.prep-orange { background: #fff4e5; color: #b85c00; border: 1.5px solid #f5c88a; }
+.prep-red    { background: #fdecea; color: #b71c1c; border: 1.5px solid #f0a8a8; }
+
 /* Admin */
 #adminPanel {
   position: fixed;
@@ -681,14 +696,38 @@ body {
   z-index: 300;
   display: none;
 }
-#adminPanel button {
+.admin-box {
+  background: #222;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  min-width: 220px;
+}
+.admin-row { display: flex; flex-direction: column; gap: 6px; }
+.admin-row button {
   padding: 10px 14px;
-  background: #333;
+  background: #444;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 13px;
+  text-align: left;
+}
+.admin-row button:hover { background: #555; }
+.admin-label { font-size: 12px; color: #aaa; font-weight: bold; }
+.admin-select {
+  padding: 9px 12px;
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  width: 100%;
 }
 .content-pad { height: 30px; }
 </style>
@@ -716,6 +755,9 @@ body {
      ══════════════════════════════════════════════ -->
 <div class="sticky-nav-wrapper">
   <div id="statusBar"></div>
+  <div id="prepTimeBar" class="prep-time-bar prep-green">
+    🕒 <span id="prepTimeText">Aktuelle Zubereitungszeit: ca. 20 Minuten</span>
+  </div>
   <div class="categories">
     <button class="cat-btn active" onclick="scrollToSection('nudelsuppen', this)">🍜 Nudelsuppen</button>
     <button class="cat-btn" onclick="scrollToSection('klassiker', this)">🍛 Thai Klassiker</button>
@@ -1012,7 +1054,25 @@ body {
 
 <!-- ADMIN -->
 <div id="adminPanel">
-  <button onclick="toggleClosed()">Admin: Öffnen/Schließen</button>
+  <div class="admin-box">
+    <div class="admin-row">
+      <button onclick="toggleClosed()">🔓 Öffnen / Schließen</button>
+    </div>
+    <div class="admin-row">
+      <label class="admin-label">🕒 Zubereitungszeit</label>
+      <select id="prepTimeSelect" class="admin-select" onchange="setPrepTime(this.value)">
+        <option value="20">ca. 20 Minuten</option>
+        <option value="25">ca. 25 Minuten</option>
+        <option value="30">ca. 30 Minuten</option>
+        <option value="35">ca. 35 Minuten</option>
+        <option value="40">ca. 40 Minuten</option>
+        <option value="45">ca. 45 Minuten</option>
+        <option value="50">ca. 50 Minuten</option>
+        <option value="55">ca. 55 Minuten</option>
+        <option value="60">ca. 60 Minuten</option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1179,9 +1239,32 @@ function toggleClosed() {
   localStorage.setItem("adminOpen", adminOpen);
   updateStatus();
 }
+function setPrepTime(minutes) {
+  localStorage.setItem("prepTime", minutes);
+  updatePrepTimeBar(minutes);
+}
+
+function updatePrepTimeBar(minutes) {
+  minutes = parseInt(minutes);
+  let bar = document.getElementById("prepTimeBar");
+  let text = document.getElementById("prepTimeText");
+  if (!bar || !text) return;
+  text.textContent = "Aktuelle Zubereitungszeit: ca. " + minutes + " Minuten";
+  bar.className = "prep-time-bar";
+  if (minutes <= 30)      bar.classList.add("prep-green");
+  else if (minutes <= 45) bar.classList.add("prep-orange");
+  else                    bar.classList.add("prep-red");
+}
+
 function checkAdmin() {
-  if (window.location.search.includes("admin"))
+  if (window.location.search.includes("admin")) {
     document.getElementById("adminPanel").style.display = "block";
+  }
+  // Gespeicherte Zubereitungszeit laden
+  let saved = localStorage.getItem("prepTime") || "20";
+  let select = document.getElementById("prepTimeSelect");
+  if (select) select.value = saved;
+  updatePrepTimeBar(saved);
 }
 
 function updatePickupTimes(selectId) {

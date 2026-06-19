@@ -1158,6 +1158,55 @@ function updateStatus() {
   }
 }
 
+function sendWhatsApp(suffix) {
+  if (!isOpen()) {
+    alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo–Fr: 12:00–14:00 & 16:00–20:50\nSa–So: 16:00–20:50");
+    return;
+  }
+  let name = document.getElementById("name" + suffix).value.trim();
+  if (!name) { alert("Bitte Namen eingeben."); return; }
+
+  let phone = document.getElementById("phone" + suffix).value;
+  let cleanPhone = phone.replace(/\D/g, "");
+  if (cleanPhone.startsWith("00")) cleanPhone = cleanPhone.substring(2);
+  if (cleanPhone.startsWith("0")) cleanPhone = "49" + cleanPhone.substring(1);
+  if (cleanPhone.length < 11 || cleanPhone.length > 14 || !cleanPhone.startsWith("49")) {
+    alert("Bitte gültige Telefonnummer eingeben, z.B. 0176... oder +49...");
+    return;
+  }
+
+  let time = document.getElementById("time" + suffix).value;
+  if (!time || time.includes("keine Abholzeit")) { alert("Bitte gültige Abholzeit auswählen."); return; }
+  if (order.length === 0) { alert("Bitte mindestens ein Gericht auswählen."); return; }
+  if (!document.getElementById("confirm" + suffix).checked) { alert("Bitte Bestellung bestätigen."); return; }
+
+  let now = new Date();
+  let orderNumber = "VT-" +
+    now.getFullYear() +
+    String(now.getMonth()+1).padStart(2,"0") +
+    String(now.getDate()).padStart(2,"0") + "-" +
+    String(now.getHours()).padStart(2,"0") +
+    String(now.getMinutes()).padStart(2,"0") +
+    String(now.getSeconds()).padStart(2,"0");
+
+  let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
+  let note = document.getElementById("note" + suffix).value.trim();
+  let items = order.map(i => "• " + i.qty + "x " + i.name).join("\n");
+
+  let text =
+    "🍜 Neue Bestellung\n\n" +
+    "#" + orderNumber + "\n\n" +
+    "👤 " + name + "\n" +
+    "📞 +" + cleanPhone + "\n\n" +
+    "🕒 " + time + "\n\n" +
+    (note ? "📝 Anmerkung:\n" + note + "\n\n" : "") +
+    "🛒 Bestellung\n" +
+    items + "\n\n" +
+    "💰 Gesamt: " + formatPrice(total);
+
+  window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
+}
+
 checkAdmin();
 updateStatus();
 renderCart();

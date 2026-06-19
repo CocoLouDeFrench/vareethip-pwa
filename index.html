@@ -67,7 +67,6 @@ body {
   font-weight: 800;
   color: white;
 }
-/* Mobile cart button — hidden on desktop */
 .cart-button {
   position: relative;
   background: transparent;
@@ -117,7 +116,49 @@ body {
 .open  { background: #27ae60; color: white; }
 .closed { background: var(--primary); color: white; }
 
-/* STICKY NAV WRAPPER (status + categories) — desktop only */
+/* ── MOBILE STICKY NAV WRAPPER ── */
+/* Only active on mobile — wraps status bar + category tabs together */
+.mobile-sticky-nav {
+  /* default: no sticky on mobile yet — desktop overrides below */
+}
+
+@media (max-width: 799px) {
+  /* Header is NOT sticky on mobile (let it scroll away) */
+  .app-header {
+    position: relative;
+    top: auto;
+  }
+
+  /* The combined nav block sticks to top on mobile */
+  .mobile-sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+  }
+
+  /* Status bar: static inside wrapper, full width */
+  .mobile-sticky-nav #statusBar {
+    position: static !important;
+    width: 100%;
+  }
+
+  /* Category tabs: static inside wrapper, full width */
+  .mobile-sticky-nav .categories {
+    position: static !important;
+    top: auto !important;
+    z-index: auto !important;
+  }
+
+  /* Sections scroll-margin accounts for the combined sticky block height */
+  #nudelsuppen,
+  #klassiker,
+  #getraenke {
+    scroll-margin-top: 90px;
+  }
+}
+
+/* DESKTOP STICKY NAV WRAPPER (status + categories) */
 .sticky-order-nav { display: contents; }
 
 /* ── LAYOUT ── */
@@ -130,7 +171,6 @@ body {
   flex: 1;
   min-width: 0;
 }
-/* Desktop cart column — hidden on mobile */
 .cart-column { display: none; }
 
 /* CATEGORY TABS */
@@ -142,6 +182,7 @@ body {
   background: white;
   border-bottom: 1px solid var(--border);
   scrollbar-width: none;
+  /* Mobile: position is overridden to static inside .mobile-sticky-nav */
   position: sticky;
   top: 180px;
   z-index: 90;
@@ -442,8 +483,11 @@ body {
 @media (min-width: 800px) {
   body { max-width: none; }
 
-  .header { position: sticky; top: 0; }
-  .header-logo span { font-size: 17px; }
+  /* Restore sticky header on desktop */
+  .app-header {
+    position: sticky;
+    top: 0;
+  }
 
   #statusBar { font-size: 15px; }
 
@@ -459,12 +503,12 @@ body {
   .sticky-order-nav {
     display: block;
     position: sticky;
-    top: 165px;   /* header min-height */
+    top: 165px;
     z-index: 95;
     background: white;
   }
 
-  /* Categories no longer sticky on their own — parent handles it */
+  /* Categories: not sticky on their own on desktop — parent handles it */
   .categories {
     position: relative;
     top: auto;
@@ -473,10 +517,8 @@ body {
   }
   .cat-btn { font-size: 14px; padding: 8px 18px; }
 
-  /* Hide section titles on desktop — tabs already show the active category */
   .section-title { display: none !important; }
 
-  /* Ensure sections land below all sticky bars when scrolled into view */
   #nudelsuppen,
   #klassiker,
   #getraenke {
@@ -493,7 +535,6 @@ body {
   .menu-card-name { font-size: 14px; }
   .menu-card-price { font-size: 15px; }
 
-  /* Show desktop cart column */
   .cart-column {
     display: flex;
     flex-direction: column;
@@ -515,7 +556,6 @@ body {
   }
   .cart-col-header h2 { font-size: 20px; font-weight: bold; }
 
-  /* Hide mobile-only elements on desktop */
   .cart-button { display: none; }
   .cart-overlay,
   .cart-sheet { display: none !important; }
@@ -589,8 +629,12 @@ body {
   </button>
 </header>
 
-<!-- STICKY NAV: Status bar + Category tabs -->
-<div class="sticky-order-nav">
+<!-- ══════════════════════════════════════════════════
+     MOBILE: Status + Kategorien als ein sticky Block
+     DESKTOP: sticky-order-nav übernimmt (display:contents auf desktop,
+              block mit top:165px sticky)
+     ══════════════════════════════════════════════════ -->
+<div class="mobile-sticky-nav sticky-order-nav">
   <div id="statusBar"></div>
   <div class="categories">
     <button class="cat-btn active" onclick="scrollToSection('nudelsuppen', this)">🍜 Nudelsuppen</button>
@@ -897,7 +941,6 @@ function changeQty(name, delta) {
   renderCart();
 }
 
-// Desktop cart HTML (unchanged)
 function buildCartHTML() {
   if (order.length === 0) {
     return `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Noch nichts im Warenkorb</p></div>`;
@@ -921,7 +964,6 @@ function buildCartHTML() {
   }).join("");
 }
 
-// Mobile cart HTML — shows name + qty × price clearly
 function buildMobileCartHTML() {
   if (order.length === 0) {
     return `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Noch nichts im Warenkorb</p></div>`;
@@ -951,13 +993,11 @@ function renderCart() {
   let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
   let totalStr = formatPrice(total);
 
-  // Desktop — unchanged layout
   let dItems = document.getElementById("cartItemsDesktop");
   if (dItems) dItems.innerHTML = buildCartHTML();
   let dTotal = document.getElementById("cartTotalDesktop");
   if (dTotal) dTotal.textContent = totalStr;
 
-  // Mobile — name + qty × price layout
   let mItems = document.getElementById("cartItemsMobile");
   if (mItems) mItems.innerHTML = buildMobileCartHTML();
   let mTotal = document.getElementById("cartTotalMobile");
@@ -971,7 +1011,6 @@ function updateBadge() {
   badge.textContent = total;
 }
 
-/* ── MOBILE CART ── */
 function openMobileCart() {
   renderCart();
   document.getElementById("cartOverlay").classList.add("open");
@@ -993,7 +1032,6 @@ function hideMobileForm() {
   document.getElementById("mobileOrderForm").style.display = "none";
 }
 
-/* ── DESKTOP CART ── */
 function showDesktopForm() {
   if (order.length === 0) { alert("Bitte erst Gerichte auswählen."); return; }
   updatePickupTimes("timeD");
@@ -1005,10 +1043,9 @@ function hideDesktopForm() {
   document.getElementById("desktopOrderForm").style.display = "none";
 }
 
-/* ── SHARED ── */
 function scrollToSection(id, btn) {
   let el = document.getElementById(id);
-  let offset = window.innerWidth >= 800 ? 255 : 120;
+  let offset = window.innerWidth >= 800 ? 255 : 90;
   let top = el.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top, behavior: "smooth" });
   document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
@@ -1070,53 +1107,6 @@ function updateStatus() {
     bar.className = "closed";
     bar.innerHTML = `❌ Geschlossen &nbsp;·&nbsp; <span style="font-weight:normal;font-size:12px;">Mo–Fr: 12–14 & 16–20:50 &nbsp;|&nbsp; Sa–So: 16–20:50</span>`;
   }
-}
-
-function sendWhatsApp(suffix) {
-  if (!isOpen()) {
-    alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo–Fr: 12:00–14:00 & 16:00–20:50\nSa–So: 16:00–20:50");
-    return;
-  }
-  let name = document.getElementById("name" + suffix).value.trim();
-  if (!name) { alert("Bitte Namen eingeben."); return; }
-
-  let phone = document.getElementById("phone" + suffix).value;
-  let cleanPhone = phone.replace(/\D/g, "");
-  if (cleanPhone.startsWith("00")) cleanPhone = cleanPhone.substring(2);
-  if (cleanPhone.startsWith("0")) cleanPhone = "49" + cleanPhone.substring(1);
-  if (cleanPhone.length < 11 || cleanPhone.length > 14 || !cleanPhone.startsWith("49")) {
-    alert("Bitte gültige Telefonnummer eingeben, z.B. 0176... oder +49...");
-    return;
-  }
-
-  let time = document.getElementById("time" + suffix).value;
-  if (!time || time.includes("keine Abholzeit")) { alert("Bitte gültige Abholzeit auswählen."); return; }
-  if (order.length === 0) { alert("Bitte mindestens ein Gericht auswählen."); return; }
-  if (!document.getElementById("confirm" + suffix).checked) { alert("Bitte Bestellung bestätigen."); return; }
-
-  let now = new Date();
-  let orderNumber = "VT-" +
-    now.getFullYear() +
-    String(now.getMonth()+1).padStart(2,"0") +
-    String(now.getDate()).padStart(2,"0") + "-" +
-    String(now.getHours()).padStart(2,"0") +
-    String(now.getMinutes()).padStart(2,"0") +
-    String(now.getSeconds()).padStart(2,"0");
-
-  let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
-  let note = document.getElementById("note" + suffix).value.trim();
-
-  let text = "Neue Vareethip Bestellung\n\n";
-  text += "Bestellnummer: " + orderNumber + "\n\n";
-  text += "Name: " + name + "\n";
-  text += "Telefon: +" + cleanPhone + "\n";
-  text += "Abholzeit: " + time + "\n\n";
-  if (note) text += "Anmerkung: " + note + "\n\n";
-  text += "Bestellung:\n";
-  for (let item of order) text += `- ${item.qty}x ${item.name} (${formatPrice(item.priceCents * item.qty)})\n`;
-  text += "\nGesamt: " + formatPrice(total);
-
-  window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }
 
 checkAdmin();

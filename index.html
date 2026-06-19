@@ -457,7 +457,20 @@ let bar = document.getElementById("statusBar");
 let button = document.querySelector('button[onclick="sendWhatsApp()"]');
 if(open){
   bar.className = "open";
-  bar.innerHTML = "Geöffnet";
+  let closingTime = 1250;
+let remaining = closingTime - current;
+let remainingHours = Math.floor(remaining / 60);
+let remainingMinutes = remaining % 60;
+
+let countdownText = "";
+
+if(remainingHours > 0){
+  countdownText = "Noch " + remainingHours + " Std. " + remainingMinutes + " Min. bestellbar";
+}else{
+  countdownText = "Noch " + remainingMinutes + " Min. bestellbar";
+}
+
+bar.innerHTML = "Geöffnet<br><span style='font-size:18px;font-weight:normal;'>" + countdownText + "</span>";
 
 
   button.disabled = false;

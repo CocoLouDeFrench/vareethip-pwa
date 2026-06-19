@@ -310,13 +310,9 @@ Ohne Ei
 <input id="phone" placeholder="Telefonnummer">
 
 <select id="time">
-  <option value="">Abholzeit wählen</option>
-<option value="30 Minuten">30 Minuten</option>
-<option value="45 Minuten">45 Minuten</option>
-<option value="60 Minuten">60 Minuten</option>
-<option value="75 Minuten">75 Minuten</option>
-<option value="90 Minuten">90 Minuten</option>
+<option value="">Abholzeit wählen</option>
 </select>
+  
    <textarea id="note" placeholder="Anmerkung z.B. ohne Koriander, extra scharf"></textarea>
 
 <label style="display:block;margin:15px 0;font-size:16px;">
@@ -674,6 +670,7 @@ if(!open){
 
 checkAdmin();
 updateStatus();
+updatePickupTimes();
 setInterval(updateStatus,60000);
    </script>
     

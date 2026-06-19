@@ -1193,6 +1193,15 @@ function sendWhatsApp(suffix) {
   let note = document.getElementById("note" + suffix).value.trim();
   let items = order.map(i => "• " + i.qty + "x " + i.name).join("\n");
 
+  // Bestätigungsnachricht, die das Restaurant an den Kunden schickt
+  let confirmText =
+    "Vielen Dank für deine Bestellung bei Vareethip! 🙏\n" +
+    "Deine Bestellung " + orderNumber + " ist bestätigt.\n" +
+    "Abholung um " + time + ".";
+
+  let confirmLink = "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(confirmText);
+
+  // Nachricht ans Restaurant
   let text =
     "🍜 Neue Bestellung\n\n" +
     "#" + orderNumber + "\n\n" +
@@ -1202,7 +1211,10 @@ function sendWhatsApp(suffix) {
     (note ? "📝 Anmerkung:\n" + note + "\n\n" : "") +
     "🛒 Bestellung\n" +
     items + "\n\n" +
-    "💰 Gesamt: " + formatPrice(total);
+    "💰 Gesamt: " + formatPrice(total) + "\n\n" +
+    "──────────────────\n" +
+    "✅ Bestellung bestätigen:\n" +
+    confirmLink;
 
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }

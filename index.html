@@ -498,6 +498,37 @@ body {
   .cart-sheet { display: none !important; }
 }
 
+/* ── MOBILE CART ITEMS (bottom sheet only) ── */
+.mobile-cart-item {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-cart-item:last-child { border-bottom: none; }
+.mobile-cart-item-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.mobile-cart-emoji { font-size: 24px; flex-shrink: 0; }
+.mobile-cart-name {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text);
+  flex: 1;
+  line-height: 1.3;
+}
+.mobile-cart-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 34px;
+}
+.mobile-cart-qty-price {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
 /* Admin */
 #adminPanel {
   position: fixed;
@@ -841,6 +872,7 @@ function changeQty(name, delta) {
   renderCart();
 }
 
+// Desktop cart HTML (unchanged)
 function buildCartHTML() {
   if (order.length === 0) {
     return `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Noch nichts im Warenkorb</p></div>`;
@@ -864,20 +896,45 @@ function buildCartHTML() {
   }).join("");
 }
 
+// Mobile cart HTML — shows name + qty × price clearly
+function buildMobileCartHTML() {
+  if (order.length === 0) {
+    return `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Noch nichts im Warenkorb</p></div>`;
+  }
+  return order.map(item => {
+    let safe = item.name.replace(/'/g, "\\'");
+    let unitPrice = formatPrice(item.priceCents);
+    return `
+      <div class="mobile-cart-item">
+        <div class="mobile-cart-item-top">
+          <span class="mobile-cart-emoji">${item.emoji}</span>
+          <span class="mobile-cart-name">${item.name}</span>
+        </div>
+        <div class="mobile-cart-item-bottom">
+          <span class="mobile-cart-qty-price">${item.qty} × ${unitPrice}</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty('${safe}',-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${safe}',1)">+</button>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 function renderCart() {
-  let html = buildCartHTML();
   let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
   let totalStr = formatPrice(total);
 
-  // Desktop
+  // Desktop — unchanged layout
   let dItems = document.getElementById("cartItemsDesktop");
-  if (dItems) dItems.innerHTML = html;
+  if (dItems) dItems.innerHTML = buildCartHTML();
   let dTotal = document.getElementById("cartTotalDesktop");
   if (dTotal) dTotal.textContent = totalStr;
 
-  // Mobile
+  // Mobile — name + qty × price layout
   let mItems = document.getElementById("cartItemsMobile");
-  if (mItems) mItems.innerHTML = html;
+  if (mItems) mItems.innerHTML = buildMobileCartHTML();
   let mTotal = document.getElementById("cartTotalMobile");
   if (mTotal) mTotal.textContent = totalStr;
 }

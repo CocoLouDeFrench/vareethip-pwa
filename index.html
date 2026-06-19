@@ -335,7 +335,7 @@ Bestellung per WhatsApp senden
 <script>
 
 let order=[];
-let forceClosed = localStorage.getItem("forceClosed") === "true";
+let adminOpen = localStorage.getItem("adminOpen") === "true";
 
 function getPrice(item){
   let match=item.match(/(\d+),00€/);
@@ -410,8 +410,8 @@ if(total < 5){
   }
 }
 function toggleClosed(){
-  forceClosed = !forceClosed;
-  localStorage.setItem("forceClosed", forceClosed);
+  adminOpen = !adminOpen;
+  localStorage.setItem("adminOpen", adminOpen);
   updateStatus();
 }
 
@@ -449,8 +449,8 @@ function updateStatus(){
 
 }
 
-if(forceClosed){
-  open = false;
+if(adminOpen){
+  open = true;
 }
 
 let bar = document.getElementById("statusBar");

@@ -470,6 +470,53 @@ body {
   color: #555;
 }
 
+/* ── MOBILE FLOATING CART BUTTON ── */
+@media (max-width: 799px) {
+  .mobile-floating-cart {
+    position: fixed;
+    top: 92px;
+    right: 18px;
+    z-index: 2000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: #c9342b;
+    color: white;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    cursor: pointer;
+  }
+  .mobile-floating-cart.hidden {
+    display: none;
+  }
+  .mobile-floating-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: #d4a843;
+    color: #111;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    line-height: 1;
+  }
+}
+
+/* Hide floating cart on desktop */
+@media (min-width: 800px) {
+  .mobile-floating-cart { display: none !important; }
+}
+
 /* ── DESKTOP STYLES ── */
 @media (min-width: 800px) {
   body { max-width: none; }
@@ -883,6 +930,12 @@ body {
   </div>
 </div>
 
+<!-- MOBILE FLOATING CART BUTTON -->
+<button class="mobile-floating-cart hidden" id="mobileFloatingCart" onclick="openMobileCart()">
+  🛒
+  <span class="mobile-floating-badge" id="mobileFloatingBadge">0</span>
+</button>
+
 <!-- ADMIN -->
 <div id="adminPanel">
   <button onclick="toggleClosed()">Admin: Öffnen/Schließen</button>
@@ -982,20 +1035,40 @@ function renderCart() {
 
 function updateBadge() {
   let total = order.reduce((s, i) => s + i.qty, 0);
+
+  // Header badge (sichtbar wenn Header sichtbar)
   let badge = document.getElementById("cartBadge");
   badge.style.display = total > 0 ? "flex" : "none";
   badge.textContent = total;
+
+  // Floating cart button (Mobile): nur sichtbar wenn Artikel > 0 und Sheet geschlossen
+  let floatBtn = document.getElementById("mobileFloatingCart");
+  let floatBadge = document.getElementById("mobileFloatingBadge");
+  let sheetOpen = document.getElementById("cartSheet").classList.contains("open");
+  if (floatBtn) {
+    if (total > 0 && !sheetOpen) {
+      floatBtn.classList.remove("hidden");
+    } else {
+      floatBtn.classList.add("hidden");
+    }
+    if (floatBadge) floatBadge.textContent = total;
+  }
 }
 
 function openMobileCart() {
   renderCart();
   document.getElementById("cartOverlay").classList.add("open");
   document.getElementById("cartSheet").classList.add("open");
+  // Floating button ausblenden solange Sheet offen
+  let floatBtn = document.getElementById("mobileFloatingCart");
+  if (floatBtn) floatBtn.classList.add("hidden");
 }
 function closeMobileCart() {
   document.getElementById("cartOverlay").classList.remove("open");
   document.getElementById("cartSheet").classList.remove("open");
   hideMobileForm();
+  // Floating button wieder einblenden wenn noch Artikel im Warenkorb
+  updateBadge();
 }
 function showMobileForm() {
   if (order.length === 0) { alert("Bitte erst Gerichte auswählen."); return; }

@@ -21,9 +21,6 @@ body {
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
 }
 
 /* HEADER */
@@ -32,7 +29,7 @@ body {
   top: 0;
   background: var(--primary);
   color: white;
-  padding: 14px 16px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,8 +49,9 @@ body {
   font-size: 15px;
   font-weight: bold;
   color: white;
-  line-height: 1.2;
+  line-height: 1.3;
 }
+/* Mobile cart button — hidden on desktop */
 .cart-icon-btn {
   position: relative;
   background: none;
@@ -66,7 +64,7 @@ body {
 .cart-badge {
   position: absolute;
   top: -2px;
-  right: 0px;
+  right: 0;
   background: var(--gold);
   color: #1a1a1a;
   border-radius: 50%;
@@ -81,13 +79,26 @@ body {
 
 /* STATUS BAR */
 #statusBar {
-  padding: 10px 16px;
+  padding: 9px 20px;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
 }
 .open  { background: #27ae60; color: white; }
 .closed { background: var(--primary); color: white; }
+
+/* ── LAYOUT ── */
+.main-layout {
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.menu-column {
+  flex: 1;
+  min-width: 0;
+}
+/* Desktop cart column — hidden on mobile */
+.cart-column { display: none; }
 
 /* CATEGORY TABS */
 .categories {
@@ -99,7 +110,7 @@ body {
   border-bottom: 1px solid var(--border);
   scrollbar-width: none;
   position: sticky;
-  top: 68px;
+  top: 76px;
   z-index: 90;
 }
 .categories::-webkit-scrollbar { display: none; }
@@ -153,7 +164,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 60px;
+  font-size: 56px;
 }
 .add-btn {
   position: absolute;
@@ -175,7 +186,7 @@ body {
   transition: transform 0.15s;
   line-height: 1;
 }
-.add-btn:active { transform: scale(0.88); }
+.add-btn:active { transform: scale(0.85); }
 .menu-card-info {
   padding: 10px 10px 8px;
   flex: 1;
@@ -207,16 +218,138 @@ body {
   cursor: pointer;
   color: var(--text);
   text-align: center;
-  transition: all 0.2s;
   font-weight: bold;
+  transition: all 0.2s;
 }
-.variant-btn:hover, .variant-btn:active {
-  border-color: var(--primary);
+.variant-btn:hover { border-color: var(--primary); color: var(--primary); background: #fff5f5; }
+
+/* ── SHARED CART STYLES ── */
+.cart-items-list { overflow-y: auto; flex: 1; }
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.cart-item:last-child { border-bottom: none; }
+.cart-item-emoji { font-size: 28px; flex-shrink: 0; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cart-item-price { font-size: 13px; color: var(--text-muted); }
+.qty-control { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: white;
   color: var(--primary);
-  background: #fff5f5;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.qty-btn:active { background: #fff0ef; }
+.qty-num { font-size: 15px; font-weight: bold; min-width: 16px; text-align: center; }
+.empty-cart { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+.empty-cart-icon { font-size: 48px; margin-bottom: 12px; }
+.cart-footer-area {
+  padding: 14px 16px 16px;
+  border-top: 1px solid var(--border);
+  background: white;
+}
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.cart-total-label { font-size: 15px; color: var(--text-muted); }
+.cart-total-value { font-size: 22px; font-weight: bold; color: var(--primary); }
+.checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.checkout-btn:active { opacity: 0.85; }
+.checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+/* ── SHARED FORM STYLES ── */
+.order-form-inner { padding: 12px 16px 20px; overflow-y: auto; flex: 1; }
+.form-back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.form-title { font-size: 17px; font-weight: bold; margin-bottom: 12px; }
+.form-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: bold;
+  margin: 10px 0 4px;
+  display: block;
+}
+.form-input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: #fafafa;
+  font-family: Arial, sans-serif;
+}
+.form-input:focus { border-color: var(--primary); background: white; }
+.confirm-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 0 16px;
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.confirm-label input { margin-top: 2px; flex-shrink: 0; accent-color: var(--primary); }
+.whatsapp-btn {
+  width: 100%;
+  padding: 14px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* CART OVERLAY & SHEET */
+/* ── MOBILE CART SHEET ── */
 .cart-overlay {
   display: none;
   position: fixed;
@@ -225,7 +358,6 @@ body {
   z-index: 200;
 }
 .cart-overlay.open { display: block; }
-
 .cart-sheet {
   position: fixed;
   bottom: 0;
@@ -241,24 +373,24 @@ body {
   flex-direction: column;
   transition: transform 0.35s cubic-bezier(.32,.72,0,1);
 }
-.cart-sheet.open {
-  transform: translateX(-50%) translateY(0);
-}
+.cart-sheet.open { transform: translateX(-50%) translateY(0); }
 .cart-drag-handle {
   width: 40px;
   height: 4px;
   background: #ddd;
   border-radius: 2px;
   margin: 12px auto 0;
+  flex-shrink: 0;
 }
-.cart-header {
-  padding: 12px 20px 14px;
+.cart-sheet-header {
+  padding: 12px 16px 14px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
-.cart-header h2 { font-size: 19px; font-weight: bold; }
+.cart-sheet-header h2 { font-size: 19px; font-weight: bold; }
 .close-cart-btn {
   background: #f0f0f0;
   border: none;
@@ -273,172 +405,76 @@ body {
   color: #555;
 }
 
-/* CART ITEMS */
-.cart-items {
-  overflow-y: auto;
-  flex: 1;
-  padding: 8px 20px;
-}
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-}
-.cart-item:last-child { border-bottom: none; }
-.cart-item-emoji { font-size: 30px; flex-shrink: 0; }
-.cart-item-info { flex: 1; min-width: 0; }
-.cart-item-name {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cart-item-price { font-size: 13px; color: var(--text-muted); }
-.qty-control {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.qty-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  color: var(--primary);
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-.qty-btn:active { background: #fff0ef; }
-.qty-num { font-size: 16px; font-weight: bold; min-width: 18px; text-align: center; }
+/* ── DESKTOP STYLES ── */
+@media (min-width: 800px) {
+  body { max-width: none; }
 
-/* EMPTY CART */
-.empty-cart {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-muted);
-}
-.empty-cart-icon { font-size: 52px; margin-bottom: 12px; }
-.empty-cart p { font-size: 15px; }
+  .header { position: sticky; top: 0; }
+  .header-logo span { font-size: 17px; }
 
-/* CART FOOTER */
-.cart-footer {
-  padding: 14px 20px 20px;
-  border-top: 1px solid var(--border);
-}
-.cart-total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-.cart-total-label { font-size: 16px; color: var(--text-muted); }
-.cart-total-value { font-size: 22px; font-weight: bold; color: var(--primary); }
-.checkout-btn {
-  width: 100%;
-  padding: 15px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.checkout-btn:active { opacity: 0.85; }
-.checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
+  #statusBar { font-size: 15px; }
 
-/* ORDER FORM */
-.order-form {
-  display: none;
-  padding: 4px 20px 20px;
-  overflow-y: auto;
-}
-.order-form.visible { display: block; }
-.order-form-title {
-  font-size: 17px;
-  font-weight: bold;
-  margin-bottom: 14px;
-  padding-top: 8px;
-}
-.form-label {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 10px 0 4px;
-  display: block;
-  font-weight: bold;
-}
-.form-input {
-  width: 100%;
-  padding: 11px 13px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-size: 15px;
-  outline: none;
-  background: #fafafa;
-  transition: border-color 0.2s;
-  font-family: Arial, sans-serif;
-}
-.form-input:focus { border-color: var(--primary); background: white; }
-.confirm-label {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 14px 0 16px;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-  cursor: pointer;
-}
-.confirm-label input { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--primary); }
-.whatsapp-btn {
-  width: 100%;
-  padding: 15px;
-  background: #25D366;
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.whatsapp-btn:disabled { background: #ccc; cursor: not-allowed; }
-.back-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 13px;
-  cursor: pointer;
-  margin-bottom: 8px;
-  padding: 4px 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  .main-layout {
+    max-width: none;
+    align-items: flex-start;
+    min-height: calc(100vh - 115px);
+  }
+
+  .menu-column { flex: 1; padding-bottom: 60px; }
+
+  .categories {
+    top: 76px;
+    padding: 12px 24px;
+    gap: 10px;
+  }
+  .cat-btn { font-size: 14px; padding: 8px 18px; }
+
+  .section-title { padding: 24px 24px 12px; font-size: 22px; }
+
+  .menu-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 0 24px 12px;
+  }
+  .menu-card-img { font-size: 64px; }
+  .menu-card-name { font-size: 14px; }
+  .menu-card-price { font-size: 15px; }
+
+  /* Show desktop cart column */
+  .cart-column {
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    min-width: 320px;
+    height: calc(100vh - 115px);
+    position: sticky;
+    top: 115px;
+    border-left: 2px solid var(--border);
+    background: white;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .cart-col-header {
+    padding: 16px 16px 14px;
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cart-col-header h2 { font-size: 20px; font-weight: bold; }
+
+  /* Hide mobile-only elements on desktop */
+  .cart-icon-btn { display: none; }
+  .cart-overlay,
+  .cart-sheet { display: none !important; }
 }
 
-.content-pad { height: 30px; }
-
-/* ADMIN */
+/* Admin */
 #adminPanel {
   position: fixed;
   bottom: 20px;
   left: 16px;
   z-index: 300;
+  display: none;
 }
 #adminPanel button {
   padding: 10px 14px;
@@ -449,6 +485,7 @@ body {
   cursor: pointer;
   font-size: 13px;
 }
+.content-pad { height: 30px; }
 </style>
 </head>
 <body>
@@ -459,7 +496,7 @@ body {
     <img src="Logo.PNG" alt="Logo" onerror="this.style.display='none'">
     <span>VAREETHIP<br>Thai Noodle Bar</span>
   </div>
-  <button class="cart-icon-btn" onclick="openCart()">
+  <button class="cart-icon-btn" onclick="openMobileCart()">
     🛒
     <span class="cart-badge" id="cartBadge">0</span>
   </button>
@@ -468,383 +505,298 @@ body {
 <!-- STATUS BAR -->
 <div id="statusBar"></div>
 
-<!-- CATEGORY TABS -->
-<div class="categories">
-  <button class="cat-btn active" onclick="scrollToSection('nudelsuppen', this)">🍜 Nudelsuppen</button>
-  <button class="cat-btn" onclick="scrollToSection('klassiker', this)">🍛 Thai Klassiker</button>
-  <button class="cat-btn" onclick="scrollToSection('getraenke', this)">🥤 Getränke</button>
-</div>
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
 
-<!-- NUDELSUPPEN -->
-<div id="nudelsuppen">
-  <div class="section-title">🍜 Nudelsuppen</div>
-  <div class="menu-grid">
+  <!-- ── MENU COLUMN ── -->
+  <div class="menu-column">
+    <div class="categories">
+      <button class="cat-btn active" onclick="scrollToSection('nudelsuppen', this)">🍜 Nudelsuppen</button>
+      <button class="cat-btn" onclick="scrollToSection('klassiker', this)">🍛 Thai Klassiker</button>
+      <button class="cat-btn" onclick="scrollToSection('getraenke', this)">🥤 Getränke</button>
+    </div>
 
-    <div class="menu-card">
-      <div class="menu-card-img">🍲</div>
-      <button class="add-btn" onclick="addItem('Khao Soi', 1800, '🍲')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Khao Soi</div>
-        <div class="menu-card-price">18,00 €</div>
+    <!-- NUDELSUPPEN -->
+    <div id="nudelsuppen">
+      <div class="section-title">🍜 Nudelsuppen</div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-img">🍲</div>
+          <button class="add-btn" onclick="addItem('Khao Soi',1800,'🍲',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Khao Soi</div><div class="menu-card-price">18,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍜</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam',1500,'🍜',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam</div><div class="menu-card-price">15,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🦐</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam Seafood',1850,'🦐',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam Seafood</div><div class="menu-card-price">18,50 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍜</div>
+          <button class="add-btn" onclick="addItem('Yen Ta Fo',1600,'🍜',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo</div><div class="menu-card-price">16,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🦐</div>
+          <button class="add-btn" onclick="addItem('Yen Ta Fo Seafood',1850,'🦐',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo Seafood</div><div class="menu-card-price">18,50 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍝</div>
+          <button class="add-btn" onclick="addItem('Bami Giew Mhu Daeng',1500,'🍝',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Bami Giew Mhu Daeng</div><div class="menu-card-price">15,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥩</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Nua',1500,'🥩',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua</div><div class="menu-card-price">15,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥩</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Nua Spezial',1600,'🥩',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua Spezial</div><div class="menu-card-price">16,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🐷</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Mhu',1500,'🐷',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu</div><div class="menu-card-price">15,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🐷</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Mhu Spezial',1600,'🐷',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu Spezial</div><div class="menu-card-price">16,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥬</div>
+          <button class="add-btn" onclick="addItem('Guay Tiew Jay',1400,'🥬',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Jay</div><div class="menu-card-price">14,00 €</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="menu-card">
-      <div class="menu-card-img">🍜</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam', 1500, '🍜')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Tom Yam</div>
-        <div class="menu-card-price">15,00 €</div>
+    <!-- THAI KLASSIKER -->
+    <div id="klassiker">
+      <div class="section-title">🍛 Thai Klassiker</div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-img">🍢</div>
+          <button class="add-btn" onclick="addItem('Pad Thai Tofu',1400,'🍢',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Pad Thai Tofu</div><div class="menu-card-price">14,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍗</div>
+          <button class="add-btn" onclick="addItem('Pad Thai Hähnchen',1550,'🍗',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Pad Thai Hähnchen</div><div class="menu-card-price">15,50 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🦐</div>
+          <button class="add-btn" onclick="addItem('Pad Thai Garnelen',1700,'🦐',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Pad Thai Garnelen</div><div class="menu-card-price">17,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🌿</div>
+          <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Schwein</div><div class="menu-card-price">15,00 €</div></div>
+          <div class="variant-row">
+            <button class="variant-btn" onclick="addItem('Pad Krapao Schwein',1500,'🌿',this)">Ohne Ei</button>
+            <button class="variant-btn" onclick="addItem('Pad Krapao Schwein + Ei',1600,'🌿',this)">+ Spiegelei</button>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🌿</div>
+          <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Hähnchen</div><div class="menu-card-price">15,00 €</div></div>
+          <div class="variant-row">
+            <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen',1500,'🌿',this)">Ohne Ei</button>
+            <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen + Ei',1600,'🌿',this)">+ Spiegelei</button>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥚</div>
+          <button class="add-btn" onclick="addItem('Kai Nok Kata',700,'🥚',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Kai Nok Kata</div><div class="menu-card-price">7,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥟</div>
+          <button class="add-btn" onclick="addItem('Giew Tord',700,'🥟',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Giew Tord</div><div class="menu-card-price">7,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍡</div>
+          <button class="add-btn" onclick="addItem('Lug Chin Tord',700,'🍡',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Lug Chin Tord</div><div class="menu-card-price">7,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🫛</div>
+          <button class="add-btn" onclick="addItem('Gui Chai Tord',700,'🫛',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Gui Chai Tord</div><div class="menu-card-price">7,00 €</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="menu-card">
-      <div class="menu-card-img">🦐</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam Seafood', 1850, '🦐')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Tom Yam Seafood</div>
-        <div class="menu-card-price">18,50 €</div>
+    <!-- GETRÄNKE -->
+    <div id="getraenke">
+      <div class="section-title">🥤 Getränke</div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-img">🍵</div>
+          <button class="add-btn" onclick="addItem('Lemongrass Iced Tea',500,'🍵',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Lemongrass Iced Tea</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">💙</div>
+          <button class="add-btn" onclick="addItem('Anchan Manao',500,'💙',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Anchan Manao</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍋</div>
+          <button class="add-btn" onclick="addItem('Cha Manao',500,'🍋',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Cha Manao</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">☕</div>
+          <button class="add-btn" onclick="addItem('Oliang',500,'☕',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Oliang</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🥛</div>
+          <button class="add-btn" onclick="addItem('Anchan Nom',500,'🥛',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Anchan Nom</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🧊</div>
+          <button class="add-btn" onclick="addItem('Coffee Yen',500,'🧊',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Coffee Yen</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🍊</div>
+          <button class="add-btn" onclick="addItem('Cha Thai',500,'🍊',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Cha Thai</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">💜</div>
+          <button class="add-btn" onclick="addItem('Anchan Jasmin',500,'💜',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Anchan Jasmin</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-img">🌸</div>
+          <button class="add-btn" onclick="addItem('Nom Yen',500,'🌸',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">Nom Yen</div><div class="menu-card-price">5,00 €</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="menu-card">
-      <div class="menu-card-img">🍜</div>
-      <button class="add-btn" onclick="addItem('Yen Ta Fo', 1600, '🍜')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Yen Ta Fo</div>
-        <div class="menu-card-price">16,00 €</div>
+    <div class="content-pad"></div>
+  </div><!-- end menu-column -->
+
+  <!-- ── DESKTOP CART COLUMN ── -->
+  <div class="cart-column" id="cartColumn">
+    <div class="cart-col-header">
+      <h2>🛒 Warenkorb</h2>
+    </div>
+
+    <!-- Items view -->
+    <div id="desktopCartView" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+      <div class="cart-items-list" id="cartItemsDesktop"></div>
+      <div class="cart-footer-area">
+        <div class="cart-total-row">
+          <span class="cart-total-label">Gesamt</span>
+          <span class="cart-total-value" id="cartTotalDesktop">0,00 €</span>
+        </div>
+        <button class="checkout-btn" onclick="showDesktopForm()">Weiter zur Bestellung →</button>
       </div>
     </div>
 
-    <div class="menu-card">
-      <div class="menu-card-img">🦐</div>
-      <button class="add-btn" onclick="addItem('Yen Ta Fo Seafood', 1850, '🦐')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Yen Ta Fo Seafood</div>
-        <div class="menu-card-price">18,50 €</div>
+    <!-- Order form view -->
+    <div id="desktopOrderForm" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+      <div class="order-form-inner">
+        <button class="form-back-btn" onclick="hideDesktopForm()">← Zurück zum Warenkorb</button>
+        <div class="form-title">📋 Bestelldetails</div>
+        <label class="form-label">Name *</label>
+        <input class="form-input" id="nameD" placeholder="Dein Name" type="text">
+        <label class="form-label">Telefonnummer *</label>
+        <input class="form-input" id="phoneD" placeholder="0176..." type="tel">
+        <label class="form-label">Abholzeit *</label>
+        <select class="form-input" id="timeD"><option value="">Abholzeit wählen</option></select>
+        <label class="form-label">Anmerkung</label>
+        <textarea class="form-input" id="noteD" placeholder="z.B. ohne Koriander, extra scharf" rows="2" style="resize:none;"></textarea>
+        <label class="confirm-label">
+          <input type="checkbox" id="confirmD">
+          Ich bestätige verbindlich, dass ich die Bestellung abhole.
+        </label>
+        <button class="whatsapp-btn" onclick="sendWhatsApp('D')">📲 Jetzt per WhatsApp bestellen</button>
       </div>
     </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍝</div>
-      <button class="add-btn" onclick="addItem('Bami Giew Mhu Daeng', 1500, '🍝')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Bami Giew Mhu Daeng</div>
-        <div class="menu-card-price">15,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥩</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Nua', 1500, '🥩')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Nua</div>
-        <div class="menu-card-price">15,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥩</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Nua Spezial', 1600, '🥩')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Nua Spezial</div>
-        <div class="menu-card-price">16,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🐷</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Mhu', 1500, '🐷')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Mhu</div>
-        <div class="menu-card-price">15,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🐷</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Mhu Spezial', 1600, '🐷')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Mhu Spezial</div>
-        <div class="menu-card-price">16,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥬</div>
-      <button class="add-btn" onclick="addItem('Guay Tiew Jay', 1400, '🥬')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Guay Tiew Jay</div>
-        <div class="menu-card-price">14,00 €</div>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<!-- THAI KLASSIKER -->
-<div id="klassiker">
-  <div class="section-title">🍛 Thai Klassiker</div>
-  <div class="menu-grid">
+</div><!-- end main-layout -->
 
-    <div class="menu-card">
-      <div class="menu-card-img">🍢</div>
-      <button class="add-btn" onclick="addItem('Pad Thai Tofu', 1400, '🍢')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Pad Thai Tofu</div>
-        <div class="menu-card-price">14,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍗</div>
-      <button class="add-btn" onclick="addItem('Pad Thai Hähnchen', 1550, '🍗')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Pad Thai Hähnchen</div>
-        <div class="menu-card-price">15,50 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🦐</div>
-      <button class="add-btn" onclick="addItem('Pad Thai Garnelen', 1700, '🦐')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Pad Thai Garnelen</div>
-        <div class="menu-card-price">17,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🌿</div>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Pad Krapao Schwein</div>
-        <div class="menu-card-price">15,00 €</div>
-      </div>
-      <div class="variant-row">
-        <button class="variant-btn" onclick="addItem('Pad Krapao Schwein', 1500, '🌿')">Ohne Ei</button>
-        <button class="variant-btn" onclick="addItem('Pad Krapao Schwein + Ei', 1600, '🌿')">+ Spiegelei</button>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🌿</div>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Pad Krapao Hähnchen</div>
-        <div class="menu-card-price">15,00 €</div>
-      </div>
-      <div class="variant-row">
-        <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen', 1500, '🌿')">Ohne Ei</button>
-        <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen + Ei', 1600, '🌿')">+ Spiegelei</button>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥚</div>
-      <button class="add-btn" onclick="addItem('Kai Nok Kata', 700, '🥚')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Kai Nok Kata</div>
-        <div class="menu-card-price">7,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥟</div>
-      <button class="add-btn" onclick="addItem('Giew Tord', 700, '🥟')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Giew Tord</div>
-        <div class="menu-card-price">7,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍡</div>
-      <button class="add-btn" onclick="addItem('Lug Chin Tord', 700, '🍡')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Lug Chin Tord</div>
-        <div class="menu-card-price">7,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🫛</div>
-      <button class="add-btn" onclick="addItem('Gui Chai Tord', 700, '🫛')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Gui Chai Tord</div>
-        <div class="menu-card-price">7,00 €</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- GETRÄNKE -->
-<div id="getraenke">
-  <div class="section-title">🥤 Getränke</div>
-  <div class="menu-grid">
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍵</div>
-      <button class="add-btn" onclick="addItem('Lemongrass Iced Tea', 500, '🍵')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Lemongrass Iced Tea</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">💙</div>
-      <button class="add-btn" onclick="addItem('Anchan Manao', 500, '💙')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Anchan Manao</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍋</div>
-      <button class="add-btn" onclick="addItem('Cha Manao', 500, '🍋')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Cha Manao</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">☕</div>
-      <button class="add-btn" onclick="addItem('Oliang', 500, '☕')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Oliang</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🥛</div>
-      <button class="add-btn" onclick="addItem('Anchan Nom', 500, '🥛')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Anchan Nom</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🧊</div>
-      <button class="add-btn" onclick="addItem('Coffee Yen', 500, '🧊')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Coffee Yen</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🍊</div>
-      <button class="add-btn" onclick="addItem('Cha Thai', 500, '🍊')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Cha Thai</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">💜</div>
-      <button class="add-btn" onclick="addItem('Anchan Jasmin', 500, '💜')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Anchan Jasmin</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-card-img">🌸</div>
-      <button class="add-btn" onclick="addItem('Nom Yen', 500, '🌸')">+</button>
-      <div class="menu-card-info">
-        <div class="menu-card-name">Nom Yen</div>
-        <div class="menu-card-price">5,00 €</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="content-pad"></div>
-
-<!-- CART OVERLAY -->
-<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-
-<!-- CART SHEET -->
+<!-- ── MOBILE CART SHEET ── -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeMobileCart()"></div>
 <div class="cart-sheet" id="cartSheet">
   <div class="cart-drag-handle"></div>
-  <div class="cart-header">
+  <div class="cart-sheet-header">
     <h2>🛒 Warenkorb</h2>
-    <button class="close-cart-btn" onclick="closeCart()">✕</button>
+    <button class="close-cart-btn" onclick="closeMobileCart()">✕</button>
   </div>
-
-  <!-- CART ITEMS VIEW -->
-  <div id="cartView" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter">
+  <!-- Mobile items view -->
+  <div id="mobileCartView" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="cart-items-list" id="cartItemsMobile"></div>
+    <div class="cart-footer-area">
       <div class="cart-total-row">
         <span class="cart-total-label">Gesamt</span>
-        <span class="cart-total-value" id="cartTotal">0,00 €</span>
+        <span class="cart-total-value" id="cartTotalMobile">0,00 €</span>
       </div>
-      <button class="checkout-btn" id="checkoutBtn" onclick="showOrderForm()">
-        Weiter zur Bestellung →
-      </button>
+      <button class="checkout-btn" onclick="showMobileForm()">Weiter zur Bestellung →</button>
     </div>
   </div>
-
-  <!-- ORDER FORM VIEW (hidden until checkout) -->
-  <div class="order-form" id="orderForm">
-    <button class="back-btn" onclick="hideOrderForm()">← Zurück zum Warenkorb</button>
-    <div class="order-form-title">📋 Bestelldetails</div>
-
-    <label class="form-label">Name *</label>
-    <input class="form-input" id="name" placeholder="Dein Name" type="text">
-
-    <label class="form-label">Telefonnummer *</label>
-    <input class="form-input" id="phone" placeholder="0176..." type="tel">
-
-    <label class="form-label">Abholzeit *</label>
-    <select class="form-input" id="time">
-      <option value="">Abholzeit wählen</option>
-    </select>
-
-    <label class="form-label">Anmerkung</label>
-    <textarea class="form-input" id="note" placeholder="z.B. ohne Koriander, extra scharf" rows="2" style="resize:none;"></textarea>
-
-    <label class="confirm-label">
-      <input type="checkbox" id="confirm">
-      Ich bestätige verbindlich, dass ich die Bestellung abhole.
-    </label>
-
-    <button class="whatsapp-btn" onclick="sendWhatsApp()">
-      📲 Jetzt per WhatsApp bestellen
-    </button>
+  <!-- Mobile order form -->
+  <div id="mobileOrderForm" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="order-form-inner">
+      <button class="form-back-btn" onclick="hideMobileForm()">← Zurück zum Warenkorb</button>
+      <div class="form-title">📋 Bestelldetails</div>
+      <label class="form-label">Name *</label>
+      <input class="form-input" id="nameM" placeholder="Dein Name" type="text">
+      <label class="form-label">Telefonnummer *</label>
+      <input class="form-input" id="phoneM" placeholder="0176..." type="tel">
+      <label class="form-label">Abholzeit *</label>
+      <select class="form-input" id="timeM"><option value="">Abholzeit wählen</option></select>
+      <label class="form-label">Anmerkung</label>
+      <textarea class="form-input" id="noteM" placeholder="z.B. ohne Koriander, extra scharf" rows="2" style="resize:none;"></textarea>
+      <label class="confirm-label">
+        <input type="checkbox" id="confirmM">
+        Ich bestätige verbindlich, dass ich die Bestellung abhole.
+      </label>
+      <button class="whatsapp-btn" onclick="sendWhatsApp('M')">📲 Jetzt per WhatsApp bestellen</button>
+    </div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" style="display:none;">
+<!-- ADMIN -->
+<div id="adminPanel">
   <button onclick="toggleClosed()">Admin: Öffnen/Schließen</button>
 </div>
 
 <script>
-let order = []; // [{name, priceCents, qty, emoji}]
+let order = [];
 let adminOpen = localStorage.getItem("adminOpen") === "true";
 
 function formatPrice(cents) {
   return Math.floor(cents / 100) + "," + String(cents % 100).padStart(2, "0") + " €";
 }
 
-function addItem(name, priceCents, emoji) {
+function addItem(name, priceCents, emoji, btn) {
   let existing = order.find(i => i.name === name);
-  if (existing) {
-    existing.qty++;
-  } else {
-    order.push({ name, priceCents, qty: 1, emoji: emoji || "🍽️" });
-  }
+  if (existing) { existing.qty++; }
+  else { order.push({ name, priceCents, qty: 1, emoji: emoji || "🍽️" }); }
   updateBadge();
   renderCart();
+  if (btn) {
+    btn.style.transform = "scale(1.35)";
+    setTimeout(() => { btn.style.transform = ""; }, 150);
+  }
 }
 
 function changeQty(name, delta) {
@@ -856,34 +808,14 @@ function changeQty(name, delta) {
   renderCart();
 }
 
-function updateBadge() {
-  let total = order.reduce((s, i) => s + i.qty, 0);
-  let badge = document.getElementById("cartBadge");
-  badge.style.display = total > 0 ? "flex" : "none";
-  badge.textContent = total;
-}
-
-function renderCart() {
-  let container = document.getElementById("cartItems");
-  let totalEl = document.getElementById("cartTotal");
-
+function buildCartHTML() {
   if (order.length === 0) {
-    container.innerHTML = `
-      <div class="empty-cart">
-        <div class="empty-cart-icon">🛒</div>
-        <p>Noch nichts im Warenkorb</p>
-      </div>`;
-    totalEl.textContent = "0,00 €";
-    return;
+    return `<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Noch nichts im Warenkorb</p></div>`;
   }
-
-  let total = 0;
-  let html = "";
-  for (let item of order) {
+  return order.map(item => {
     let sub = item.priceCents * item.qty;
-    total += sub;
-    let safeName = item.name.replace(/'/g, "\\'");
-    html += `
+    let safe = item.name.replace(/'/g, "\\'");
+    return `
       <div class="cart-item">
         <div class="cart-item-emoji">${item.emoji}</div>
         <div class="cart-item-info">
@@ -891,44 +823,78 @@ function renderCart() {
           <div class="cart-item-price">${formatPrice(sub)}</div>
         </div>
         <div class="qty-control">
-          <button class="qty-btn" onclick="changeQty('${safeName}', -1)">−</button>
+          <button class="qty-btn" onclick="changeQty('${safe}',-1)">−</button>
           <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty('${safeName}', 1)">+</button>
+          <button class="qty-btn" onclick="changeQty('${safe}',1)">+</button>
         </div>
       </div>`;
-  }
-  container.innerHTML = html;
-  totalEl.textContent = formatPrice(total);
+  }).join("");
 }
 
-function openCart() {
+function renderCart() {
+  let html = buildCartHTML();
+  let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
+  let totalStr = formatPrice(total);
+
+  // Desktop
+  let dItems = document.getElementById("cartItemsDesktop");
+  if (dItems) dItems.innerHTML = html;
+  let dTotal = document.getElementById("cartTotalDesktop");
+  if (dTotal) dTotal.textContent = totalStr;
+
+  // Mobile
+  let mItems = document.getElementById("cartItemsMobile");
+  if (mItems) mItems.innerHTML = html;
+  let mTotal = document.getElementById("cartTotalMobile");
+  if (mTotal) mTotal.textContent = totalStr;
+}
+
+function updateBadge() {
+  let total = order.reduce((s, i) => s + i.qty, 0);
+  let badge = document.getElementById("cartBadge");
+  badge.style.display = total > 0 ? "flex" : "none";
+  badge.textContent = total;
+}
+
+/* ── MOBILE CART ── */
+function openMobileCart() {
   renderCart();
   document.getElementById("cartOverlay").classList.add("open");
   document.getElementById("cartSheet").classList.add("open");
 }
-
-function closeCart() {
+function closeMobileCart() {
   document.getElementById("cartOverlay").classList.remove("open");
   document.getElementById("cartSheet").classList.remove("open");
-  hideOrderForm();
+  hideMobileForm();
 }
-
-function showOrderForm() {
+function showMobileForm() {
   if (order.length === 0) { alert("Bitte erst Gerichte auswählen."); return; }
-  updatePickupTimes();
-  document.getElementById("cartView").style.display = "none";
-  document.getElementById("orderForm").classList.add("visible");
+  updatePickupTimes("timeM");
+  document.getElementById("mobileCartView").style.display = "none";
+  document.getElementById("mobileOrderForm").style.display = "flex";
+}
+function hideMobileForm() {
+  document.getElementById("mobileCartView").style.display = "flex";
+  document.getElementById("mobileOrderForm").style.display = "none";
 }
 
-function hideOrderForm() {
-  document.getElementById("cartView").style.display = "flex";
-  document.getElementById("orderForm").classList.remove("visible");
+/* ── DESKTOP CART ── */
+function showDesktopForm() {
+  if (order.length === 0) { alert("Bitte erst Gerichte auswählen."); return; }
+  updatePickupTimes("timeD");
+  document.getElementById("desktopCartView").style.display = "none";
+  document.getElementById("desktopOrderForm").style.display = "flex";
+}
+function hideDesktopForm() {
+  document.getElementById("desktopCartView").style.display = "flex";
+  document.getElementById("desktopOrderForm").style.display = "none";
 }
 
+/* ── SHARED ── */
 function scrollToSection(id, btn) {
-  // account for sticky header + tabs height
   let el = document.getElementById(id);
-  let top = el.getBoundingClientRect().top + window.scrollY - 120;
+  let offset = window.innerWidth >= 800 ? 130 : 120;
+  let top = el.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top, behavior: "smooth" });
   document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
@@ -939,15 +905,13 @@ function toggleClosed() {
   localStorage.setItem("adminOpen", adminOpen);
   updateStatus();
 }
-
 function checkAdmin() {
-  if (window.location.search.includes("admin")) {
+  if (window.location.search.includes("admin"))
     document.getElementById("adminPanel").style.display = "block";
-  }
 }
 
-function updatePickupTimes() {
-  let select = document.getElementById("time");
+function updatePickupTimes(selectId) {
+  let select = document.getElementById(selectId);
   if (!select) return;
   let now = new Date();
   let current = now.getHours() * 60 + now.getMinutes();
@@ -955,10 +919,7 @@ function updatePickupTimes() {
   let day = now.getDay();
   let lastPickup = 1230;
   if (day >= 1 && day <= 5 && current < 840) lastPickup = 830;
-  if (day >= 1 && day <= 5 && current >= 840 && current < 960) {
-    firstPickup = 960;
-    lastPickup = 1230;
-  }
+  if (day >= 1 && day <= 5 && current >= 840 && current < 960) { firstPickup = 960; lastPickup = 1230; }
   select.innerHTML = '<option value="Schnellstmöglich">Schnellstmöglich (ca. 30 Min.)</option>';
   if (firstPickup > lastPickup) {
     select.innerHTML = '<option value="">Heute keine Abholzeit mehr verfügbar</option>';
@@ -975,39 +936,36 @@ function isOpen() {
   if (adminOpen) return true;
   let now = new Date();
   let day = now.getDay();
-  let current = now.getHours() * 60 + now.getMinutes();
-  if (day >= 1 && day <= 5)
-    return (current >= 720 && current <= 840) || (current >= 960 && current <= 1250);
-  return current >= 960 && current <= 1250;
+  let cur = now.getHours() * 60 + now.getMinutes();
+  if (day >= 1 && day <= 5) return (cur >= 720 && cur <= 840) || (cur >= 960 && cur <= 1250);
+  return cur >= 960 && cur <= 1250;
 }
 
 function updateStatus() {
   let now = new Date();
-  let day = now.getDay();
   let current = now.getHours() * 60 + now.getMinutes();
-  let open = isOpen();
   let bar = document.getElementById("statusBar");
-  if (open) {
+  if (isOpen()) {
     let rem = 1250 - current;
     let h = Math.floor(rem / 60), m = rem % 60;
-    let countdown = h > 0 ? `Noch ${h} Std. ${m} Min. bestellbar` : `Noch ${m} Min. bestellbar`;
+    let cd = h > 0 ? `Noch ${h} Std. ${m} Min. bestellbar` : `Noch ${m} Min. bestellbar`;
     bar.className = "open";
-    bar.innerHTML = `✅ Geöffnet &nbsp;·&nbsp; <span style="font-weight:normal;">${countdown}</span>`;
+    bar.innerHTML = `✅ Geöffnet &nbsp;·&nbsp; <span style="font-weight:normal;">${cd}</span>`;
   } else {
     bar.className = "closed";
     bar.innerHTML = `❌ Geschlossen &nbsp;·&nbsp; <span style="font-weight:normal;font-size:12px;">Mo–Fr: 12–14 & 16–20:50 &nbsp;|&nbsp; Sa–So: 16–20:50</span>`;
   }
 }
 
-function sendWhatsApp() {
+function sendWhatsApp(suffix) {
   if (!isOpen()) {
     alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo–Fr: 12:00–14:00 & 16:00–20:50\nSa–So: 16:00–20:50");
     return;
   }
-  let name = document.getElementById("name").value.trim();
+  let name = document.getElementById("name" + suffix).value.trim();
   if (!name) { alert("Bitte Namen eingeben."); return; }
 
-  let phone = document.getElementById("phone").value;
+  let phone = document.getElementById("phone" + suffix).value;
   let cleanPhone = phone.replace(/\D/g, "");
   if (cleanPhone.startsWith("00")) cleanPhone = cleanPhone.substring(2);
   if (cleanPhone.startsWith("0")) cleanPhone = "49" + cleanPhone.substring(1);
@@ -1016,29 +974,22 @@ function sendWhatsApp() {
     return;
   }
 
-  let time = document.getElementById("time").value;
-  if (!time || time.includes("keine Abholzeit")) {
-    alert("Bitte gültige Abholzeit auswählen.");
-    return;
-  }
+  let time = document.getElementById("time" + suffix).value;
+  if (!time || time.includes("keine Abholzeit")) { alert("Bitte gültige Abholzeit auswählen."); return; }
   if (order.length === 0) { alert("Bitte mindestens ein Gericht auswählen."); return; }
-  if (!document.getElementById("confirm").checked) {
-    alert("Bitte Bestellung bestätigen.");
-    return;
-  }
+  if (!document.getElementById("confirm" + suffix).checked) { alert("Bitte Bestellung bestätigen."); return; }
 
   let now = new Date();
   let orderNumber = "VT-" +
     now.getFullYear() +
-    String(now.getMonth() + 1).padStart(2, "0") +
-    String(now.getDate()).padStart(2, "0") +
-    "-" +
-    String(now.getHours()).padStart(2, "0") +
-    String(now.getMinutes()).padStart(2, "0") +
-    String(now.getSeconds()).padStart(2, "0");
+    String(now.getMonth()+1).padStart(2,"0") +
+    String(now.getDate()).padStart(2,"0") + "-" +
+    String(now.getHours()).padStart(2,"0") +
+    String(now.getMinutes()).padStart(2,"0") +
+    String(now.getSeconds()).padStart(2,"0");
 
   let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
-  let note = document.getElementById("note").value.trim();
+  let note = document.getElementById("note" + suffix).value.trim();
 
   let text = "Neue Vareethip Bestellung\n\n";
   text += "Bestellnummer: " + orderNumber + "\n\n";
@@ -1047,9 +998,7 @@ function sendWhatsApp() {
   text += "Abholzeit: " + time + "\n\n";
   if (note) text += "Anmerkung: " + note + "\n\n";
   text += "Bestellung:\n";
-  for (let item of order) {
-    text += `- ${item.qty}x ${item.name} (${formatPrice(item.priceCents * item.qty)})\n`;
-  }
+  for (let item of order) text += `- ${item.qty}x ${item.name} (${formatPrice(item.priceCents * item.qty)})\n`;
   text += "\nGesamt: " + formatPrice(total);
 
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
@@ -1057,6 +1006,7 @@ function sendWhatsApp() {
 
 checkAdmin();
 updateStatus();
+renderCart();
 setInterval(updateStatus, 60000);
 </script>
 </body>

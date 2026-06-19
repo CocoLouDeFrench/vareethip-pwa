@@ -23,98 +23,62 @@ body {
   color: var(--text);
 }
 
-/* HEADER */
+/* ── HEADER ── */
 .app-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   background: #c9342b;
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 28px;
-  min-height: 165px;
-  box-sizing: border-box;
-  z-index: 100;
+  gap: 14px;
+  padding: 14px 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.brand-area {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
 .brand-logo {
-  width: 110px;
-  height: auto;
-  max-height: 110px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  display: block;
+  flex-shrink: 0;
   image-rendering: auto;
 }
 .brand-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
+  line-height: 1.2;
+  min-width: 0;
 }
 .brand-title {
-  font-size: 31px;
-  font-weight: 800;
-  letter-spacing: 0.3px;
+  font-size: 20px;
+  font-weight: 900;
   color: white;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 .brand-subtitle {
-  font-size: 31px;
-  font-weight: 800;
-  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
 }
-.cart-button {
-  position: relative;
-  background: transparent;
-  border: none;
-  font-size: 40px;
-  cursor: pointer;
-  color: white;
-  flex-shrink: 0;
-}
-.cart-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: var(--gold);
-  color: #1a1a1a;
-  border-radius: 50%;
-  min-width: 22px;
-  height: 22px;
-  font-size: 13px;
-  font-weight: bold;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
+/* Header cart button: hidden on mobile (floating cart handles it), visible on desktop */
+.cart-button { display: none; }
+.cart-badge  { display: none; }
+
 @media (max-width: 480px) {
-  .app-header {
-    padding: 22px 24px;
-    min-height: 150px;
-  }
-  .brand-logo {
-    width: 86px;
-    max-height: 86px;
-  }
-  .brand-area { gap: 16px; }
-  .brand-title,
-  .brand-subtitle { font-size: 28px; }
-  .cart-button { font-size: 36px; }
+  .brand-logo  { width: 56px; height: 56px; }
+  .brand-title { font-size: 18px; }
+  .brand-subtitle { font-size: 13px; }
 }
 
-/* STATUS BAR */
+/* STATUS BAR — redesigned */
 #statusBar {
-  padding: 9px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
+  padding: 8px 16px 4px;
+  font-size: 13px;
+  text-align: left;
+  background: white;
 }
-.open  { background: #27ae60; color: white; }
-.closed { background: var(--primary); color: white; }
+.open  { background: white; color: var(--text); }
+.closed { background: white; color: var(--text); }
 
 /* ══════════════════════════════════════════════
    STICKY NAV WRAPPER — gilt für Mobile & Desktop
@@ -475,20 +439,21 @@ body {
 @media (max-width: 799px) {
   .mobile-floating-cart {
     position: fixed;
-    top: 92px;
+    bottom: 24px;
     right: 18px;
+    top: auto;
     z-index: 2000;
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     border: none;
     background: #c9342b;
     color: white;
-    font-size: 26px;
+    font-size: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.32);
     cursor: pointer;
   }
   .mobile-floating-cart.hidden {
@@ -522,7 +487,16 @@ body {
 @media (min-width: 800px) {
   body { max-width: none; }
 
-  #statusBar { font-size: 15px; }
+  /* Desktop header: slightly larger */
+  .app-header {
+    padding: 16px 28px;
+    gap: 18px;
+  }
+  .brand-logo { width: 80px; height: 80px; }
+  .brand-title { font-size: 26px; }
+  .brand-subtitle { font-size: 16px; }
+
+  #statusBar { font-size: 13px; }
 
   .main-layout {
     max-width: none;
@@ -736,17 +710,11 @@ body {
 
 <!-- HEADER -->
 <header class="app-header">
-  <div class="brand-area">
-    <img src="Logo.PNG" alt="Vareethip Thai Noodle Bar Logo" class="brand-logo" onerror="this.style.display='none'">
-    <div class="brand-text">
-      <div class="brand-title">VAREETHIP</div>
-      <div class="brand-subtitle">Thai Noodle Bar</div>
-    </div>
+  <img src="Logo.PNG" alt="Vareethip Logo" class="brand-logo" onerror="this.style.display='none'">
+  <div class="brand-text">
+    <div class="brand-title">VAREETHIP</div>
+    <div class="brand-subtitle">Thai Noodle Bar</div>
   </div>
-  <button class="cart-button" onclick="openMobileCart()">
-    🛒
-    <span class="cart-badge" id="cartBadge">0</span>
-  </button>
 </header>
 
 <!-- ══════════════════════════════════════════════
@@ -1170,11 +1138,6 @@ function renderCart() {
 function updateBadge() {
   let total = order.reduce((s, i) => s + i.qty, 0);
 
-  // Header badge (sichtbar wenn Header sichtbar)
-  let badge = document.getElementById("cartBadge");
-  badge.style.display = total > 0 ? "flex" : "none";
-  badge.textContent = total;
-
   // Floating cart button (Mobile): nur sichtbar wenn Artikel > 0 und Sheet geschlossen
   let floatBtn = document.getElementById("mobileFloatingCart");
   let floatBadge = document.getElementById("mobileFloatingBadge");
@@ -1299,18 +1262,15 @@ function isOpen() {
 }
 
 function updateStatus() {
-  let now = new Date();
-  let current = now.getHours() * 60 + now.getMinutes();
   let bar = document.getElementById("statusBar");
   if (isOpen()) {
-    let rem = 1250 - current;
-    let h = Math.floor(rem / 60), m = rem % 60;
-    let cd = h > 0 ? `Noch ${h} Std. ${m} Min. bestellbar` : `Noch ${m} Min. bestellbar`;
-    bar.className = "open";
-    bar.innerHTML = `✅ Geöffnet &nbsp;·&nbsp; <span style="font-weight:normal;">${cd}</span>`;
+    bar.innerHTML =
+      '<span style="color:#1e7e3e;font-weight:800;font-size:14px;">🟢 Geöffnet</span>' +
+      '<div style="font-size:11px;color:#777;margin-top:2px;">Mo–Fr: 12–14 Uhr &amp; 16–21 Uhr &nbsp;·&nbsp; Sa–So: 16–21 Uhr</div>';
   } else {
-    bar.className = "closed";
-    bar.innerHTML = `❌ Geschlossen &nbsp;·&nbsp; <span style="font-weight:normal;font-size:12px;">Mo–Fr: 12–14 & 16–20:50 &nbsp;|&nbsp; Sa–So: 16–20:50</span>`;
+    bar.innerHTML =
+      '<span style="color:#b71c1c;font-weight:800;font-size:14px;">🔴 Geschlossen</span>' +
+      '<div style="font-size:11px;color:#777;margin-top:2px;">Mo–Fr: 12–14 Uhr &amp; 16–21 Uhr &nbsp;·&nbsp; Sa–So: 16–21 Uhr</div>';
   }
 }
 

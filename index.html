@@ -1013,6 +1013,72 @@ body {
   cursor: pointer;
   width: 100%;
 }
+
+/* ── Admin: Bestellliste mit Bestätigen/Ablehnen ── */
+.admin-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.admin-order-empty {
+  font-size: 12px;
+  color: #888;
+  padding: 8px 0;
+}
+.admin-order-card {
+  background: #333;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.admin-order-id {
+  font-size: 11px;
+  color: #d4a843;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.admin-order-name {
+  font-size: 13px;
+  color: white;
+  font-weight: 700;
+}
+.admin-order-meta {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 2px;
+}
+.admin-order-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+}
+.admin-order-confirm,
+.admin-order-reject {
+  flex: 1;
+  padding: 8px 6px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.admin-order-confirm {
+  background: #27ae60;
+  color: white;
+}
+.admin-order-reject {
+  background: #c0392b;
+  color: white;
+}
+.admin-order-handled {
+  font-size: 11px;
+  color: #6fbf73;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
 .content-pad { height: 30px; }
 </style>
 </head>
@@ -1379,6 +1445,10 @@ body {
         <option value="55">ca. 55 Minuten</option>
         <option value="60">ca. 60 Minuten</option>
       </select>
+    </div>
+    <div class="admin-row">
+      <label class="admin-label">📋 Letzte Bestellungen</label>
+      <div id="adminOrderList" class="admin-order-list"></div>
     </div>
   </div>
 </div>
@@ -1768,6 +1838,7 @@ function isAdminAuthenticated() {
 
 function openAdminPanel() {
   document.getElementById("adminPanel").style.display = "block";
+  renderAdminOrders();
 }
 
 function openAdminModal() {
@@ -1897,6 +1968,100 @@ function updateStatus() {
   }
 }
 
+// ── Admin: lokal gespeicherte Bestellungen (nur im Admin-Bereich sichtbar) ──
+const ADMIN_ORDERS_KEY = "adminOrders";
+const ADMIN_ORDERS_MAX = 20; // nur die letzten 20 Bestellungen behalten
+
+function getAdminOrders() {
+  try {
+    return JSON.parse(localStorage.getItem(ADMIN_ORDERS_KEY)) || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveAdminOrder(orderData) {
+  let list = getAdminOrders();
+  list.unshift({ ...orderData, status: "neu" }); // neueste zuerst
+  if (list.length > ADMIN_ORDERS_MAX) list = list.slice(0, ADMIN_ORDERS_MAX);
+  localStorage.setItem(ADMIN_ORDERS_KEY, JSON.stringify(list));
+  renderAdminOrders();
+}
+
+function setAdminOrderStatus(orderNumber, status) {
+  let list = getAdminOrders();
+  let entry = list.find(o => o.orderNumber === orderNumber);
+  if (entry) entry.status = status;
+  localStorage.setItem(ADMIN_ORDERS_KEY, JSON.stringify(list));
+  renderAdminOrders();
+}
+
+function renderAdminOrders() {
+  let container = document.getElementById("adminOrderList");
+  if (!container) return;
+  let list = getAdminOrders();
+
+  if (list.length === 0) {
+    container.innerHTML = '<div class="admin-order-empty">Noch keine Bestellungen</div>';
+    return;
+  }
+
+  container.innerHTML = list.map(o => {
+    let actionsHTML;
+    if (o.status === "bestaetigt") {
+      actionsHTML = '<div class="admin-order-handled">✅ Kunde wurde bestätigt</div>';
+    } else if (o.status === "abgelehnt") {
+      actionsHTML = '<div class="admin-order-handled" style="color:#e07a7a;">❌ Bestellung wurde abgelehnt</div>';
+    } else {
+      actionsHTML = `
+        <div class="admin-order-actions">
+          <button class="admin-order-confirm" onclick="confirmCustomerOrder('${o.orderNumber}')">✅ Kunde bestätigen</button>
+          <button class="admin-order-reject" onclick="rejectCustomerOrder('${o.orderNumber}')">❌ Ablehnen</button>
+        </div>`;
+    }
+
+    return `
+      <div class="admin-order-card">
+        <div class="admin-order-id">#${o.orderNumber}</div>
+        <div class="admin-order-name">${escapeHtml(o.name)}</div>
+        <div class="admin-order-meta">📞 +${escapeHtml(o.phone)} · 🕒 ${escapeHtml(o.time)} · 💰 ${formatPrice(o.total)}</div>
+        <div class="admin-order-meta">${escapeHtml(o.itemsSummary)}</div>
+        ${actionsHTML}
+      </div>`;
+  }).join("");
+}
+
+function confirmCustomerOrder(orderNumber) {
+  let entry = getAdminOrders().find(o => o.orderNumber === orderNumber);
+  if (!entry) return;
+
+  let confirmText =
+    "Vielen Dank für deine Bestellung bei Vareethip 🍜\n\n" +
+    "Deine Bestellung #" + entry.orderNumber + " ist bestätigt.\n\n" +
+    "Abholung: " + entry.time + "\n\n" +
+    "Bis gleich!";
+
+  let confirmUrl = "https://wa.me/" + entry.phone + "?text=" + encodeURIComponent(confirmText);
+
+  setAdminOrderStatus(orderNumber, "bestaetigt");
+  window.open(confirmUrl, "_blank");
+}
+
+function rejectCustomerOrder(orderNumber) {
+  let entry = getAdminOrders().find(o => o.orderNumber === orderNumber);
+  if (!entry) return;
+
+  let rejectText =
+    "Vielen Dank für deine Bestellung bei Vareethip.\n\n" +
+    "Leider können wir deine Bestellung #" + entry.orderNumber + " aktuell nicht annehmen.\n\n" +
+    "Bitte ruf uns kurz an oder bestelle später erneut.";
+
+  let rejectUrl = "https://wa.me/" + entry.phone + "?text=" + encodeURIComponent(rejectText);
+
+  setAdminOrderStatus(orderNumber, "abgelehnt");
+  window.open(rejectUrl, "_blank");
+}
+
 function sendWhatsApp(suffix) {
   if (!isOpen()) {
     alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo–Fr: 12:00–14:00 & 16:00–20:50\nSa–So: 16:00–20:50");
@@ -1953,6 +2118,28 @@ function sendWhatsApp(suffix) {
     "🛒 Bestellung\n" +
     items + "\n\n" +
     "💰 Gesamt: " + formatPrice(total);
+
+  // Bestellung für den Admin-Bereich lokal speichern (nur intern sichtbar)
+  saveAdminOrder({
+    orderNumber: orderNumber,
+    name: name,
+    phone: cleanPhone,
+    time: time,
+    total: total,
+    itemsSummary: order.map(i => i.qty + "x " + i.name).join(", "),
+    createdAt: Date.now()
+  });
+
+  // Bestellung für den Admin-Bereich speichern (Bestätigen/Ablehnen-Buttons)
+  saveAdminOrder({
+    orderNumber: orderNumber,
+    name: name,
+    phone: cleanPhone,
+    time: time,
+    total: total,
+    createdAt: Date.now(),
+    status: "open" // open | confirmed | rejected
+  });
 
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }

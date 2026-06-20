@@ -347,6 +347,30 @@ body {
   text-overflow: ellipsis;
 }
 .cart-item-price { font-size: 13px; color: var(--text-muted); }
+
+/* ── Pro-Portion-Anmerkungen im Warenkorb ── */
+.cart-item-notes {
+  margin: 5px 0 2px 4px;
+  padding-left: 6px;
+  border-left: 2px solid var(--border);
+}
+.cart-note-line {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.cart-note-add-btn {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+.cart-note-add-btn:active { opacity: 0.6; }
 .qty-control { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .qty-btn {
   width: 28px;
@@ -806,6 +830,74 @@ body {
 .prep-orange { background: #fff4e5; color: #b85c00; border: 1.5px solid #f5c88a; }
 .prep-red    { background: #fdecea; color: #b71c1c; border: 1.5px solid #f0a8a8; }
 
+/* ── ANMERKUNGS-MODAL ── */
+.note-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.note-modal-overlay.open { display: flex; }
+.note-modal {
+  background: white;
+  border-radius: 18px;
+  padding: 22px 20px;
+  width: 100%;
+  max-width: 360px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+.note-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.note-modal-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+.note-modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.note-modal-row label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.note-modal-row input {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: #fafafa;
+  font-family: Arial, sans-serif;
+}
+.note-modal-row input:focus { border-color: var(--primary); background: white; }
+.note-modal-done {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 /* ── ADMIN PASSWORT-MODAL ── */
 .admin-modal-overlay {
   display: none;
@@ -1246,6 +1338,15 @@ body {
 </button>
 <div class="cart-toast" id="cartToast"></div>
 
+<!-- ANMERKUNGS-MODAL: Pro-Portion-Notizen -->
+<div class="note-modal-overlay" id="noteModalOverlay">
+  <div class="note-modal">
+    <div class="note-modal-title" id="noteModalTitle">Anmerkungen</div>
+    <div class="note-modal-list" id="noteModalList"></div>
+    <button class="note-modal-done" onclick="closeNoteModal()">Fertig</button>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <!-- ADMIN PASSWORT-MODAL -->
 <div class="admin-modal-overlay" id="adminModalOverlay">
@@ -1290,6 +1391,12 @@ function formatPrice(cents) {
   return Math.floor(cents / 100) + "," + String(cents % 100).padStart(2, "0") + " €";
 }
 
+function escapeHtml(str) {
+  let div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 let toastTimer = null;
 function showCartToast(msg) {
   let toast = document.getElementById("cartToast");
@@ -1302,8 +1409,12 @@ function showCartToast(msg) {
 
 function addItem(name, priceCents, emoji, btn) {
   let existing = order.find(i => i.name === name);
-  if (existing) { existing.qty++; }
-  else { order.push({ name, priceCents, qty: 1, emoji: emoji || "🍽️" }); }
+  if (existing) {
+    existing.qty++;
+    existing.notes.push(""); // neue Portion startet ohne Anmerkung
+  } else {
+    order.push({ name, priceCents, qty: 1, emoji: emoji || "🍽️", notes: [""] });
+  }
   updateBadge(name);
   renderCart();
   if (btn) {
@@ -1316,10 +1427,78 @@ function changeQty(name, delta) {
   let idx = order.findIndex(i => i.name === name);
   if (idx === -1) return;
   order[idx].qty += delta;
+  if (delta > 0) {
+    order[idx].notes.push("");
+  } else if (delta < 0) {
+    order[idx].notes.pop(); // letzte Portion (und ihre Notiz) entfernen
+  }
   if (order[idx].qty <= 0) order.splice(idx, 1);
   updateBadge();
   renderCart();
 }
+
+// Anmerkung für eine einzelne Portion setzen (portionIndex = 0-basiert innerhalb des Artikels)
+function setPortionNote(name, portionIndex, note) {
+  let item = order.find(i => i.name === name);
+  if (!item) return;
+  item.notes[portionIndex] = note.trim();
+  renderCart();
+}
+
+// Fasst gleiche Anmerkungen zusammen, z.B. ["ohne Erdnüsse","ohne Erdnüsse","extra scharf"]
+// → [{ text: "ohne Erdnüsse", count: 2 }, { text: "extra scharf", count: 1 }]
+// Leere Anmerkungen werden ignoriert.
+function groupNotes(notes) {
+  let counts = {};
+  let seenOrder = [];
+  notes.forEach(n => {
+    let t = (n || "").trim();
+    if (!t) return;
+    if (!(t in counts)) seenOrder.push(t);
+    counts[t] = (counts[t] || 0) + 1;
+  });
+  return seenOrder.map(t => ({ text: t, count: counts[t] }));
+}
+
+// Öffnet das Anmerkungs-Modal für einen Artikel: ein Eingabefeld pro Portion
+function openNoteModal(name) {
+  let item = order.find(i => i.name === name);
+  if (!item) return;
+
+  let titleEl = document.getElementById("noteModalTitle");
+  let listEl  = document.getElementById("noteModalList");
+  titleEl.textContent = item.emoji + " " + item.name;
+
+  listEl.innerHTML = item.notes.map((note, idx) => `
+    <div class="note-modal-row">
+      <label>Portion ${idx + 1}</label>
+      <input
+        type="text"
+        value="${escapeHtml(note || "")}"
+        placeholder="z.B. ohne Erdnüsse, extra scharf"
+        data-name="${escapeHtml(name)}"
+        data-idx="${idx}"
+        onchange="setPortionNote(this.dataset.name, parseInt(this.dataset.idx), this.value)"
+      >
+    </div>
+  `).join("");
+
+  document.getElementById("noteModalOverlay").classList.add("open");
+}
+
+function closeNoteModal() {
+  document.getElementById("noteModalOverlay").classList.remove("open");
+  renderCart(); // Warenkorb mit aktualisierten Notizen neu zeichnen
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  let overlay = document.getElementById("noteModalOverlay");
+  if (overlay) {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeNoteModal();
+    });
+  }
+});
 
 function buildCartHTML() {
   if (order.length === 0) {
@@ -1328,12 +1507,20 @@ function buildCartHTML() {
   return order.map(item => {
     let sub = item.priceCents * item.qty;
     let safe = item.name.replace(/'/g, "\\'");
+    let grouped = groupNotes(item.notes);
+    let notesHTML = grouped.length
+      ? `<div class="cart-item-notes">` +
+          grouped.map(g => `<div class="cart-note-line">• ${g.count}x ${escapeHtml(g.text)}</div>`).join("") +
+        `</div>`
+      : "";
     return `
       <div class="cart-item">
         <div class="cart-item-emoji">${item.emoji}</div>
         <div class="cart-item-info">
           <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${formatPrice(sub)}</div>
+          <div class="cart-item-price">${item.qty} × ${formatPrice(item.priceCents)}</div>
+          ${notesHTML}
+          <button class="cart-note-add-btn" onclick="openNoteModal('${safe}')">📝 Anmerkung hinzufügen</button>
         </div>
         <div class="qty-control">
           <button class="qty-btn" onclick="changeQty('${safe}',-1)">−</button>
@@ -1351,6 +1538,12 @@ function buildMobileCartHTML() {
   return order.map(item => {
     let safe = item.name.replace(/'/g, "\\'");
     let unitPrice = formatPrice(item.priceCents);
+    let grouped = groupNotes(item.notes);
+    let notesHTML = grouped.length
+      ? `<div class="cart-item-notes">` +
+          grouped.map(g => `<div class="cart-note-line">• ${g.count}x ${escapeHtml(g.text)}</div>`).join("") +
+        `</div>`
+      : "";
     return `
       <div class="mobile-cart-item">
         <div class="mobile-cart-item-top">
@@ -1365,6 +1558,8 @@ function buildMobileCartHTML() {
             <button class="qty-btn" onclick="changeQty('${safe}',1)">+</button>
           </div>
         </div>
+        ${notesHTML}
+        <button class="cart-note-add-btn" onclick="openNoteModal('${safe}')">📝 Anmerkung hinzufügen</button>
       </div>`;
   }).join("");
 }
@@ -1735,7 +1930,17 @@ function sendWhatsApp(suffix) {
 
   let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
   let note = document.getElementById("note" + suffix).value.trim();
-  let items = order.map(i => "• " + i.qty + "x " + i.name).join("\n");
+
+  // Pro Artikel: Zeile + ggf. gruppierte Pro-Portion-Anmerkungen darunter
+  let items = order.map(i => {
+    let line = "• " + i.qty + "x " + i.name;
+    let grouped = groupNotes(i.notes);
+    if (grouped.length) {
+      let noteLines = grouped.map(g => "   ↳ " + g.count + "x " + g.text).join("\n");
+      line += "\n" + noteLines;
+    }
+    return line;
+  }).join("\n");
 
   // Bestätigungsnachricht, die das Restaurant an den Kunden schickt
   let confirmText =

@@ -751,6 +751,80 @@ body {
 .prep-orange { background: #fff4e5; color: #b85c00; border: 1.5px solid #f5c88a; }
 .prep-red    { background: #fdecea; color: #b71c1c; border: 1.5px solid #f0a8a8; }
 
+/* ── ADMIN PASSWORT-MODAL ── */
+.admin-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.admin-modal-overlay.open {
+  display: flex;
+}
+.admin-modal {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 22px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+.admin-modal-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+  text-align: center;
+}
+.admin-modal-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background: #fafafa;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+.admin-modal-input:focus { border-color: var(--primary); background: white; }
+.admin-modal-error {
+  display: none;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 10px;
+  text-align: center;
+}
+.admin-modal-error.show { display: block; }
+.admin-modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.admin-modal-cancel,
+.admin-modal-submit {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.admin-modal-cancel {
+  background: #f0f0f0;
+  color: #555;
+}
+.admin-modal-submit {
+  background: var(--primary);
+  color: white;
+}
+
 /* Admin */
 #adminPanel {
   position: fixed;
@@ -799,7 +873,7 @@ body {
 
 <!-- HEADER -->
 <header class="app-header">
-  <img src="Logo.PNG" alt="Vareethip Logo" class="brand-logo" onerror="this.style.display='none'">
+  <img src="Logo.PNG" alt="Vareethip Logo" class="brand-logo" id="logoTrigger" onerror="this.style.display='none'">
   <div class="brand-text">
     <div class="brand-title">VAREETHIP</div>
     <div class="brand-subtitle">Thai Noodle Bar</div>
@@ -1111,6 +1185,19 @@ body {
 <div class="cart-toast" id="cartToast"></div>
 
 <!-- ADMIN -->
+<!-- ADMIN PASSWORT-MODAL -->
+<div class="admin-modal-overlay" id="adminModalOverlay">
+  <div class="admin-modal">
+    <div class="admin-modal-title">🔒 Admin-Zugang</div>
+    <input type="password" id="adminPasswordInput" class="admin-modal-input" placeholder="Passwort eingeben" autocomplete="off">
+    <div class="admin-modal-error" id="adminModalError">Falsches Passwort</div>
+    <div class="admin-modal-buttons">
+      <button class="admin-modal-cancel" onclick="closeAdminModal()">Abbrechen</button>
+      <button class="admin-modal-submit" onclick="submitAdminPassword()">Bestätigen</button>
+    </div>
+  </div>
+</div>
+
 <div id="adminPanel">
   <div class="admin-box">
     <div class="admin-row">
@@ -1404,11 +1491,103 @@ function updatePrepTimeBar(minutes) {
   else                    bar.classList.add("prep-red");
 }
 
-function checkAdmin() {
-  if (window.location.search.includes("admin")) {
-    document.getElementById("adminPanel").style.display = "block";
+/* ── ADMIN: Zugriff über 3-Sekunden-Long-Press auf Logo + Passwort ── */
+const ADMIN_PASSWORD = "Vareethip2026";
+const ADMIN_AUTH_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Stunden
+
+function isAdminAuthenticated() {
+  let raw = localStorage.getItem("adminAuthenticated");
+  if (!raw) return false;
+  try {
+    let data = JSON.parse(raw);
+    if (data === true) return true; // Altformat-Fallback
+    if (data && data.expires && Date.now() < data.expires) return true;
+  } catch (e) {
+    // Altformat: einfacher String "true"
+    if (raw === "true") return true;
   }
-  // Gespeicherte Zubereitungszeit laden
+  return false;
+}
+
+function openAdminPanel() {
+  document.getElementById("adminPanel").style.display = "block";
+}
+
+function openAdminModal() {
+  let overlay = document.getElementById("adminModalOverlay");
+  let input = document.getElementById("adminPasswordInput");
+  let error = document.getElementById("adminModalError");
+  error.classList.remove("show");
+  input.value = "";
+  overlay.classList.add("open");
+  setTimeout(() => input.focus(), 100);
+}
+
+function closeAdminModal() {
+  document.getElementById("adminModalOverlay").classList.remove("open");
+}
+
+function submitAdminPassword() {
+  let input = document.getElementById("adminPasswordInput");
+  let error = document.getElementById("adminModalError");
+  if (input.value === ADMIN_PASSWORD) {
+    localStorage.setItem("adminAuthenticated", JSON.stringify({
+      value: true,
+      expires: Date.now() + ADMIN_AUTH_DURATION_MS
+    }));
+    closeAdminModal();
+    openAdminPanel();
+  } else {
+    error.classList.add("show");
+    input.value = "";
+    input.focus();
+  }
+}
+
+// Enter-Taste im Passwortfeld bestätigt
+document.addEventListener("DOMContentLoaded", () => {
+  let input = document.getElementById("adminPasswordInput");
+  if (input) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submitAdminPassword();
+    });
+  }
+});
+
+// Long-Press-Erkennung auf dem Logo (3 Sekunden)
+function setupLogoLongPress() {
+  let logo = document.getElementById("logoTrigger");
+  if (!logo) return;
+  let pressTimer = null;
+  const HOLD_MS = 3000;
+
+  function startPress(e) {
+    pressTimer = setTimeout(() => {
+      if (isAdminAuthenticated()) {
+        openAdminPanel();
+      } else {
+        openAdminModal();
+      }
+    }, HOLD_MS);
+  }
+  function cancelPress() {
+    clearTimeout(pressTimer);
+  }
+
+  logo.addEventListener("touchstart", startPress, { passive: true });
+  logo.addEventListener("touchend", cancelPress);
+  logo.addEventListener("touchmove", cancelPress);
+  logo.addEventListener("mousedown", startPress);
+  logo.addEventListener("mouseup", cancelPress);
+  logo.addEventListener("mouseleave", cancelPress);
+}
+
+function checkAdmin() {
+  // Admin-Panel ist standardmäßig immer verborgen — kein URL-Trigger mehr.
+  // Zugriff nur über 3-Sekunden-Long-Press auf das Logo + Passwort.
+  setupLogoLongPress();
+
+  // Gespeicherte Zubereitungszeit laden (unabhängig vom Admin-Login sichtbar für die Anzeige)
   let saved = localStorage.getItem("prepTime") || "20";
   let select = document.getElementById("prepTimeSelect");
   if (select) select.value = saved;

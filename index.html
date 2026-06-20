@@ -7,13 +7,13 @@
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#c8352d">
+<meta name="theme-color" content="#c9322b">
 
 <!-- Apple PWA Support -->
-<link rel="apple-touch-icon" href="logo-512.png">
+<link rel="apple-touch-icon" href="logo-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Vareethip">
+<meta name="apple-mobile-web-app-title" content="VAREETHIP">
 
 <!-- Android / Chrome -->
 <meta name="mobile-web-app-capable" content="yes">
@@ -1781,6 +1781,15 @@ function setupPwaSplash() {
     splash.classList.add("fade-out");
     setTimeout(() => { splash.style.display = "none"; }, 400);
   }, 1000);
+}
+
+// ── Service Worker registrieren (Voraussetzung für PWA-Installierbarkeit) ──
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch((err) => {
+      console.warn("Service Worker Registrierung fehlgeschlagen:", err);
+    });
+  });
 }
 
 checkAdmin();

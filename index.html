@@ -169,13 +169,25 @@ body {
   color: white;
 }
 
-/* SECTION */
+/* SECTION TITLES — eigenständige Kategorie-Abschnitte */
 .section-title {
-  padding: 20px 16px 10px;
-  font-size: 20px;
-  font-weight: bold;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 20px 16px 12px;
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
   color: var(--primary);
+  border-bottom: 2px solid var(--border);
 }
+.section-title .cat-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+/* Erste Sektion braucht keinen extra Abstand oben */
+#nudelsuppen .section-title { margin-top: 0; }
 
 /* MENU GRID */
 .menu-grid {
@@ -580,7 +592,18 @@ body {
   .cat-btn { font-size: 14px; padding: 8px 18px; }
 
   /* Hide section titles on desktop — tabs already show the active category */
-  .section-title { display: none !important; }
+  /* Section-Titel auf Desktop/Tablet GROSS anzeigen statt zu verstecken */
+  .section-title {
+    display: flex;
+    font-size: 38px;
+    font-weight: 900;
+    padding: 0 24px 18px;
+    margin-top: 70px;
+    border-bottom: 2px solid var(--border);
+    letter-spacing: -0.5px;
+  }
+  #nudelsuppen .section-title { margin-top: 24px; }
+  .section-title .cat-count { font-size: 18px; }
 
   /* Desktop scroll offset = sticky-nav-wrapper height (~100px) */
   #nudelsuppen,
@@ -807,7 +830,7 @@ body {
 
     <!-- NUDELSUPPEN -->
     <div id="nudelsuppen">
-      <div class="section-title">🍜 Nudelsuppen</div>
+      <div class="section-title">🍜 Nudelsuppen <span class="cat-count" id="countNudelsuppen"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
           <div class="menu-card-img">🍲</div>
@@ -869,7 +892,7 @@ body {
 
     <!-- THAI KLASSIKER -->
     <div id="klassiker">
-      <div class="section-title">🍛 Thai Klassiker</div>
+      <div class="section-title">🍛 Thai Klassiker <span class="cat-count" id="countKlassiker"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
           <div class="menu-card-img">🍢</div>
@@ -927,7 +950,7 @@ body {
 
     <!-- GETRÄNKE -->
     <div id="getraenke">
-      <div class="section-title">🥤 Getränke</div>
+      <div class="section-title">🥤 Getränke <span class="cat-count" id="countGetraenke"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
           <div class="menu-card-img">🍵</div>
@@ -1314,6 +1337,51 @@ function scrollToSection(id, btn) {
   btn.classList.add("active");
 }
 
+// ── Kategorie-Anzahl automatisch berechnen (zählt Produktkarten je Sektion) ──
+function updateCategoryCounts() {
+  let map = {
+    nudelsuppen: "countNudelsuppen",
+    klassiker:   "countKlassiker",
+    getraenke:   "countGetraenke"
+  };
+  Object.keys(map).forEach(sectionId => {
+    let section = document.getElementById(sectionId);
+    let countEl = document.getElementById(map[sectionId]);
+    if (section && countEl) {
+      let count = section.querySelectorAll(".menu-card").length;
+      countEl.textContent = "(" + count + ")";
+    }
+  });
+}
+
+// ── Scroll-Spy: aktiver Tab folgt der sichtbaren Kategorie ──
+let scrollSpyMap = { nudelsuppen: 0, klassiker: 1, getraenke: 2 };
+function setupScrollSpy() {
+  let sections = ["nudelsuppen", "klassiker", "getraenke"]
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  let tabs = document.querySelectorAll(".cat-btn");
+  if (sections.length === 0 || tabs.length === 0) return;
+
+  let observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        let idx = scrollSpyMap[entry.target.id];
+        if (idx === undefined) return;
+        tabs.forEach(t => t.classList.remove("active"));
+        if (tabs[idx]) tabs[idx].classList.add("active");
+      }
+    });
+  }, {
+    root: null,
+    // Aktivierungszone: knapp unter dem sticky Nav-Block bis Bildschirmmitte
+    rootMargin: "-110px 0px -60% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(s => observer.observe(s));
+}
+
 function toggleClosed() {
   adminOpen = !adminOpen;
   localStorage.setItem("adminOpen", adminOpen);
@@ -1455,6 +1523,8 @@ function sendWhatsApp(suffix) {
 checkAdmin();
 updateStatus();
 renderCart();
+updateCategoryCounts();
+setupScrollSpy();
 setInterval(updateStatus, 60000);
 </script>
 </body>

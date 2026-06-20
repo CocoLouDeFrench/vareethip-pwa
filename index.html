@@ -1554,37 +1554,39 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Long-Press-Erkennung auf dem Logo (3 Sekunden)
+// 5x-Tap-Erkennung auf dem Logo (ersetzt den alten 3-Sekunden-Long-Press)
 function setupLogoLongPress() {
   let logo = document.getElementById("logoTrigger");
   if (!logo) return;
-  let pressTimer = null;
-  const HOLD_MS = 3000;
+  let tapCount = 0;
+  let tapTimer = null;
+  const TAP_TARGET = 5;
+  const TAP_WINDOW_MS = 2000; // Zeitfenster für die 5 Taps
 
-  function startPress(e) {
-    pressTimer = setTimeout(() => {
+  function registerTap() {
+    tapCount++;
+    clearTimeout(tapTimer);
+
+    if (tapCount >= TAP_TARGET) {
+      tapCount = 0;
       if (isAdminAuthenticated()) {
         openAdminPanel();
       } else {
         openAdminModal();
       }
-    }, HOLD_MS);
-  }
-  function cancelPress() {
-    clearTimeout(pressTimer);
+      return;
+    }
+
+    // Zähler nach Zeitfenster zurücksetzen, falls nicht schnell genug weitergetippt wird
+    tapTimer = setTimeout(() => { tapCount = 0; }, TAP_WINDOW_MS);
   }
 
-  logo.addEventListener("touchstart", startPress, { passive: true });
-  logo.addEventListener("touchend", cancelPress);
-  logo.addEventListener("touchmove", cancelPress);
-  logo.addEventListener("mousedown", startPress);
-  logo.addEventListener("mouseup", cancelPress);
-  logo.addEventListener("mouseleave", cancelPress);
+  logo.addEventListener("click", registerTap);
 }
 
 function checkAdmin() {
-  // Admin-Panel ist standardmäßig immer verborgen — kein URL-Trigger mehr.
-  // Zugriff nur über 3-Sekunden-Long-Press auf das Logo + Passwort.
+  // Admin-Panel ist standardmäßig immer verborgen — kein URL-Trigger.
+  // Zugriff nur über 5x Tippen auf das Logo (innerhalb 2 Sek.) + Passwort.
   setupLogoLongPress();
 
   // Gespeicherte Zubereitungszeit laden (unabhängig vom Admin-Login sichtbar für die Anzeige)

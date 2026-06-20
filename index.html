@@ -1942,15 +1942,7 @@ function sendWhatsApp(suffix) {
     return line;
   }).join("\n");
 
-  // Bestätigungsnachricht, die das Restaurant an den Kunden schickt
-  let confirmText =
-    "Vielen Dank für deine Bestellung bei Vareethip! 🙏\n" +
-    "Deine Bestellung " + orderNumber + " ist bestätigt.\n" +
-    "Abholung um " + time + ".";
-
-  let confirmLink = "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(confirmText);
-
-  // Nachricht ans Restaurant
+  // Nachricht ans Restaurant — reine Bestellung, ohne Bestätigungslink
   let text =
     "🍜 Neue Bestellung\n\n" +
     "#" + orderNumber + "\n\n" +
@@ -1960,10 +1952,7 @@ function sendWhatsApp(suffix) {
     (note ? "📝 Anmerkung:\n" + note + "\n\n" : "") +
     "🛒 Bestellung\n" +
     items + "\n\n" +
-    "💰 Gesamt: " + formatPrice(total) + "\n\n" +
-    "──────────────────\n" +
-    "✅ Bestellung bestätigen:\n" +
-    confirmLink;
+    "💰 Gesamt: " + formatPrice(total);
 
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }

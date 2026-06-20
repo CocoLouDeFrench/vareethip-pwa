@@ -2,10 +2,65 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Vareethip Thai Noodle Bar</title>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c8352d">
+
+<!-- Apple PWA Support -->
+<link rel="apple-touch-icon" href="logo-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vareethip">
+
+<!-- Android / Chrome -->
+<meta name="mobile-web-app-capable" content="yes">
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── PWA SPLASH SCREEN ── */
+.pwa-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #c8352d;
+  display: none; /* nur sichtbar wenn als installierte PWA gestartet */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+.pwa-splash.visible {
+  display: flex;
+}
+.pwa-splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+.pwa-splash-logo {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+}
+.pwa-splash-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.pwa-splash-subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: 1px;
+  margin-top: -8px;
+}
 
 :root {
   --primary: #c0392b;
@@ -871,6 +926,13 @@ body {
 </head>
 <body>
 
+<!-- ── PWA SPLASH SCREEN ── -->
+<div id="pwaSplash" class="pwa-splash">
+  <img src="logo-512.png" alt="Vareethip Logo" class="pwa-splash-logo" onerror="this.style.display='none'">
+  <div class="pwa-splash-title">VAREETHIP</div>
+  <div class="pwa-splash-subtitle">Thai Noodle Bar</div>
+</div>
+
 <!-- HEADER -->
 <header class="app-header">
   <img src="Logo.PNG" alt="Vareethip Logo" class="brand-logo" id="logoTrigger" onerror="this.style.display='none'">
@@ -1701,7 +1763,28 @@ function sendWhatsApp(suffix) {
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }
 
+// ── PWA Splash Screen: nur im Standalone-Modus (vom Homescreen gestartet) ──
+function setupPwaSplash() {
+  let isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true; // iOS Safari
+
+  let splash = document.getElementById("pwaSplash");
+  if (!splash) return;
+
+  if (!isStandalone) {
+    return; // normaler Browser-Besuch: kein Splash, direkt zur Speisekarte
+  }
+
+  splash.classList.add("visible");
+  setTimeout(() => {
+    splash.classList.add("fade-out");
+    setTimeout(() => { splash.style.display = "none"; }, 400);
+  }, 1000);
+}
+
 checkAdmin();
+setupPwaSplash();
 updateStatus();
 renderCart();
 updateCategoryCounts();

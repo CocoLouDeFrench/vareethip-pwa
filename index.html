@@ -268,6 +268,21 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 56px;
+  position: relative;
+  overflow: hidden;
+}
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.menu-card-emoji-fallback {
+  display: none; /* wird per onerror auf 'flex' gesetzt, falls das Bild fehlt */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 .add-btn {
   position: absolute;
@@ -1014,71 +1029,6 @@ body {
   width: 100%;
 }
 
-/* ── Admin: Bestellliste mit Bestätigen/Ablehnen ── */
-.admin-order-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 280px;
-  overflow-y: auto;
-}
-.admin-order-empty {
-  font-size: 12px;
-  color: #888;
-  padding: 8px 0;
-}
-.admin-order-card {
-  background: #333;
-  border-radius: 10px;
-  padding: 10px 12px;
-}
-.admin-order-id {
-  font-size: 11px;
-  color: #d4a843;
-  font-weight: 700;
-  margin-bottom: 3px;
-}
-.admin-order-name {
-  font-size: 13px;
-  color: white;
-  font-weight: 700;
-}
-.admin-order-meta {
-  font-size: 11px;
-  color: #aaa;
-  margin-top: 2px;
-}
-.admin-order-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 9px;
-}
-.admin-order-confirm,
-.admin-order-reject {
-  flex: 1;
-  padding: 8px 6px;
-  border: none;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-}
-.admin-order-confirm {
-  background: #27ae60;
-  color: white;
-}
-.admin-order-reject {
-  background: #c0392b;
-  color: white;
-}
-.admin-order-handled {
-  font-size: 11px;
-  color: #6fbf73;
-  font-weight: 700;
-  margin-top: 8px;
-}
-
 .content-pad { height: 30px; }
 </style>
 </head>
@@ -1127,57 +1077,57 @@ body {
       <div class="section-title">🍜 Nudelsuppen <span class="cat-count" id="countNudelsuppen"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img">🍲</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Khao Soi.jpeg" alt="Khao Soi" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍲</span></div>
           <button class="add-btn" onclick="addItem('Khao Soi',1800,'🍲',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Khao Soi</div><div class="menu-card-price">18,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍜</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Tom Yam.jpeg" alt="Guay Tiew Tom Yam" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam',1500,'🍜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🦐</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Tom Yam Seafood.jpeg" alt="Guay Tiew Tom Yam Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam Seafood',1850,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam Seafood</div><div class="menu-card-price">18,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍜</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Yen Ta Fo.jpeg" alt="Yen Ta Fo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
           <button class="add-btn" onclick="addItem('Yen Ta Fo',1600,'🍜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🦐</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Yen Ta Fo Seafood.jpeg" alt="Yen Ta Fo Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Yen Ta Fo Seafood',1850,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo Seafood</div><div class="menu-card-price">18,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍝</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Bami Giew Mhu Daeng.jpeg" alt="Bami Giew Mhu Daeng" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍝</span></div>
           <button class="add-btn" onclick="addItem('Bami Giew Mhu Daeng',1500,'🍝',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Bami Giew Mhu Daeng</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥩</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Nua.jpeg" alt="Guay Tiew Nua" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Nua',1500,'🥩',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥩</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Nua Spezial.jpeg" alt="Guay Tiew Nua Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Nua Spezial',1600,'🥩',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua Spezial</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🐷</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Mhu.jpeg" alt="Guay Tiew Mhu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Mhu',1500,'🐷',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🐷</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Mhu Spezial.jpeg" alt="Guay Tiew Mhu Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Mhu Spezial',1600,'🐷',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu Spezial</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥬</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Jay.jpeg" alt="Guay Tiew Jay" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥬</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Jay',1400,'🥬',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Jay</div><div class="menu-card-price">14,00 €</div></div>
         </div>
@@ -1189,22 +1139,22 @@ body {
       <div class="section-title">🍛 Thai Klassiker <span class="cat-count" id="countKlassiker"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img">🍢</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Tofu.jpeg" alt="Pad Thai Tofu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍢</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Tofu',1400,'🍢',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Tofu</div><div class="menu-card-price">14,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍗</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Hähnchen.jpeg" alt="Pad Thai Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍗</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Hähnchen',1550,'🍗',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Hähnchen</div><div class="menu-card-price">15,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🦐</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Garnelen.jpeg" alt="Pad Thai Garnelen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Garnelen',1700,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Garnelen</div><div class="menu-card-price">17,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🌿</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Pad Krapao Schwein.jpeg" alt="Pad Krapao Schwein" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
           <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Schwein</div><div class="menu-card-price">15,00 €</div></div>
           <div class="variant-row">
             <button class="variant-btn" onclick="addItem('Pad Krapao Schwein',1500,'🌿',this)">Ohne Ei</button>
@@ -1212,7 +1162,7 @@ body {
           </div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🌿</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Pad Krapao Hähnchen.jpeg" alt="Pad Krapao Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
           <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Hähnchen</div><div class="menu-card-price">15,00 €</div></div>
           <div class="variant-row">
             <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen',1500,'🌿',this)">Ohne Ei</button>
@@ -1220,22 +1170,22 @@ body {
           </div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥚</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Kai Nok Kata.jpeg" alt="Kai Nok Kata" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥚</span></div>
           <button class="add-btn" onclick="addItem('Kai Nok Kata',700,'🥚',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Kai Nok Kata</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥟</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Giew Tord.jpeg" alt="Giew Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥟</span></div>
           <button class="add-btn" onclick="addItem('Giew Tord',700,'🥟',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Giew Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍡</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Lug Chin Tord.jpeg" alt="Lug Chin Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍡</span></div>
           <button class="add-btn" onclick="addItem('Lug Chin Tord',700,'🍡',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Lug Chin Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🫛</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Gui Chai Tord.jpeg" alt="Gui Chai Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🫛</span></div>
           <button class="add-btn" onclick="addItem('Gui Chai Tord',700,'🫛',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Gui Chai Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
@@ -1247,47 +1197,47 @@ body {
       <div class="section-title">🥤 Getränke <span class="cat-count" id="countGetraenke"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img">🍵</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Lemongrass Iced Tea.jpeg" alt="Lemongrass Iced Tea" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍵</span></div>
           <button class="add-btn" onclick="addItem('Lemongrass Iced Tea',500,'🍵',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Lemongrass Iced Tea</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">💙</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Anchan Manao.jpeg" alt="Anchan Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💙</span></div>
           <button class="add-btn" onclick="addItem('Anchan Manao',500,'💙',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Manao</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍋</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Cha Manao.jpeg" alt="Cha Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍋</span></div>
           <button class="add-btn" onclick="addItem('Cha Manao',500,'🍋',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Cha Manao</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">☕</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Oliang.jpeg" alt="Oliang" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">☕</span></div>
           <button class="add-btn" onclick="addItem('Oliang',500,'☕',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Oliang</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🥛</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Anchan Nom.jpeg" alt="Anchan Nom" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥛</span></div>
           <button class="add-btn" onclick="addItem('Anchan Nom',500,'🥛',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Nom</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🧊</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Coffee Yen.jpeg" alt="Coffee Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🧊</span></div>
           <button class="add-btn" onclick="addItem('Coffee Yen',500,'🧊',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Coffee Yen</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🍊</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Cha Thai.jpeg" alt="Cha Thai" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍊</span></div>
           <button class="add-btn" onclick="addItem('Cha Thai',500,'🍊',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Cha Thai</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">💜</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Anchan Jasmin.jpeg" alt="Anchan Jasmin" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💜</span></div>
           <button class="add-btn" onclick="addItem('Anchan Jasmin',500,'💜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Jasmin</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img">🌸</div>
+          <div class="menu-card-img"><img class="product-image" src="images/Nom Yen.jpeg" alt="Nom Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌸</span></div>
           <button class="add-btn" onclick="addItem('Nom Yen',500,'🌸',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Nom Yen</div><div class="menu-card-price">5,00 €</div></div>
         </div>
@@ -1445,10 +1395,6 @@ body {
         <option value="55">ca. 55 Minuten</option>
         <option value="60">ca. 60 Minuten</option>
       </select>
-    </div>
-    <div class="admin-row">
-      <label class="admin-label">📋 Letzte Bestellungen</label>
-      <div id="adminOrderList" class="admin-order-list"></div>
     </div>
   </div>
 </div>
@@ -1838,7 +1784,6 @@ function isAdminAuthenticated() {
 
 function openAdminPanel() {
   document.getElementById("adminPanel").style.display = "block";
-  renderAdminOrders();
 }
 
 function openAdminModal() {
@@ -1968,100 +1913,6 @@ function updateStatus() {
   }
 }
 
-// ── Admin: lokal gespeicherte Bestellungen (nur im Admin-Bereich sichtbar) ──
-const ADMIN_ORDERS_KEY = "adminOrders";
-const ADMIN_ORDERS_MAX = 20; // nur die letzten 20 Bestellungen behalten
-
-function getAdminOrders() {
-  try {
-    return JSON.parse(localStorage.getItem(ADMIN_ORDERS_KEY)) || [];
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveAdminOrder(orderData) {
-  let list = getAdminOrders();
-  list.unshift({ ...orderData, status: "neu" }); // neueste zuerst
-  if (list.length > ADMIN_ORDERS_MAX) list = list.slice(0, ADMIN_ORDERS_MAX);
-  localStorage.setItem(ADMIN_ORDERS_KEY, JSON.stringify(list));
-  renderAdminOrders();
-}
-
-function setAdminOrderStatus(orderNumber, status) {
-  let list = getAdminOrders();
-  let entry = list.find(o => o.orderNumber === orderNumber);
-  if (entry) entry.status = status;
-  localStorage.setItem(ADMIN_ORDERS_KEY, JSON.stringify(list));
-  renderAdminOrders();
-}
-
-function renderAdminOrders() {
-  let container = document.getElementById("adminOrderList");
-  if (!container) return;
-  let list = getAdminOrders();
-
-  if (list.length === 0) {
-    container.innerHTML = '<div class="admin-order-empty">Noch keine Bestellungen</div>';
-    return;
-  }
-
-  container.innerHTML = list.map(o => {
-    let actionsHTML;
-    if (o.status === "bestaetigt") {
-      actionsHTML = '<div class="admin-order-handled">✅ Kunde wurde bestätigt</div>';
-    } else if (o.status === "abgelehnt") {
-      actionsHTML = '<div class="admin-order-handled" style="color:#e07a7a;">❌ Bestellung wurde abgelehnt</div>';
-    } else {
-      actionsHTML = `
-        <div class="admin-order-actions">
-          <button class="admin-order-confirm" onclick="confirmCustomerOrder('${o.orderNumber}')">✅ Kunde bestätigen</button>
-          <button class="admin-order-reject" onclick="rejectCustomerOrder('${o.orderNumber}')">❌ Ablehnen</button>
-        </div>`;
-    }
-
-    return `
-      <div class="admin-order-card">
-        <div class="admin-order-id">#${o.orderNumber}</div>
-        <div class="admin-order-name">${escapeHtml(o.name)}</div>
-        <div class="admin-order-meta">📞 +${escapeHtml(o.phone)} · 🕒 ${escapeHtml(o.time)} · 💰 ${formatPrice(o.total)}</div>
-        <div class="admin-order-meta">${escapeHtml(o.itemsSummary)}</div>
-        ${actionsHTML}
-      </div>`;
-  }).join("");
-}
-
-function confirmCustomerOrder(orderNumber) {
-  let entry = getAdminOrders().find(o => o.orderNumber === orderNumber);
-  if (!entry) return;
-
-  let confirmText =
-    "Vielen Dank für deine Bestellung bei Vareethip 🍜\n\n" +
-    "Deine Bestellung #" + entry.orderNumber + " ist bestätigt.\n\n" +
-    "Abholung: " + entry.time + "\n\n" +
-    "Bis gleich!";
-
-  let confirmUrl = "https://wa.me/" + entry.phone + "?text=" + encodeURIComponent(confirmText);
-
-  setAdminOrderStatus(orderNumber, "bestaetigt");
-  window.open(confirmUrl, "_blank");
-}
-
-function rejectCustomerOrder(orderNumber) {
-  let entry = getAdminOrders().find(o => o.orderNumber === orderNumber);
-  if (!entry) return;
-
-  let rejectText =
-    "Vielen Dank für deine Bestellung bei Vareethip.\n\n" +
-    "Leider können wir deine Bestellung #" + entry.orderNumber + " aktuell nicht annehmen.\n\n" +
-    "Bitte ruf uns kurz an oder bestelle später erneut.";
-
-  let rejectUrl = "https://wa.me/" + entry.phone + "?text=" + encodeURIComponent(rejectText);
-
-  setAdminOrderStatus(orderNumber, "abgelehnt");
-  window.open(rejectUrl, "_blank");
-}
-
 function sendWhatsApp(suffix) {
   if (!isOpen()) {
     alert("Online-Bestellungen sind aktuell geschlossen.\n\nMo–Fr: 12:00–14:00 & 16:00–20:50\nSa–So: 16:00–20:50");
@@ -2118,28 +1969,6 @@ function sendWhatsApp(suffix) {
     "🛒 Bestellung\n" +
     items + "\n\n" +
     "💰 Gesamt: " + formatPrice(total);
-
-  // Bestellung für den Admin-Bereich lokal speichern (nur intern sichtbar)
-  saveAdminOrder({
-    orderNumber: orderNumber,
-    name: name,
-    phone: cleanPhone,
-    time: time,
-    total: total,
-    itemsSummary: order.map(i => i.qty + "x " + i.name).join(", "),
-    createdAt: Date.now()
-  });
-
-  // Bestellung für den Admin-Bereich speichern (Bestätigen/Ablehnen-Buttons)
-  saveAdminOrder({
-    orderNumber: orderNumber,
-    name: name,
-    phone: cleanPhone,
-    time: time,
-    total: total,
-    createdAt: Date.now(),
-    status: "open" // open | confirmed | rejected
-  });
 
   window.location.href = "https://wa.me/4915730642210?text=" + encodeURIComponent(text);
 }

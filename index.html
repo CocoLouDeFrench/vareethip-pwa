@@ -845,6 +845,158 @@ body {
 .prep-orange { background: #fff4e5; color: #b85c00; border: 1.5px solid #f5c88a; }
 .prep-red    { background: #fdecea; color: #b71c1c; border: 1.5px solid #f0a8a8; }
 
+/* ── PRODUKT-INFO BOTTOM SHEET ── */
+.info-sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9000;
+}
+.info-sheet-overlay.open { display: block; }
+
+.info-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 22px 22px 0 0;
+  z-index: 9001;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(.32,.72,0,1);
+}
+.info-sheet.open {
+  transform: translateX(-50%) translateY(0);
+}
+
+.info-sheet-drag-handle {
+  width: 40px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.info-sheet-img-wrap {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: #f0e8d8;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.info-sheet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.info-sheet-emoji-fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 72px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.info-sheet-body {
+  padding: 18px 20px 22px;
+  overflow-y: auto;
+}
+.info-sheet-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.info-sheet-description {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.info-sheet-section {
+  margin-bottom: 14px;
+}
+.info-sheet-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+.info-sheet-value {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.info-sheet-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.info-sheet-back-btn {
+  flex: 1;
+  padding: 13px;
+  background: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.info-sheet-add-btn {
+  flex: 1.4;
+  padding: 13px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Kleiner Info-Button auf der Produktkarte */
+.info-btn {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  background: rgba(255,255,255,0.65);
+  border: none;
+  border-radius: 10px;
+  padding: 3px 7px 3px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+.info-btn:active { opacity: 0.6; }
+
 /* ── ANMERKUNGS-MODAL ── */
 .note-modal-overlay {
   display: none;
@@ -1077,57 +1229,57 @@ body {
       <div class="section-title">🍜 Nudelsuppen <span class="cat-count" id="countNudelsuppen"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Khao Soi.jpeg" alt="Khao Soi" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍲</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Khao Soi',1800,'🍲','images/Khao%20Soi.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Khao%20Soi.jpeg" alt="Khao Soi" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍲</span></div>
           <button class="add-btn" onclick="addItem('Khao Soi',1800,'🍲',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Khao Soi</div><div class="menu-card-price">18,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Tom Yam.jpeg" alt="Guay Tiew Tom Yam" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Tom Yam',1500,'🍜','images/Guay%20Tiew%20Tom%20Yam.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Tom%20Yam.jpeg" alt="Guay Tiew Tom Yam" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam',1500,'🍜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Tom Yam Seafood.jpeg" alt="Guay Tiew Tom Yam Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Tom Yam Seafood',1850,'🦐','images/Guay%20Tiew%20Tom%20Yam%20Seafood.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Tom%20Yam%20Seafood.jpeg" alt="Guay Tiew Tom Yam Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam Seafood',1850,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam Seafood</div><div class="menu-card-price">18,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Yen Ta Fo.jpeg" alt="Yen Ta Fo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Yen Ta Fo',1600,'🍜','images/Yen%20Ta%20Fo.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Yen%20Ta%20Fo.jpeg" alt="Yen Ta Fo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
           <button class="add-btn" onclick="addItem('Yen Ta Fo',1600,'🍜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Yen Ta Fo Seafood.jpeg" alt="Yen Ta Fo Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Yen Ta Fo Seafood',1850,'🦐','images/Yen%20Ta%20Fo%20Seafood.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Yen%20Ta%20Fo%20Seafood.jpeg" alt="Yen Ta Fo Seafood" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Yen Ta Fo Seafood',1850,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Yen Ta Fo Seafood</div><div class="menu-card-price">18,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Bami Giew Mhu Daeng.jpeg" alt="Bami Giew Mhu Daeng" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍝</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Bami Giew Mhu Daeng',1500,'🍝','images/Bami%20Giew%20Mhu%20Daeng.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Bami%20Giew%20Mhu%20Daeng.jpeg" alt="Bami Giew Mhu Daeng" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍝</span></div>
           <button class="add-btn" onclick="addItem('Bami Giew Mhu Daeng',1500,'🍝',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Bami Giew Mhu Daeng</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Nua.jpeg" alt="Guay Tiew Nua" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Nua',1500,'🥩','images/Guay%20Tiew%20Nua.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Nua.jpeg" alt="Guay Tiew Nua" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Nua',1500,'🥩',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Nua Spezial.jpeg" alt="Guay Tiew Nua Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Nua Spezial',1600,'🥩','images/Guay%20Tiew%20Nua%20Spezial.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Nua%20Spezial.jpeg" alt="Guay Tiew Nua Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥩</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Nua Spezial',1600,'🥩',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Nua Spezial</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Mhu.jpeg" alt="Guay Tiew Mhu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Mhu',1500,'🐷','images/Guay%20Tiew%20Mhu.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Mhu.jpeg" alt="Guay Tiew Mhu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Mhu',1500,'🐷',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu</div><div class="menu-card-price">15,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Mhu Spezial.jpeg" alt="Guay Tiew Mhu Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Mhu Spezial',1600,'🐷','images/Guay%20Tiew%20Mhu%20Spezial.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Mhu%20Spezial.jpeg" alt="Guay Tiew Mhu Spezial" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🐷</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Mhu Spezial',1600,'🐷',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Mhu Spezial</div><div class="menu-card-price">16,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Guay Tiew Jay.jpeg" alt="Guay Tiew Jay" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥬</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Guay Tiew Jay',1400,'🥬','images/Guay%20Tiew%20Jay.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Jay.jpeg" alt="Guay Tiew Jay" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥬</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Jay',1400,'🥬',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Jay</div><div class="menu-card-price">14,00 €</div></div>
         </div>
@@ -1139,22 +1291,22 @@ body {
       <div class="section-title">🍛 Thai Klassiker <span class="cat-count" id="countKlassiker"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Tofu.jpeg" alt="Pad Thai Tofu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍢</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Pad Thai Tofu',1400,'🍢','images/Pad%20Thai%20Tofu.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Thai%20Tofu.jpeg" alt="Pad Thai Tofu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍢</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Tofu',1400,'🍢',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Tofu</div><div class="menu-card-price">14,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Hähnchen.jpeg" alt="Pad Thai Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍗</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Pad Thai Hähnchen',1550,'🍗','images/Pad%20Thai%20H%C3%A4hnchen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Thai%20H%C3%A4hnchen.jpeg" alt="Pad Thai Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍗</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Hähnchen',1550,'🍗',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Hähnchen</div><div class="menu-card-price">15,50 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Pad Thai Garnelen.jpeg" alt="Pad Thai Garnelen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Pad Thai Garnelen',1700,'🦐','images/Pad%20Thai%20Garnelen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Thai%20Garnelen.jpeg" alt="Pad Thai Garnelen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🦐</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Garnelen',1700,'🦐',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Pad Thai Garnelen</div><div class="menu-card-price">17,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Pad Krapao Schwein.jpeg" alt="Pad Krapao Schwein" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Pad Krapao Schwein',1500,'🌿','images/Pad%20Krapao%20Schwein.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Krapao%20Schwein.jpeg" alt="Pad Krapao Schwein" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
           <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Schwein</div><div class="menu-card-price">15,00 €</div></div>
           <div class="variant-row">
             <button class="variant-btn" onclick="addItem('Pad Krapao Schwein',1500,'🌿',this)">Ohne Ei</button>
@@ -1162,7 +1314,7 @@ body {
           </div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Pad Krapao Hähnchen.jpeg" alt="Pad Krapao Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Pad Krapao Hähnchen',1500,'🌿','images/Pad%20Krapao%20H%C3%A4hnchen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Krapao%20H%C3%A4hnchen.jpeg" alt="Pad Krapao Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌿</span></div>
           <div class="menu-card-info"><div class="menu-card-name">Pad Krapao Hähnchen</div><div class="menu-card-price">15,00 €</div></div>
           <div class="variant-row">
             <button class="variant-btn" onclick="addItem('Pad Krapao Hähnchen',1500,'🌿',this)">Ohne Ei</button>
@@ -1170,22 +1322,22 @@ body {
           </div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Kai Nok Kata.jpeg" alt="Kai Nok Kata" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥚</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Kai Nok Kata',700,'🥚','images/Kai%20Nok%20Kata.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Kai%20Nok%20Kata.jpeg" alt="Kai Nok Kata" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥚</span></div>
           <button class="add-btn" onclick="addItem('Kai Nok Kata',700,'🥚',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Kai Nok Kata</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Giew Tord.jpeg" alt="Giew Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥟</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Giew Tord',700,'🥟','images/Giew%20Tord.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Giew%20Tord.jpeg" alt="Giew Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥟</span></div>
           <button class="add-btn" onclick="addItem('Giew Tord',700,'🥟',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Giew Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Lug Chin Tord.jpeg" alt="Lug Chin Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍡</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Lug Chin Tord',700,'🍡','images/Lug%20Chin%20Tord.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Lug%20Chin%20Tord.jpeg" alt="Lug Chin Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍡</span></div>
           <button class="add-btn" onclick="addItem('Lug Chin Tord',700,'🍡',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Lug Chin Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Gui Chai Tord.jpeg" alt="Gui Chai Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🫛</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Gui Chai Tord',700,'🫛','images/Gui%20Chai%20Tord.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Gui%20Chai%20Tord.jpeg" alt="Gui Chai Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🫛</span></div>
           <button class="add-btn" onclick="addItem('Gui Chai Tord',700,'🫛',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Gui Chai Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
@@ -1197,47 +1349,47 @@ body {
       <div class="section-title">🥤 Getränke <span class="cat-count" id="countGetraenke"></span></div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Lemongrass Iced Tea.jpeg" alt="Lemongrass Iced Tea" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍵</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Lemongrass Iced Tea',500,'🍵','images/Lemongrass%20Iced%20Tea.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Lemongrass%20Iced%20Tea.jpeg" alt="Lemongrass Iced Tea" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍵</span></div>
           <button class="add-btn" onclick="addItem('Lemongrass Iced Tea',500,'🍵',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Lemongrass Iced Tea</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Anchan Manao.jpeg" alt="Anchan Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💙</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Anchan Manao',500,'💙','images/Anchan%20Manao.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Anchan%20Manao.jpeg" alt="Anchan Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💙</span></div>
           <button class="add-btn" onclick="addItem('Anchan Manao',500,'💙',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Manao</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Cha Manao.jpeg" alt="Cha Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍋</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Cha Manao',500,'🍋','images/Cha%20Manao.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Cha%20Manao.jpeg" alt="Cha Manao" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍋</span></div>
           <button class="add-btn" onclick="addItem('Cha Manao',500,'🍋',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Cha Manao</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Oliang.jpeg" alt="Oliang" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">☕</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Oliang',500,'☕','images/Oliang.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Oliang.jpeg" alt="Oliang" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">☕</span></div>
           <button class="add-btn" onclick="addItem('Oliang',500,'☕',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Oliang</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Anchan Nom.jpeg" alt="Anchan Nom" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥛</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Anchan Nom',500,'🥛','images/Anchan%20Nom.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Anchan%20Nom.jpeg" alt="Anchan Nom" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥛</span></div>
           <button class="add-btn" onclick="addItem('Anchan Nom',500,'🥛',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Nom</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Coffee Yen.jpeg" alt="Coffee Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🧊</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Coffee Yen',500,'🧊','images/Coffee%20Yen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Coffee%20Yen.jpeg" alt="Coffee Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🧊</span></div>
           <button class="add-btn" onclick="addItem('Coffee Yen',500,'🧊',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Coffee Yen</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Cha Thai.jpeg" alt="Cha Thai" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍊</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Cha Thai',500,'🍊','images/Cha%20Thai.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Cha%20Thai.jpeg" alt="Cha Thai" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍊</span></div>
           <button class="add-btn" onclick="addItem('Cha Thai',500,'🍊',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Cha Thai</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Anchan Jasmin.jpeg" alt="Anchan Jasmin" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💜</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Anchan Jasmin',500,'💜','images/Anchan%20Jasmin.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Anchan%20Jasmin.jpeg" alt="Anchan Jasmin" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">💜</span></div>
           <button class="add-btn" onclick="addItem('Anchan Jasmin',500,'💜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Anchan Jasmin</div><div class="menu-card-price">5,00 €</div></div>
         </div>
         <div class="menu-card">
-          <div class="menu-card-img"><img class="product-image" src="images/Nom Yen.jpeg" alt="Nom Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌸</span></div>
+          <button class="info-btn" onclick="openInfoSheet('Nom Yen',500,'🌸','images/Nom%20Yen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Nom%20Yen.jpeg" alt="Nom Yen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌸</span></div>
           <button class="add-btn" onclick="addItem('Nom Yen',500,'🌸',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Nom Yen</div><div class="menu-card-price">5,00 €</div></div>
         </div>
@@ -1354,6 +1506,36 @@ body {
 </button>
 <div class="cart-toast" id="cartToast"></div>
 
+<!-- PRODUKT-INFO BOTTOM SHEET -->
+<div class="info-sheet-overlay" id="infoSheetOverlay" onclick="closeInfoSheet()"></div>
+<div class="info-sheet" id="infoSheet">
+  <div class="info-sheet-drag-handle"></div>
+  <div class="info-sheet-img-wrap">
+    <img id="infoSheetImg" class="info-sheet-img" src="" alt="" loading="lazy"
+         onerror="this.style.display='none'; document.getElementById('infoSheetEmojiFallback').style.display='flex';">
+    <div class="info-sheet-emoji-fallback" id="infoSheetEmojiFallback"></div>
+  </div>
+  <div class="info-sheet-body">
+    <div class="info-sheet-name" id="infoSheetName"></div>
+    <div class="info-sheet-description" id="infoSheetDescription"></div>
+
+    <div class="info-sheet-section" id="infoSheetSpiceRow" style="display:none;">
+      <span class="info-sheet-label">🌶️ Schärfegrad</span>
+      <span class="info-sheet-value" id="infoSheetSpice"></span>
+    </div>
+
+    <div class="info-sheet-section">
+      <span class="info-sheet-label">⚠️ Allergene</span>
+      <span class="info-sheet-value" id="infoSheetAllergens"></span>
+    </div>
+
+    <div class="info-sheet-actions">
+      <button class="info-sheet-back-btn" onclick="closeInfoSheet()">← Zurück</button>
+      <button class="info-sheet-add-btn" id="infoSheetAddBtn">+ Hinzufügen</button>
+    </div>
+  </div>
+</div>
+
 <!-- ANMERKUNGS-MODAL: Pro-Portion-Notizen -->
 <div class="note-modal-overlay" id="noteModalOverlay">
   <div class="note-modal">
@@ -1400,6 +1582,162 @@ body {
 </div>
 
 <script>
+// ══════════════════════════════════════════════════════════
+// PRODUKTDETAILS — zentrale Datenquelle für die Info-Popups.
+// Schlüssel = exakter Gerichtname (wie in addItem() verwendet).
+// Bitte hier die echten Texte eintragen — description, allergens,
+// spiceLevel können frei angepasst werden. allergens ist ein Array;
+// leeres Array [] zeigt automatisch den Allergie-Hinweistext.
+// spiceLevel ist optional — leer lassen ("") wenn nicht relevant.
+// ══════════════════════════════════════════════════════════
+const dishDetails = {
+  "Khao Soi": {
+    description: "Cremige nordthailändische Kokos-Curry-Nudelsuppe mit Hähnchenschenkel, Eiernudeln, eingelegtem Senfkohl, roten Zwiebeln und knusprigen Nudeln.",
+    allergens: ["Gluten", "Ei", "Soja", "Fischsauce"],
+    spiceLevel: "Leicht scharf"
+  },
+  "Guay Tiew Tom Yam": {
+    description: "Würzig-saure Nudelsuppe mit Tom-Yam-Brühe und frischen Kräutern.",
+    allergens: [],
+    spiceLevel: "Scharf"
+  },
+  "Guay Tiew Tom Yam Seafood": {
+    description: "Würzig-saure Nudelsuppe mit Tom-Yam-Brühe und Meeresfrüchten.",
+    allergens: [],
+    spiceLevel: "Scharf"
+  },
+  "Yen Ta Fo": {
+    description: "Pinke thailändische Nudelsuppe mit fermentierter Tofu-Sauce und Garnitur.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Yen Ta Fo Seafood": {
+    description: "Pinke thailändische Nudelsuppe mit fermentierter Tofu-Sauce und Meeresfrüchten.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Bami Giew Mhu Daeng": {
+    description: "Eiernudelsuppe mit rotem Schweinefleisch (Mhu Daeng) und Wan-Tan.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Guay Tiew Nua": {
+    description: "Klare Nudelsuppe mit Rindfleisch und frischen Kräutern.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Guay Tiew Nua Spezial": {
+    description: "Klare Nudelsuppe mit Rindfleisch, Spezial-Einlage und frischen Kräutern.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Guay Tiew Mhu": {
+    description: "Klare Nudelsuppe mit Schweinefleisch und frischen Kräutern.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Guay Tiew Mhu Spezial": {
+    description: "Klare Nudelsuppe mit Schweinefleisch, Spezial-Einlage und frischen Kräutern.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Guay Tiew Jay": {
+    description: "Vegetarische Nudelsuppe mit Gemüse und Tofu.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Pad Thai Tofu": {
+    description: "Gebratene Reisnudeln mit Tofu, Ei, Sprossen und gerösteten Erdnüssen.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Pad Thai Hähnchen": {
+    description: "Gebratene Reisnudeln mit Hähnchen, Ei, Sprossen und gerösteten Erdnüssen.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Pad Thai Garnelen": {
+    description: "Gebratene Reisnudeln mit Garnelen, Ei, Sprossen und gerösteten Erdnüssen.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Pad Krapao Schwein": {
+    description: "Schweinefleisch scharf gebraten mit Thai-Basilikum, serviert mit Reis.",
+    allergens: [],
+    spiceLevel: "Scharf"
+  },
+  "Pad Krapao Hähnchen": {
+    description: "Hähnchen scharf gebraten mit Thai-Basilikum, serviert mit Reis.",
+    allergens: [],
+    spiceLevel: "Scharf"
+  },
+  "Kai Nok Kata": {
+    description: "Thailändische Eierspeise, in der Pfanne zubereitet.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Giew Tord": {
+    description: "Knusprig frittierte Wan-Tan-Taschen.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Lug Chin Tord": {
+    description: "Frittierte Fleischbällchen, thailändische Art.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Gui Chai Tord": {
+    description: "Knusprig frittierte Schnittlauchtaschen.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Lemongrass Iced Tea": {
+    description: "Erfrischender Eistee mit Zitronengras.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Anchan Manao": {
+    description: "Blaue Schmetterlingserbsen-Limonade mit Limette.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Cha Manao": {
+    description: "Thai-Eistee mit frischer Limette.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Oliang": {
+    description: "Traditioneller thailändischer Eiskaffee.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Anchan Nom": {
+    description: "Blaue Schmetterlingserbsen-Limonade mit Milch.",
+    allergens: ["Milch"],
+    spiceLevel: ""
+  },
+  "Coffee Yen": {
+    description: "Thailändischer Eiskaffee mit Kondensmilch.",
+    allergens: ["Milch"],
+    spiceLevel: ""
+  },
+  "Cha Thai": {
+    description: "Klassischer thailändischer Eistee mit Kondensmilch.",
+    allergens: ["Milch"],
+    spiceLevel: ""
+  },
+  "Anchan Jasmin": {
+    description: "Blaue Schmetterlingserbsen-Limonade mit Jasmin-Aroma.",
+    allergens: [],
+    spiceLevel: ""
+  },
+  "Nom Yen": {
+    description: "Rosa thailändisches Milchgetränk, gekühlt serviert.",
+    allergens: ["Milch"],
+    spiceLevel: ""
+  }
+};
+
 let order = [];
 let adminOpen = localStorage.getItem("adminOpen") === "true";
 
@@ -1411,6 +1749,57 @@ function escapeHtml(str) {
   let div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
+}
+
+// ── Produkt-Info Bottom Sheet ──
+function openInfoSheet(name, priceCents, emoji, imageSrc) {
+  let details = dishDetails[name] || {};
+  let description = details.description || "";
+  let allergens = details.allergens || [];
+  let spiceLevel = details.spiceLevel || "";
+
+  document.getElementById("infoSheetName").textContent = name;
+  document.getElementById("infoSheetDescription").textContent =
+    description || "Keine Beschreibung verfügbar.";
+
+  // Bild + Emoji-Fallback
+  let img = document.getElementById("infoSheetImg");
+  let fallback = document.getElementById("infoSheetEmojiFallback");
+  img.style.display = "block";
+  fallback.style.display = "none";
+  fallback.textContent = emoji || "🍽️";
+  img.src = imageSrc || "";
+  img.alt = name;
+
+  // Schärfegrad: Zeile nur anzeigen, wenn relevant
+  let spiceRow = document.getElementById("infoSheetSpiceRow");
+  if (spiceLevel) {
+    spiceRow.style.display = "block";
+    document.getElementById("infoSheetSpice").textContent = spiceLevel;
+  } else {
+    spiceRow.style.display = "none";
+  }
+
+  // Allergene oder Hinweistext
+  let allergensEl = document.getElementById("infoSheetAllergens");
+  allergensEl.textContent = allergens.length
+    ? allergens.join(", ")
+    : "Bitte bei Allergien direkt nachfragen.";
+
+  // "Hinzufügen"-Button mit den korrekten addItem-Parametern verknüpfen
+  let addBtn = document.getElementById("infoSheetAddBtn");
+  addBtn.onclick = function () {
+    addItem(name, priceCents, emoji, null);
+    closeInfoSheet();
+  };
+
+  document.getElementById("infoSheetOverlay").classList.add("open");
+  document.getElementById("infoSheet").classList.add("open");
+}
+
+function closeInfoSheet() {
+  document.getElementById("infoSheetOverlay").classList.remove("open");
+  document.getElementById("infoSheet").classList.remove("open");
 }
 
 let toastTimer = null;

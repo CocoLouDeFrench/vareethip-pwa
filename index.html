@@ -1354,6 +1354,11 @@ body {
           <div class="menu-card-info"><div class="menu-card-name">Khao Soi</div><div class="menu-card-price">18,00 €</div></div>
         </div>
         <div class="menu-card">
+          <button class="info-btn" onclick="openInfoSheet('Khao Soi Tofu',1700,'🌱','images/Khao%20Soi.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Khao%20Soi.jpeg" alt="Khao Soi Tofu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🌱</span></div>
+          <button class="add-btn" onclick="addItem('Khao Soi Tofu',1700,'🌱',this)">+</button>
+          <div class="menu-card-info"><div class="menu-card-name">🌱 Khao Soi Tofu</div><div class="menu-card-price">17,00 €</div></div>
+        </div>
+        <div class="menu-card">
           <button class="info-btn" onclick="openInfoSheet('Guay Tiew Tom Yam',1500,'🍜','images/Guay%20Tiew%20Tom%20Yam.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Tom%20Yam.jpeg" alt="Guay Tiew Tom Yam" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍜</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Tom Yam',1500,'🍜',this)">+</button>
           <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Tom Yam</div><div class="menu-card-price">15,00 €</div></div>
@@ -1401,7 +1406,7 @@ body {
         <div class="menu-card">
           <button class="info-btn" onclick="openInfoSheet('Guay Tiew Jay',1400,'🥬','images/Guay%20Tiew%20Jay.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Guay%20Tiew%20Jay.jpeg" alt="Guay Tiew Jay" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🥬</span></div>
           <button class="add-btn" onclick="addItem('Guay Tiew Jay',1400,'🥬',this)">+</button>
-          <div class="menu-card-info"><div class="menu-card-name">Guay Tiew Jay</div><div class="menu-card-price">14,00 €</div></div>
+          <div class="menu-card-info"><div class="menu-card-name">🌱 Guay Tiew Jay</div><div class="menu-card-price">14,00 €</div></div>
         </div>
       </div>
     </div>
@@ -1413,7 +1418,7 @@ body {
         <div class="menu-card">
           <button class="info-btn" onclick="openInfoSheet('Pad Thai Tofu',1400,'🍢','images/Pad%20Thai%20Tofu.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Thai%20Tofu.jpeg" alt="Pad Thai Tofu" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍢</span></div>
           <button class="add-btn" onclick="addItem('Pad Thai Tofu',1400,'🍢',this)">+</button>
-          <div class="menu-card-info"><div class="menu-card-name">Pad Thai Tofu</div><div class="menu-card-price">14,00 €</div></div>
+          <div class="menu-card-info"><div class="menu-card-name">🌱 Pad Thai Tofu</div><div class="menu-card-price">14,00 €</div></div>
         </div>
         <div class="menu-card">
           <button class="info-btn" onclick="openInfoSheet('Pad Thai Hähnchen',1550,'🍗','images/Pad%20Thai%20H%C3%A4hnchen.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Pad%20Thai%20H%C3%A4hnchen.jpeg" alt="Pad Thai Hähnchen" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🍗</span></div>
@@ -1459,7 +1464,7 @@ body {
         <div class="menu-card">
           <button class="info-btn" onclick="openInfoSheet('Gui Chai Tord',700,'🫛','images/Gui%20Chai%20Tord.jpeg')">ⓘ Info</button><div class="menu-card-img"><img class="product-image" src="images/Gui%20Chai%20Tord.jpeg" alt="Gui Chai Tord" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="menu-card-emoji-fallback" style="display:none;">🫛</span></div>
           <button class="add-btn" onclick="addItem('Gui Chai Tord',700,'🫛',this)">+</button>
-          <div class="menu-card-info"><div class="menu-card-name">Gui Chai Tord</div><div class="menu-card-price">7,00 €</div></div>
+          <div class="menu-card-info"><div class="menu-card-name">🌱 Gui Chai Tord</div><div class="menu-card-price">7,00 €</div></div>
         </div>
       </div>
     </div>
@@ -1693,7 +1698,7 @@ body {
     <div class="admin-modal-error" id="adminModalError">Falsches Passwort</div>
     <div class="admin-modal-buttons">
       <button class="admin-modal-cancel" onclick="closeAdminModal()">Abbrechen</button>
-      <button class="admin-modal-submit" onclick="submitAdminPassword()">Bestätigen</button>
+      <button class="admin-modal-submit" id="adminSubmitBtn" onclick="submitAdminPassword()">Bestätigen</button>
     </div>
   </div>
 </div>
@@ -1733,6 +1738,11 @@ const dishDetails = {
   "Khao Soi": {
     description: "Cremige nordthailändische Kokos-Curry-Nudelsuppe mit Hähnchenschenkel, Eiernudeln, eingelegtem Senfkohl, roten Zwiebeln und knusprigen Nudeln.",
     allergens: ["Gluten", "Ei", "Soja", "Fischsauce"],
+    spiceLevel: "Leicht scharf"
+  },
+  "Khao Soi Tofu": {
+    description: "Nordthailändische Kokos-Curry-Nudelsuppe mit Tofu, Eiernudeln, knusprigen Nudeln, Schalotten, eingelegtem Senfkohl und Limette.",
+    allergens: ["Gluten", "Ei", "Soja"],
     spiceLevel: "Leicht scharf"
   },
   "Guay Tiew Tom Yam": {
@@ -2381,7 +2391,7 @@ function updatePrepTimeBar(minutes) {
 }
 
 /* ── ADMIN: Zugriff über 3-Sekunden-Long-Press auf Logo + Passwort ── */
-const ADMIN_PASSWORD = "Vareethip2026";
+// Kein ADMIN_PASSWORD im Frontend — Prüfung erfolgt ausschließlich über das Backend.
 const ADMIN_AUTH_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Stunden
 
 function isAdminAuthenticated() {
@@ -2392,7 +2402,6 @@ function isAdminAuthenticated() {
     if (data === true) return true; // Altformat-Fallback
     if (data && data.expires && Date.now() < data.expires) return true;
   } catch (e) {
-    // Altformat: einfacher String "true"
     if (raw === "true") return true;
   }
   return false;
@@ -2407,6 +2416,7 @@ function openAdminModal() {
   let input = document.getElementById("adminPasswordInput");
   let error = document.getElementById("adminModalError");
   error.classList.remove("show");
+  error.textContent = "Falsches Passwort"; // auf Standard zurücksetzen
   input.value = "";
   overlay.classList.add("open");
   setTimeout(() => input.focus(), 100);
@@ -2416,20 +2426,48 @@ function closeAdminModal() {
   document.getElementById("adminModalOverlay").classList.remove("open");
 }
 
-function submitAdminPassword() {
+async function submitAdminPassword() {
   let input = document.getElementById("adminPasswordInput");
   let error = document.getElementById("adminModalError");
-  if (input.value === ADMIN_PASSWORD) {
-    localStorage.setItem("adminAuthenticated", JSON.stringify({
-      value: true,
-      expires: Date.now() + ADMIN_AUTH_DURATION_MS
-    }));
-    closeAdminModal();
-    openAdminPanel();
-  } else {
+  let submitBtn = document.getElementById("adminSubmitBtn");
+  let password = input.value;
+
+  if (!password) return;
+
+  // Button während der Anfrage deaktivieren
+  submitBtn.disabled = true;
+  submitBtn.textContent = "…";
+
+  try {
+    let response = await fetch("/api/admin-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password })
+    });
+
+    let data = await response.json();
+
+    if (response.ok && data.ok === true) {
+      // Erfolgreich — 24h-Session speichern und Admin-Panel öffnen
+      localStorage.setItem("adminAuthenticated", JSON.stringify({
+        value: true,
+        expires: Date.now() + ADMIN_AUTH_DURATION_MS
+      }));
+      closeAdminModal();
+      openAdminPanel();
+    } else {
+      // Falsches Passwort — Fehlermeldung zeigen
+      error.classList.add("show");
+      input.value = "";
+      input.focus();
+    }
+  } catch (e) {
+    // Netzwerkfehler oder Backend nicht erreichbar — keine technischen Details zeigen
+    error.textContent = "Verbindungsfehler. Bitte erneut versuchen.";
     error.classList.add("show");
-    input.value = "";
-    input.focus();
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Bestätigen";
   }
 }
 

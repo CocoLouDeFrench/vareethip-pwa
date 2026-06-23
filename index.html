@@ -1607,18 +1607,18 @@ const dishDetails = {
     spiceLevel: "Scharf"
   },
   "Yen Ta Fo": {
-    description: "Pinke thailändische Nudelsuppe mit fermentierter Tofu-Sauce. Serviert mit gebratenen Fischwürfeln, Fischbällchen, Fischrolle (Pla Sen), weißer Morchel, gebratenem Tofu und frischen Kräutern. Ein einzigartiger Streetfood-Klassiker mit süßlich-herzhaftem Geschmack und charakteristischer rosa Brühe.",
-    allergens: ["Enthält Fisch, Krebstiere, Weichtiere und Weizen. Bitte bei Allergien direkt nachfragen."],
-    spiceLevel: "Leicht scharf"
+    description: "Pinke thailändische Nudelsuppe mit fermentierter Tofu-Sauce und Garnitur.",
+    allergens: [],
+    spiceLevel: ""
   },
   "Yen Ta Fo Seafood": {
-    description: "Kräftig-würzige und angenehm säuerliche Tom-Yam-Nudelsuppe mit Garnelen, Tintenfisch, Miesmuscheln und Fischbällchen. Die aromatische Brühe vereint Chili, Limette und traditionelle thailändische Gewürze zu einem intensiven Geschmackserlebnis. Ein beliebter Streetfood-Klassiker aus Thailand.",
-    allergens: ["Enthält Fisch, Krebstiere, Weichtiere und Soja. Bitte bei Allergien direkt nachfragen."],
-    spiceLevel: "Leicht scharf"
+    description: "Pinke thailändische Nudelsuppe mit fermentierter Tofu-Sauce und Meeresfrüchten.",
+    allergens: [],
+    spiceLevel: ""
   },
   "Bami Giew Mhu Daeng": {
-    description: "Ein beliebter Klassiker aus Thailand mit Eiernudeln, süßlich-herzhaft mariniertem Schweinefleisch (Mhu Daeng), Wan Tan und Pak Choi in klarer Brühe.",
-    allergens: ["Enthält Gluten (Weizen), Eier und Soja. Bitte bei Allergien direkt nachfragen."],
+    description: "Eiernudelsuppe mit rotem Schweinefleisch (Mhu Daeng) und Wan-Tan.",
+    allergens: [],
     spiceLevel: ""
   },
   "Guay Tiew Nua": {
@@ -1627,8 +1627,8 @@ const dishDetails = {
     spiceLevel: ""
   },
   "Guay Tiew Nua Spezial": {
-    description: "Kräftige thailändische Rindfleisch-Nudelsuppe mit extra viel zart geschmortem Rindfleisch, hausgemachten Rinderbällchen, frischem Gemüse, Sojasprossen und Kräutern. Die aromatische Brühe wird traditionell über viele Stunden gekocht und entwickelt dadurch ihren besonders intensiven Geschmack.",
-    allergens: ["Enthält Gluten (Weizen), Soja und Sellerie. Bitte bei Allergien direkt nachfragen."],
+    description: "Klare Nudelsuppe mit Rindfleisch, Spezial-Einlage und frischen Kräutern.",
+    allergens: [],
     spiceLevel: ""
   },
   "Guay Tiew Mhu": {
@@ -1637,8 +1637,8 @@ const dishDetails = {
     spiceLevel: ""
   },
   "Guay Tiew Mhu Spezial": {
-    description: "Klare thailändische Nudelsuppe mit zartem Schweinefleisch, Fischbällchen, Fischrolle, extra Sojasprossen und frischen Kräutern. Die aromatische Brühe wird traditionell zubereitet und macht diese Spezial-Version zu einer besonders reichhaltigen Variante des beliebten Klassikers.",
-    allergens: ["Enthält Fisch, Gluten (Weizen) und Soja. Bitte bei Allergien direkt nachfragen."],
+    description: "Klare Nudelsuppe mit Schweinefleisch, Spezial-Einlage und frischen Kräutern.",
+    allergens: [],
     spiceLevel: ""
   },
   "Guay Tiew Jay": {
@@ -1672,7 +1672,7 @@ const dishDetails = {
     spiceLevel: "Scharf"
   },
   "Kai Nok Kata": {
-    description: "Frisch gebratene Wachteleier nach thailändischer Streetfood-Art.",
+    description: "Thailändische Eierspeise, in der Pfanne zubereitet.",
     allergens: [],
     spiceLevel: ""
   },
@@ -1687,7 +1687,7 @@ const dishDetails = {
     spiceLevel: ""
   },
   "Gui Chai Tord": {
-    description: "Knusprig gebratener Schnittlauch-Pancake nach thailändischer Art. Gefüllt mit aromatischem chinesischem Schnittlauch und goldbraun ausgebacken. Serviert mit einer süß-würzigen Dip-Sauce.",
+    description: "Knusprig frittierte Schnittlauchtaschen.",
     allergens: [],
     spiceLevel: ""
   },
@@ -2331,7 +2331,8 @@ function sendWhatsApp(suffix) {
     String(now.getDate()).padStart(2,"0") + "-" +
     String(now.getHours()).padStart(2,"0") +
     String(now.getMinutes()).padStart(2,"0") +
-    String(now.getSeconds()).padStart(2,"0");
+    String(now.getSeconds()).padStart(2,"0") + "-" +
+    Math.random().toString(36).substring(2, 6).toUpperCase();
 
   let total = order.reduce((s, i) => s + i.priceCents * i.qty, 0);
   let note = document.getElementById("note" + suffix).value.trim();

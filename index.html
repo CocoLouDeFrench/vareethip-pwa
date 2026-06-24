@@ -2368,12 +2368,15 @@ function setupScrollSpy() {
   sections.forEach(s => observer.observe(s));
 }
 
-function toggleClosed() {
+async function toggleClosed() {
+  if (!await requireAdmin()) return;
   adminOpen = !adminOpen;
   localStorage.setItem("adminOpen", adminOpen);
   updateStatus();
 }
-function setPrepTime(minutes) {
+
+async function setPrepTime(minutes) {
+  if (!await requireAdmin()) return;
   localStorage.setItem("prepTime", minutes);
   updatePrepTimeBar(minutes);
 }
@@ -2383,6 +2386,14 @@ function updatePrepTimeBar(minutes) {
   let bar = document.getElementById("prepTimeBar");
   let text = document.getElementById("prepTimeText");
   if (!bar || !text) return;
+
+  // Nur anzeigen wenn Restaurant geöffnet ist
+  if (!isOpen()) {
+    bar.style.display = "none";
+    return;
+  }
+
+  bar.style.display = "";
   text.textContent = "Aktuelle Zubereitungszeit: ca. " + minutes + " Minuten";
   bar.className = "prep-time-bar";
   if (minutes <= 30)      bar.classList.add("prep-green");
@@ -2392,19 +2403,57 @@ function updatePrepTimeBar(minutes) {
 
 /* ── ADMIN: Zugriff über 3-Sekunden-Long-Press auf Logo + Passwort ── */
 // Kein ADMIN_PASSWORD im Frontend — Prüfung erfolgt ausschließlich über das Backend.
-const ADMIN_AUTH_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Stunden
+// ── ADMIN AUTH — Token-basiert ──────────────────────────────────────
+// Token wird nach Login im localStorage gespeichert.
+// Jede Admin-Aktion prüft das Token gegen das Backend (verify-admin).
+// localStorage allein reicht nicht mehr — ohne gültiges Backend-Token kein Zugriff.
 
-function isAdminAuthenticated() {
-  let raw = localStorage.getItem("adminAuthenticated");
-  if (!raw) return false;
+const ADMIN_TOKEN_KEY = "adminToken";
+
+function getStoredToken() {
+  return localStorage.getItem(ADMIN_TOKEN_KEY) || "";
+}
+
+function storeToken(token) {
+  localStorage.setItem(ADMIN_TOKEN_KEY, token);
+}
+
+function clearToken() {
+  localStorage.removeItem(ADMIN_TOKEN_KEY);
+  // Altformat aufräumen
+  localStorage.removeItem("adminAuthenticated");
+}
+
+// Prüft Token gegen Backend — gibt Promise<boolean> zurück
+async function verifyAdminToken(token) {
+  if (!token) return false;
   try {
-    let data = JSON.parse(raw);
-    if (data === true) return true; // Altformat-Fallback
-    if (data && data.expires && Date.now() < data.expires) return true;
-  } catch (e) {
-    if (raw === "true") return true;
+    let res = await fetch("/api/verify-admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+    let data = await res.json();
+    return res.ok && data.ok === true;
+  } catch {
+    return false;
   }
-  return false;
+}
+
+// Schnell-Check: ist ein Token gespeichert? (kein Netzwerk-Aufruf)
+function isAdminAuthenticated() {
+  return !!getStoredToken();
+}
+
+// Vollständige Backend-Verifikation — für Admin-Aktionen
+async function requireAdmin() {
+  const token = getStoredToken();
+  const valid = await verifyAdminToken(token);
+  if (!valid) {
+    clearToken();
+    alert("Admin-Session abgelaufen. Bitte erneut anmelden.");
+  }
+  return valid;
 }
 
 function openAdminPanel() {
@@ -2416,7 +2465,7 @@ function openAdminModal() {
   let input = document.getElementById("adminPasswordInput");
   let error = document.getElementById("adminModalError");
   error.classList.remove("show");
-  error.textContent = "Falsches Passwort"; // auf Standard zurücksetzen
+  error.textContent = "Falsches Passwort";
   input.value = "";
   overlay.classList.add("open");
   setTimeout(() => input.focus(), 100);
@@ -2434,7 +2483,6 @@ async function submitAdminPassword() {
 
   if (!password) return;
 
-  // Button während der Anfrage deaktivieren
   submitBtn.disabled = true;
   submitBtn.textContent = "…";
 
@@ -2447,22 +2495,16 @@ async function submitAdminPassword() {
 
     let data = await response.json();
 
-    if (response.ok && data.ok === true) {
-      // Erfolgreich — 24h-Session speichern und Admin-Panel öffnen
-      localStorage.setItem("adminAuthenticated", JSON.stringify({
-        value: true,
-        expires: Date.now() + ADMIN_AUTH_DURATION_MS
-      }));
+    if (response.ok && data.ok === true && data.token) {
+      storeToken(data.token);
       closeAdminModal();
       openAdminPanel();
     } else {
-      // Falsches Passwort — Fehlermeldung zeigen
       error.classList.add("show");
       input.value = "";
       input.focus();
     }
   } catch (e) {
-    // Netzwerkfehler oder Backend nicht erreichbar — keine technischen Details zeigen
     error.textContent = "Verbindungsfehler. Bitte erneut versuchen.";
     error.classList.add("show");
   } finally {
@@ -2488,23 +2530,30 @@ function setupLogoLongPress() {
   let tapCount = 0;
   let tapTimer = null;
   const TAP_TARGET = 5;
-  const TAP_WINDOW_MS = 2000; // Zeitfenster für die 5 Taps
+  const TAP_WINDOW_MS = 2000;
 
-  function registerTap() {
+  async function registerTap() {
     tapCount++;
     clearTimeout(tapTimer);
 
     if (tapCount >= TAP_TARGET) {
       tapCount = 0;
-      if (isAdminAuthenticated()) {
-        openAdminPanel();
+      const token = getStoredToken();
+      if (token) {
+        // Token vorhanden — Backend-Verifikation vor dem Öffnen
+        const valid = await verifyAdminToken(token);
+        if (valid) {
+          openAdminPanel();
+        } else {
+          clearToken();
+          openAdminModal();
+        }
       } else {
         openAdminModal();
       }
       return;
     }
 
-    // Zähler nach Zeitfenster zurücksetzen, falls nicht schnell genug weitergetippt wird
     tapTimer = setTimeout(() => { tapCount = 0; }, TAP_WINDOW_MS);
   }
 
@@ -2565,6 +2614,9 @@ function updateStatus() {
       '<span style="color:#b71c1c;font-weight:800;font-size:14px;">🔴 Geschlossen</span>' +
       '<div style="font-size:11px;color:#777;margin-top:2px;">Mo–Fr: 12–14 Uhr &amp; 16–21 Uhr &nbsp;·&nbsp; Sa–So: 16–21 Uhr</div>';
   }
+  // Zubereitungszeit-Banner je nach Status ein-/ausblenden
+  let saved = localStorage.getItem("prepTime") || "20";
+  updatePrepTimeBar(parseInt(saved));
 }
 
 function sendWhatsApp(suffix) {

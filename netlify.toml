@@ -11,3 +11,13 @@
   from = "/api/verify-admin"
   to = "/.netlify/functions/verify-admin"
   status = 200
+
+[[redirects]]
+  from = "/api/set-soldout"
+  to = "/.netlify/functions/set-soldout"
+  status = 200
+
+[[redirects]]
+  from = "/api/get-soldout"
+  to = "/.netlify/functions/get-soldout"
+  status = 200

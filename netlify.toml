@@ -7,8 +7,7 @@
   to = "/.netlify/functions/admin-login"
   status = 200
 
-[[redirects]]
-  from = "/api/verify-admin"
+[[redirects]
   to = "/.netlify/functions/verify-admin"
   status = 200
 
